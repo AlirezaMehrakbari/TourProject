@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@font-face {
+    font-family: kalameh300;
+    src: url("../public/fonts/Kalameh(FaNum)-Light.ttf") format('truetype')
+}
+
+@font-face {
+    font-family: kalameh400;
+    src: url("../public/fonts/Kalameh(FaNum)-Regular.ttf") format('truetype')
+}
+
+@font-face {
+    font-family: kalameh500;
+    src: url("../public/fonts/Kalameh(FaNum)-Medium.ttf") format('truetype')
+}
+
+@font-face {
+    font-family: kalameh700;
+    src: url("../public/fonts/Kalameh-Bold.ttf") format('truetype')
+}
+
+@font-face {
+    font-family: kalamehBold;
+    src: url("../public/fonts/Kalameh-Black.ttf") format('truetype')
+}
+
+@font-face {
+    font-family: potk;
+    src: url("../public/fonts/Potk.ttf") format('truetype')
+}
+
+html {
+    @apply font-kalameh300
+}
+
+@tailwind utilities;
+
+
+@layer utilities {
+    .active {
+        @apply text-[#E6AE07] border-b-[1px] border-[#E6AE07]
+    }
+}
+
+html,
+body,
+:root {
+    margin: 0 auto;
+    box-sizing: border-box;
+    direction: rtl;
+}
