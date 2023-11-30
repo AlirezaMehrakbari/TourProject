@@ -1,7 +1,7 @@
 import React from 'react'
 
 const TourDetailPage = () => {
-  return <TourDetail/>
+  // return <TourDetail/>
 }
 
 export default TourDetailPage
