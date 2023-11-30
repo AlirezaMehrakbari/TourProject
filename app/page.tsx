@@ -55,7 +55,7 @@ export default function Home() {
         {
             id: 5,
             category: "خرید تور",
-            url: '/tour/home',
+            url: '/tour',
             icon: Airplane
         }
     ]
@@ -246,10 +246,9 @@ export default function Home() {
 
                     {/*قسمت تخفیف ویژه*/}
                     <div className='flex items-center xl:flex-row justify-between flex-col pb-20'>
-                        <div className='w-fit '>
+                        <div className='w-fit'>
                             <h1 className='pb-[28px] text-[26px] font-kalameh500'>تخفیف های ویژه</h1>
-                            <div
-                                className='relative  bg-gradient-to-l from-[#000] to-white to-60%  py-[2px] px-[2px] rounded-xl'>
+                            <div className='relative  bg-gradient-to-l from-[#000] to-white to-60%  py-[2px] px-[2px] rounded-xl'>
                                 <ul className='list-disc list-inside px-3 py-[59px] rounded-lg w-[269px] h-[352px] bg-white '>
                                     <li className='text-[20px] '>ویلای دوبلکس فول امکانات</li>
                                     <li className='text-[20px] '>مازندران | رامسر</li>

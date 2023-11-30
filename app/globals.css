@@ -41,6 +41,7 @@ html {
     .active {
         @apply text-[#E6AE07] border-b-[1px] border-[#E6AE07]
     }
+
 }
 
 html,
@@ -49,4 +50,25 @@ body,
     margin: 0 auto;
     box-sizing: border-box;
     direction: rtl;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #F7F6F6;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -1,4 +1,5 @@
-import React, {useId} from 'react'
+'use client'
+import React, {useId, useState} from 'react'
 import Navbar from "@/app/components/navbar/Navbar";
 import {Metadata} from "next";
 import Image from "next/image";
@@ -11,11 +12,12 @@ import Layout from "@/app/components/Layout";
 import TourList from "@/app/components/tour/TourList";
 import Link from "next/link";
 import Footer from "@/app/components/footer/footer";
+import SelectDropDown from "@/app/components/inputs/SelectDropDown";
 
-export const metadata: Metadata = {
-    title: 'Reserve Tour',
-    description: 'You Can go anywhere with us :)',
-}
+// export const metadata: Metadata = {
+//     title: 'Reserve Tour',
+//     description: 'You Can go anywhere with us :)',
+// }
 
 const TourHomePage = () => {
     const tourData = [
@@ -111,22 +113,44 @@ const TourHomePage = () => {
                 'با ورود به لینک میتوانید نظر خود را ثبت کنید '
         },
     ]
+    const provinces = [
+        {
+            id: 1,
+            provinceName: 'تهران'
+        },
+        {
+            id: 1,
+            provinceName: 'اصفهان'
+        },
+        {
+            id: 1,
+            provinceName: 'شیراز'
+        },
+        {
+            id: 1,
+            provinceName: 'سمنان'
+        },
+        {
+            id: 1,
+            provinceName: 'البرز'
+        },
+    ]
 
-    // const options = [
-    //     {label: 'ali', value: 'ali'},
-    //     {label: 'ali', value: 'ali'},
-    //     {label: 'ali', value: 'ali'},
-    // ]
-    // const colorStyles = {
-    //     control: (styles: any) => (
-    //         {
-    //             ...styles,
-    //             backgroundColor: '#FF7512',
-    //             border: '2px solid #FF7512',
-    //             width: '80px'
-    //         }
-    //     )
-    // }
+    const [origin, setOrigin] = useState('مبدا مورد نظر را انتخاب کنید')
+    const [destination, setDestination] = useState('مقصد مورد نظر را انتخاب کنید')
+    const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
+    const [passengers, setPassengers] = useState(0)
+
+    const handleIncreasePassenger = () => {
+        setPassengers(prev => prev + 1)
+    }
+    const handleDecreasePassenger = () => {
+        if (passengers === 0) {
+            return
+        }
+        setPassengers(prev => prev - 1)
+    }
+
     return (
         <div className='flex flex-col'>
             <Navbar/>
@@ -134,19 +158,101 @@ const TourHomePage = () => {
                 className='rounded-xl mt-[12rem] max-h-[564px] xl:max-w-[1164px] lg:max-w-[900px] md:max-w-[700px] mx-auto object-cover'
                 src={TourHomePicture}
                 alt='Tour Picture'/>
-            <div className='mx-auto mt-[-20px]'>
+            <div className='mx-auto mt-[-30px]'>
                 <Layout>
-                    <form className='xl:w-[1020px]'>
-                        <div>
-                            <h2 className='text-[20.6px]'>کجا میخوای بـری؟!</h2>
-                            {/*<DropDown onClick={} label={'مبد'}/>*/}
-                            {/*<Select*/}
-                            {/*    options={options}*/}
-                            {/*    styles={colorStyles}*/}
-                            {/*/>*/}
+                    <form className='xl:w-[1020px] flex items-center gap-x-8 justify-between'>
+                        <div className='flex flex-col gap-y-4'>
+                            <p className='text-[20.6px] font-kalameh700 text-white'>از کجا میخوای بـری؟!</p>
+                            <SelectDropDown main label={origin}
+                                            dropDownStyles={'absolute bg-[#FFF] top-10 w-full shadow-md rounded-md text-[#000] left-[2px] px-4 py-2'}>
+                                <div className='flex flex-col divide-y divide-[#D3D3D3]'>
+                                    {provinces.map(province => {
+                                        return (
+                                            <div className='py-2 cursor-pointer'
+                                                 onClick={() => setOrigin(province.provinceName)}>{province.provinceName}</div>
+                                        )
+                                    })}
+                                </div>
+                            </SelectDropDown>
                         </div>
-                        <div></div>
-                        <div></div>
+                        <div>
+                            <div className='flex flex-col gap-y-4'>
+                                <p className='text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری ؟!</p>
+                                <SelectDropDown main label={destination}
+                                                dropDownStyles={'absolute bg-[#FFF] top-10 w-full shadow-md rounded-md text-[#000] left-[2px] px-4 py-2'}>
+                                    <div className='flex flex-col divide-y divide-[#D3D3D3]'>
+                                        {provinces.map(province => {
+                                            return (
+                                                <div className='py-2 cursor-pointer'
+                                                     onClick={() => setDestination(province.provinceName)}>{province.provinceName}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </SelectDropDown>
+                            </div>
+                        </div>
+                        <div>
+                            <div className='flex flex-col gap-y-4'>
+                                <p className='text-[20.6px] font-kalameh700 text-white'> کِی میخوای بـری ؟!</p>
+                                <SelectDropDown main label={date}
+                                                dropDownStyles={'absolute bg-[#FFF] top-10 w-full shadow-md rounded-md text-[#000] left-[2px] px-4 py-2'}>
+                                    <div className='flex flex-col divide-y divide-[#D3D3D3]'>
+                                        {provinces.map(province => {
+                                            return (
+                                                <div className='text-[14px] font-kalameh400 py-2 cursor-pointer'
+                                                     onClick={() => setDate(province.provinceName)}>{province.provinceName}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </SelectDropDown>
+                            </div>
+                        </div>
+                        <div>
+                            <div className='flex flex-col gap-y-4'>
+                                <p className='text-[20.6px] font-kalameh700 text-white'>چند نفـر ؟!</p>
+                                <SelectDropDown main isCounter
+                                                label={(passengers > 0 ? `${passengers} مسافر` : 'تعداد مسافران')}
+                                                dropDownStyles={'absolute bg-[#FFF] top-10 w-[300px] inset-x-0  rounded-md text-[#000] mx-auto shadow-md px-4 py-2'}>
+                                    <div className='flex items-center justify-between'>
+                                        <div className='flex items-center'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="23"
+                                                 viewBox="0 0 27 23" fill="none">
+                                                <path
+                                                    d="M19.1818 21.4549V19.1822C19.1818 17.9766 18.7029 16.8205 17.8505 15.9681C16.998 15.1156 15.8419 14.6367 14.6364 14.6367H5.54545C4.33992 14.6367 3.18377 15.1156 2.33133 15.9681C1.47889 16.8205 1 17.9766 1 19.1822V21.4549"
+                                                    stroke="black" strokeWidth="1.70455" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                                <path
+                                                    d="M10.0909 10.0909C12.6013 10.0909 14.6363 8.05584 14.6363 5.54545C14.6363 3.03507 12.6013 1 10.0909 1C7.58048 1 5.54541 3.03507 5.54541 5.54545C5.54541 8.05584 7.58048 10.0909 10.0909 10.0909Z"
+                                                    stroke="black" strokeWidth="1.70455" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                                <path
+                                                    d="M25.9999 21.4537V19.1809C25.9992 18.1738 25.664 17.1954 25.0469 16.3995C24.4299 15.6035 23.566 15.035 22.5908 14.7832"
+                                                    stroke="black" strokeWidth="1.70455" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                                <path
+                                                    d="M18.0454 1.14844C19.0232 1.39878 19.8898 1.96742 20.5086 2.7647C21.1275 3.56198 21.4634 4.54256 21.4634 5.55185C21.4634 6.56113 21.1275 7.54171 20.5086 8.33899C19.8898 9.13628 19.0232 9.70491 18.0454 9.95526"
+                                                    stroke="black" strokeWidth="1.70455" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                            </svg>
+                                            <p className='font-kalameh400'>تعداد نفــرات</p>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <button type='button' onClick={handleIncreasePassenger}
+                                                    className='w-[24px] h-[24px] bg-[#1270B0] rounded-full text-white'>+
+                                            </button>
+                                            <span className='px-2'>{passengers}</span>
+                                            <button type='button' onClick={handleDecreasePassenger}
+                                                    className='w-[24px] h-[24px] border-[2px] border-[#1270B0] rounded-full'>-
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </SelectDropDown>
+                            </div>
+                        </div>
+                        <button className='text-[22px] font-kalameh500 bg-[#83734E] text-white px-8 py-2 rounded-full'>
+                            جست و جو
+                        </button>
                     </form>
                 </Layout>
             </div>
@@ -269,7 +375,8 @@ const TourHomePage = () => {
                     <h1 className='text-[20px] md:text-[32.4px] font-kalameh500 pr-2'>سوالات متداول</h1>
                     {questions.map(item => {
                         return (
-                            <div key={item.id} className="collapse collapse-arrow bg-[#F4FDFB] max-md:overflow-x-scroll">
+                            <div key={item.id}
+                                 className="collapse collapse-arrow bg-[#F4FDFB] max-md:overflow-x-scroll">
                                 <input type="radio" name="my-accordion-2"/>
                                 <div className="collapse-title lg:text-[24px] text-[#15247B] font-kalameh400">
                                     {item.question}

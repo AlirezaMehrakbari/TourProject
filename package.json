@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.18",
     "modules": "^0.4.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
     "react-select": "^5.8.0",
-    "swiper": "^11.0.4"
+    "swiper": "^11.0.4",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@types/node": "^20",

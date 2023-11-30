@@ -8,11 +8,13 @@ type ButtonProps = {
     icon?: ImgHTMLAttributes<HTMLImageElement>,
     outline?: boolean
     height?: string,
-    styles?: string
+    styles?: string,
+    type?:'submit'
 }
 
 const Button: React.FC<ButtonProps> = ({
                                            children,
+                                           type,
                                            onClick,
                                            disabled,
                                            icon,
@@ -24,6 +26,7 @@ const Button: React.FC<ButtonProps> = ({
         <button
             disabled={disabled}
             onClick={onClick}
+            type={type}
             className={
                 `
                 flex 
