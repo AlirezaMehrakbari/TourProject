@@ -1,3 +1,4 @@
+
 import TourDetail0 from '@/public/images/TourDetail.png'
 import TourDetail1 from '@/public/images/TourDetail1.png'
 import TourDetail2 from '@/public/images/TourDetail2.png'
@@ -7,8 +8,22 @@ import Footer from "@/app/components/footer/footer";
 import Comments from "@/app/components/Comments";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
+import {Metadata} from "next";
+import SelectDropDown from "@/app/components/inputs/SelectDropDown";
+import {useState} from "react";
+import Stepper from "@/app/components/Stepper";
+
 
 const TourDetail = () => {
+    const [travelDate, setTravelDate] = useState<string>('تاریخ سفر را مشخص کنید')
+    const [passengers, setPassengers] = useState({
+        adult2: 0,
+        adult1: 0,
+        childFrom2to12: 0,
+        child2: 0
+
+    })
+    let quantity = passengers.adult1 + passengers.adult2 + passengers.childFrom2to12 + passengers.child2
     const planForDay = [
         {
             id: 1,
@@ -39,7 +54,8 @@ const TourDetail = () => {
 
     return (
         <div>
-            <div className='w-[80%] mx-auto'>
+            <Stepper/>
+            <div className='w-[80%] mx-auto pt-[10rem]'>
                 <div className='flex item-center justify-between w-full py-8 h-full'>
                     <Image
                         className='w-[70%] object-cover rounded-[12px]'
@@ -235,13 +251,69 @@ const TourDetail = () => {
                         </div>
                     </div>
                     <div
-                        className='hidden md:flex flex-col justify-between sticky top-8 rounded-[12px] md:w-[30%] bg-[#F1F1F1] p-4 max-h-[451px]'>
-                        <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-20'> انتخـاب تاریـخ تـور</h1>
+                        className='hidden md:flex flex-col gap-y-4 sticky top-[10rem] rounded-[12px] md:w-[30%] bg-[#F1F1F1] p-4 max-h-[500px] overflow-hidden'>
+                        <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-6'> انتخـاب تاریـخ
+                            تـور</h1>
                         <div className='flex items-center gap-x-[8px]'>
                             <button
                                 className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آبان'}</button>
                             <button
                                 className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آذر'}</button>
+                        </div>
+                        <SelectDropDown
+                            label={travelDate}
+                            styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
+                            icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                       fill="none">
+                                <path
+                                    d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"
+                                    stroke="#FF7512" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                      strokeLinejoin="round"/>
+                                <path
+                                    d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                    fill="#FF7512"/>
+                                <path
+                                    d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                    fill="#FF7512"/>
+                            </svg>}
+                            dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
+                            labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
+                        >
+                            <div
+                                className='text-[18px] text-[#616161] divide-y-[1px] flex flex-col gap-y-2 py-2 divide-[#D0D0D0]'>
+                                <div onClick={() => setTravelDate('17 آبـان - 20 آبـان')}>17 آبـان - 20 آبـان</div>
+                                <div onClick={() => setTravelDate('22 آبـان - 25 آبـان')}>22 آبـان - 25 آبـان</div>
+                            </div>
+                        </SelectDropDown>
+                        <SelectDropDown
+                            label={`${quantity > 0  ? quantity : 'تعداد مسافران'}`}
+                            styles='flex flex-col items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
+                            icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                       fill="none">
+                                <path
+                                    d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"
+                                    stroke="#FF7512" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                      strokeLinejoin="round"/>
+                                <path
+                                    d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                    fill="#FF7512"/>
+                                <path
+                                    d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                    fill="#FF7512"/>
+                            </svg>}
+                            dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
+                            labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
+                        >
+                            <div className='text-[18px] text-[#616161]'>
+                                <div>17 آبـان - 20 آبـان</div>
+                                <div>22 آبـان - 25 آبـان</div>
+                            </div>
+                        </SelectDropDown>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[17.5px] font-kalameh400'>مجموع قیمت :</p>
+                            <p className='text-[22.8px] font-kalameh500'> 5.000.000 تومـان</p>
                         </div>
                         <Button styles='text-[24px] font-kalameh400 rounded-[5px] h-[56px]' onClick={handleStep}>
                             تایید و ادامـه

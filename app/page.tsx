@@ -31,7 +31,7 @@ export default function Home() {
         {
             id: 1,
             category: 'ویلا',
-            url: '/',
+            url: '/villa',
             icon: VillaPic
         },
         {

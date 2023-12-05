@@ -1,4 +1,3 @@
-'use client'
 import React from 'react'
 import Logo from "@/app/components/navbar/Logo";
 import Button from "@/app/components/Button";
@@ -24,7 +23,7 @@ const Navbar = () => {
             <div className='flex items-center'>
                 <Link href={'/'} className='pl-6'><Logo/></Link>
                 <ul className='hidden items-center lg:text-[20.6px] font-kalameh400 lg:gap-x-[53px] lg:flex'>
-                    <Link href={'/'}>
+                    <Link href={'/villa'} className={(pathname === '/villa' ? 'active' : '')}>
                         <li>ویلا</li>
                     </Link>
                     <Link href={'/'}>
@@ -36,7 +35,7 @@ const Navbar = () => {
                     <Link href={'/'}>
                         <li>هتل</li>
                     </Link>
-                    <Link href={'/tour/home'} className={(pathname === '/tour/home' ? 'active' : '')}>
+                    <Link href={'/tour'} className={(pathname === '/tour' ? 'active' : '')}>
                         <li>خرید تور</li>
                     </Link>
                 </ul>

@@ -112,7 +112,7 @@ const Comments: React.FC<CommentsProps> = ({
     return (
         <div className='py-20'>
             <div className='flex items-center gap-x-2'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="54" height="40" viewBox="0 0 54 40"
+                <svg className='icon' xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 54 40"
                      fill="none">
                     <path
                         d="M2 20.0989C2 20.0989 11.0922 2 27.0037 2C42.9151 2 52.0073 20.0989 52.0073 20.0989C52.0073 20.0989 42.9151 38.1979 27.0037 38.1979C11.0922 38.1979 2 20.0989 2 20.0989Z"
@@ -127,7 +127,7 @@ const Comments: React.FC<CommentsProps> = ({
             </div>
             <div className='relative bg-[#F7F6F6] p-4 h-[724px] hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px] '>
                 <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
-                    <div className='absolute w-[1px] bg-[#CFCFCF] h-full'/>
+                    <div className='hidden sm:block absolute w-[1px] bg-[#CFCFCF] h-full'/>
 
                     {comments.map(item => {
                         return (

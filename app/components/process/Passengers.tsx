@@ -10,7 +10,7 @@ const Passengers = () => {
     return (
         <div>
             <Stepper/>
-            <form>
+            <form className='pt-[10rem]'>
                 {passengers.map(passenger => {
                     return (
                         <form

@@ -124,7 +124,7 @@ const Favorite = () => {
                                     <div className="flex flex-row">
                                         <p className="text-[9.85px]">{item.opinion}</p>
                                         <p className="text-[9.85px] px-2">دیدگاه</p>
-                                    </div>
+                                     </div>
                                     <div className="flex flex-row items-center">
                                         <p className="text-[9.85px] px-1">
                                             {item.Satisfaction}

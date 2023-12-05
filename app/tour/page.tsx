@@ -1,5 +1,5 @@
 'use client'
-import React, {useId, useState} from 'react'
+import React, {useEffect, useId, useState} from 'react'
 import Navbar from "@/app/components/navbar/Navbar";
 import {Metadata} from "next";
 import Image from "next/image";
@@ -13,11 +13,7 @@ import TourList from "@/app/components/tour/TourList";
 import Link from "next/link";
 import Footer from "@/app/components/footer/footer";
 import SelectDropDown from "@/app/components/inputs/SelectDropDown";
-
-// export const metadata: Metadata = {
-//     title: 'Reserve Tour',
-//     description: 'You Can go anywhere with us :)',
-// }
+import useStep from "@/app/hooks/useStep";
 
 const TourHomePage = () => {
     const tourData = [
@@ -119,27 +115,28 @@ const TourHomePage = () => {
             provinceName: 'تهران'
         },
         {
-            id: 1,
+            id: 2,
             provinceName: 'اصفهان'
         },
         {
-            id: 1,
+            id: 3,
             provinceName: 'شیراز'
         },
         {
-            id: 1,
+            id: 4,
             provinceName: 'سمنان'
         },
         {
-            id: 1,
+            id: 5,
             provinceName: 'البرز'
         },
     ]
 
-    const [origin, setOrigin] = useState('مبدا مورد نظر را انتخاب کنید')
-    const [destination, setDestination] = useState('مقصد مورد نظر را انتخاب کنید')
+    const [origin, setOrigin] = useState('مبدا')
+    const [destination, setDestination] = useState('مقصد')
     const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
     const [passengers, setPassengers] = useState(0)
+
 
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
@@ -168,7 +165,7 @@ const TourHomePage = () => {
                                 <div className='flex flex-col divide-y divide-[#D3D3D3]'>
                                     {provinces.map(province => {
                                         return (
-                                            <div className='py-2 cursor-pointer'
+                                            <div key={province.id} className='py-2 cursor-pointer'
                                                  onClick={() => setOrigin(province.provinceName)}>{province.provinceName}</div>
                                         )
                                     })}
@@ -183,7 +180,7 @@ const TourHomePage = () => {
                                     <div className='flex flex-col divide-y divide-[#D3D3D3]'>
                                         {provinces.map(province => {
                                             return (
-                                                <div className='py-2 cursor-pointer'
+                                                <div key={province.id} className='py-2 cursor-pointer'
                                                      onClick={() => setDestination(province.provinceName)}>{province.provinceName}</div>
                                             )
                                         })}
@@ -199,7 +196,7 @@ const TourHomePage = () => {
                                     <div className='flex flex-col divide-y divide-[#D3D3D3]'>
                                         {provinces.map(province => {
                                             return (
-                                                <div className='text-[14px] font-kalameh400 py-2 cursor-pointer'
+                                                <div  className='text-[14px] font-kalameh400 py-2 cursor-pointer'
                                                      onClick={() => setDate(province.provinceName)}>{province.provinceName}</div>
                                             )
                                         })}
