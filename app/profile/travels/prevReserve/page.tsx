@@ -1,6 +1,6 @@
 'use client'
 import DropDown from '@/app/components/navbar/DropDown'
-import ButtnosAdmin from '@/app/components/profile/ButtnosAdmin'
+import ButtnosAdmin from '@/app/components/profile/ProfileNavbar'
 import Reserve from '@/app/components/profile/Reserve'
 import Sidebar from '@/app/components/profile/Sidebar'
 import Link from 'next/link'

@@ -1,5 +1,5 @@
 'use client'
-import ButtnosAdmin from '@/app/components/profile/ButtnosAdmin'
+import ButtnosAdmin from '@/app/components/profile/ProfileNavbar'
 import PaymentDetails from '@/app/components/profile/PaymentDetails'
 import Sidebar from '@/app/components/profile/Sidebar'
 import React from 'react'
