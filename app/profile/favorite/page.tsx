@@ -1,11 +1,7 @@
 'use client'
 import Button from "@/app/components/Button";
 import Sidebar from "../../components/profile/Sidebar";
-<<<<<<< HEAD
 import ProfileNavbar from "../../components/profile/ProfileNavbar";
-=======
-import ButtnosAdmin from "../../components/profile/ProfileNavbar";
->>>>>>> main
 import imageee from '../../../public/images/TakhfifPicture1.png'
 import Image from "next/image";
 import { IoStarHalfOutline } from "react-icons/io5";
