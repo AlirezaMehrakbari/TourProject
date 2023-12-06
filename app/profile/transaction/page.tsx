@@ -3,13 +3,14 @@ import ButtnosAdmin from '@/app/components/profile/ProfileNavbar'
 import PaymentDetails from '@/app/components/profile/PaymentDetails'
 import Sidebar from '@/app/components/profile/Sidebar'
 import React from 'react'
+import ProfileNavbar from "@/app/components/profile/ProfileNavbar";
 
 const Transaction = () => {
     const data = [1, 2, 3]
     return (
         <div className='w-[90%] mx-auto flex flex-col'>
             <div className="py-8">
-                <ButtnosAdmin />
+                <ProfileNavbar />
             </div>
             <div className="w-[full]  flex flex-col justify-between pb-10 pt-7 md:flex-row">
                 <Sidebar />
