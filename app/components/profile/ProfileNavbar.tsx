@@ -1,12 +1,15 @@
 import React from 'react'
 import Button from '../Button'
 import DropDown from '../navbar/DropDown'
+import Link from 'next/link'
 
-const ButtnosAdmin = () => {
+const ProfileNavbar = () => {
     return (
         <div className="w-full flex flex-row justify-end mt-4">
             <div className="mx-1">
+                <Link href={'/profile'}>
                 <Button outline styles={'w-[100px] rounded-md'}>صفحه اصلی</Button>
+                </Link>
             </div>
             <div className="mx-1">
                 <DropDown label={'امیر ولی زاده'}
@@ -26,4 +29,4 @@ const ButtnosAdmin = () => {
     )
 }
 
-export default ButtnosAdmin
+export default ProfileNavbar
