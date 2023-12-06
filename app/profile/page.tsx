@@ -60,7 +60,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="flex flex-row pt-7 mr-[168px]">
                             <div className="mx-1">
-                                <Button styles={'w-[100px] rounded-md bg-[#000]'} >ثبت</Button>
+                               <Button styles={'w-[100px] rounded-md bg-[#000]'} >ثبت</Button>
                             </div>
                             <div className="mx-1">
                                 <Button outline styles={'w-[100px] rounded-md bg-[#B1B1B1] border-none text-white '}>انصراف</Button>
