@@ -1,7 +1,11 @@
 'use client'
 import Button from "@/app/components/Button";
 import Sidebar from "../components/profile/Sidebar";
+<<<<<<< HEAD
 import ProfileNavbar from "../components/profile/ProfileNavbar";
+=======
+import ButtnosAdmin from "../components/profile/ProfileNavbar";
+>>>>>>> main
 
 
 type Option = {
