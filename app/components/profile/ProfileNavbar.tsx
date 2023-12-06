@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../Button'
 import DropDown from '../navbar/DropDown'
 
-const ButtnosAdmin = () => {
+const ProfileNavbar = () => {
     return (
         <div className="w-full flex flex-row justify-end mt-4">
             <div className="mx-1">
@@ -26,4 +26,4 @@ const ButtnosAdmin = () => {
     )
 }
 
-export default ButtnosAdmin
+export default ProfileNavbar

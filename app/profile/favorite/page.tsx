@@ -1,7 +1,7 @@
 'use client'
 import Button from "@/app/components/Button";
 import Sidebar from "../../components/profile/Sidebar";
-import ButtnosAdmin from "../../components/profile/ButtnosAdmin";
+import ProfileNavbar from "../../components/profile/ProfileNavbar";
 import imageee from '../../../public/images/TakhfifPicture1.png'
 import Image from "next/image";
 import { IoStarHalfOutline } from "react-icons/io5";
@@ -104,7 +104,7 @@ const Favorite = () => {
     return (
         <div className='w-[90%] mx-auto flex flex-col justify-center '>
             <div className="py-8 pb-14">
-            <ButtnosAdmin />
+            <ProfileNavbar />
             </div>
 
             <h1 className="font-kalameh700 mr-[295px]">مورد علاقه ها</h1>

@@ -1,6 +1,6 @@
 'use client'
 import Button from '@/app/components/Button'
-import ButtnosAdmin from '@/app/components/profile/ButtnosAdmin'
+import ProfileNavbar from '@/app/components/profile/ProfileNavbar'
 import Sidebar from '@/app/components/profile/Sidebar'
 import React from 'react'
 
@@ -8,7 +8,7 @@ const Travels = () => {
     return (
         <div className='w-[90%] mx-auto flex flex-col'>
             <div className="py-8">
-                <ButtnosAdmin />
+                <ProfileNavbar />
             </div>
 
             <h1 className="font-kalameh700 mr-[338px]">سفر های من</h1>

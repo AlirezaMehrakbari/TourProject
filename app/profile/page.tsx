@@ -1,7 +1,7 @@
 'use client'
 import Button from "@/app/components/Button";
 import Sidebar from "../components/profile/Sidebar";
-import ButtnosAdmin from "../components/profile/ButtnosAdmin";
+import ProfileNavbar from "../components/profile/ProfileNavbar";
 
 
 type Option = {
@@ -16,7 +16,7 @@ const ProfilePage = () => {
     return (
         <div className='w-[90%] mx-auto flex flex-col'>
             <div className="py-8">
-                <ButtnosAdmin />
+                <ProfileNavbar />
             </div>
 
             <h1 className="font-kalameh700 mr-[338px]">حساب کاربری</h1>
