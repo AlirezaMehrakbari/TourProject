@@ -55,7 +55,7 @@ const TourDetail = () => {
     return (
         <div>
             <Stepper/>
-            <div className='w-[80%] mx-auto pt-[10rem]'>
+            <div className='w-[80%] mx-auto md:pt-[10rem]'>
                 <div className='flex item-center justify-between w-full py-8 h-full'>
                     <Image
                         className='w-[70%] object-cover rounded-[12px]'
