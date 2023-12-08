@@ -10,7 +10,8 @@ type SelectDropDownProps = {
     main?: boolean,
     dropDownStyles?: string,
     icon?: any,
-    labelStyles?: string
+    labelStyles?: string,
+    arrowBlack?: boolean
 }
 const SelectDropDown: React.FC<SelectDropDownProps> = ({
                                                            styles,
@@ -20,7 +21,8 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
                                                            main,
                                                            dropDownStyles,
                                                            icon,
-                                                           labelStyles
+                                                           labelStyles,
+                                                           arrowBlack
                                                        }) => {
     const [isOpen, setIsOpen] = useState(false)
     const ref = useRef<HTMLInputElement>(null)
@@ -64,38 +66,22 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
                     {label}
                 </div>
                 <div>
-                    {main ? (
-                        isOpen ? (
-                            <svg className='rotate-180' xmlns="http://www.w3.org/2000/svg" width="11" height="6"
-                                 viewBox="0 0 11 6"
-                                 fill="none">
-                                <path d="M1.05347 0.731445L5.66061 5.33859L10.2678 0.731445" stroke="#FBFBFB"
-                                      strokeWidth="1.15179"
-                                      strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="6" viewBox="0 0 11 6"
-                                 fill="none">
-                                <path d="M1.05347 0.731445L5.66061 5.33859L10.2678 0.731445" stroke="#FBFBFB"
-                                      strokeWidth="1.15179" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        )
-
+                    {isOpen ? (
+                        <svg className={`${arrowBlack ? 'stroke-[#000]' : 'stroke-white'} rotate-180`} xmlns="http://www.w3.org/2000/svg" width="11" height="6"
+                             viewBox="0 0 11 6"
+                             fill="none">
+                            <path d="M1.05347 0.731445L5.66061 5.33859L10.2678 0.731445"
+                                  strokeWidth="1.15179"
+                                  strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                     ) : (
-                        isOpen ? (
-                            <svg className='rotate-180' xmlns="http://www.w3.org/2000/svg" width="17" height="17"
-                                 viewBox="0 0 17 17" fill="none">
-                                <path d="M4.25 6.375L8.5 10.625L12.75 6.375" stroke="black" strokeWidth="1.41667"
-                                      strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17"
-                                 fill="none">
-                                <path d="M4.25 6.375L8.5 10.625L12.75 6.375" stroke="black" strokeWidth="1.41667"
-                                      strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        )
-                    )}
+                        <svg className={`${arrowBlack ? 'stroke-[#000]' : 'stroke-white'}`} xmlns="http://www.w3.org/2000/svg" width="11" height="6" viewBox="0 0 11 6"
+                             fill="none">
+                            <path d="M1.05347 0.731445L5.66061 5.33859L10.2678 0.731445"
+                                  strokeWidth="1.15179" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    )
+                    }
                 </div>
             </div>
             {isOpen &&

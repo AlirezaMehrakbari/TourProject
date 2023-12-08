@@ -83,7 +83,7 @@ const footer = () => {
                         className='max-w-[116px] max-h-[116px] rounded-[116px] bg-[#15247B]'/>
                     <h1 className='font-potk text-[28.4px]'>انتخابی با خیال راحت</h1>
                     <div className='w-[221px] h-[39px] mt-[25px] bg-[#000C4D] rounded-[10px]'><Link
-                        className='text-[24.7px] font-kalameh500 flex justify-center items-center' href={'/'}>فرصت
+                        className='text-[24.7px] font-kalameh500 flex justify-center items-center' href={'/admin'}>فرصت
                         شغلی</Link></div>
                     <p className='text-[15.6px] font-kalameh400 pt-[20px]'>مارا در شبکه های مجازی دنبال کنید.</p>
                     <div className='flex pt-[29px] gap-x-[23.85px]'>

@@ -12,7 +12,7 @@ import Layout from "@/app/components/Layout";
 import TourList from "@/app/components/tour/TourList";
 import Link from "next/link";
 import Footer from "@/app/components/footer/footer";
-import SelectDropDown from "@/app/components/inputs/SelectDropDown";
+import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import useStep from "@/app/hooks/useStep";
 
 const TourHomePage = () => {

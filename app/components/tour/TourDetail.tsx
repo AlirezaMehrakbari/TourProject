@@ -1,4 +1,3 @@
-
 import TourDetail0 from '@/public/images/TourDetail.png'
 import TourDetail1 from '@/public/images/TourDetail1.png'
 import TourDetail2 from '@/public/images/TourDetail2.png'
@@ -9,7 +8,7 @@ import Comments from "@/app/components/Comments";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
 import {Metadata} from "next";
-import SelectDropDown from "@/app/components/inputs/SelectDropDown";
+import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import {useState} from "react";
 import Stepper from "@/app/components/Stepper";
 
@@ -247,7 +246,9 @@ const TourDetail = () => {
                             </div>
 
                             {/*قسمت ثبت نظر*/} {/*قسمت کامنت ها*/}
-                            <Comments disabled={true}/>
+                            <div className='pt-20'>
+                                <Comments disabled={true}/>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -261,6 +262,7 @@ const TourDetail = () => {
                                 className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آذر'}</button>
                         </div>
                         <SelectDropDown
+                            arrowBlack
                             label={travelDate}
                             styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
                             icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -287,7 +289,8 @@ const TourDetail = () => {
                             </div>
                         </SelectDropDown>
                         <SelectDropDown
-                            label={`${quantity > 0  ? quantity : 'تعداد مسافران'}`}
+                            arrowBlack
+                            label={`${quantity > 0 ? quantity : 'تعداد مسافران'}`}
                             styles='flex flex-col items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
                             icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                        fill="none">
