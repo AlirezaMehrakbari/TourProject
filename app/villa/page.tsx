@@ -3,7 +3,7 @@ import Navbar from "@/app/components/navbar/Navbar";
 import Image from "next/image";
 import VillaHomePicture from '@/public/images/VillaHomePicture.png'
 import Layout from "@/app/components/Layout";
-import SelectDropDown from "@/app/components/inputs/SelectDropDown";
+import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import React, {useState} from "react";
 import imageee from "@/public/images/TakhfifPicture1.png";
 import VillaList from "@/app/components/villa/VillaList";

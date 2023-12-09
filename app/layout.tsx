@@ -2,6 +2,9 @@ import type {Metadata} from 'next'
 import './globals.css'
 import Footer from "@/app/components/footer/footer";
 import ReduxProvider from "@/app/redux/provider";
+import dynamic from "next/dynamic";
+
+const RegisterModal = dynamic(() => import('@/app/components/modals/RegisterModal'), {ssr: false})
 
 
 export const metadata: Metadata = {
@@ -19,6 +22,7 @@ export default function RootLayout({
         <body className='font-body'>
         <ReduxProvider>
             {children}
+            <RegisterModal/>
         </ReduxProvider>
         {/*<Footer/>*/}
         </body>

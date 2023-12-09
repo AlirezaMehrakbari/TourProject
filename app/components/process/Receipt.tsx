@@ -10,9 +10,9 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
     return (
         <div className='bg-[#F5F5F5] min-h-screen flex flex-col items-center'>
             <Stepper isVilla={isVilla}/>
-            <div className='flex flex-col w-[50%]'>
-                <div className='flex items-center self-end w-fit border-[1px] rounded-[9px] px-4 mt-[10rem] mb-3'>
-                    <button className='text-[25.6px] self-end'>دانلود بلیط</button>
+            <div className='flex flex-col md:w-[80%] lg:w-[60%]'>
+                <div className='flex items-center self-end w-fit border-[1px] rounded-[9px] px-4 md:mt-[10rem] mb-3'>
+                    <button className='sm:text-[25.6px] self-end'>دانلود بلیط</button>
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
                         <path
                             d="M17.6204 12.7793V16.4621C17.6204 16.9505 17.4264 17.4188 17.0811 17.7642C16.7358 18.1095 16.2674 18.3035 15.779 18.3035H2.88925C2.40088 18.3035 1.93251 18.1095 1.58718 17.7642C1.24186 17.4188 1.04785 16.9505 1.04785 16.4621V12.7793"
@@ -24,14 +24,14 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
                     </svg>
                 </div>
                 <div className='bg-white rounded-[10px] py-8 shadow-md'>
-                    <div className='relative w-[80%] mx-auto'>
+                    <div className='relative w-[60%] sm:w-[80%] mx-auto'>
                         <Image
-                            className='rounded-[78px] h-[288px] object-cover'
+                            className='rounded-[78px] sm:h-[288px] object-cover'
                             src={ReceiptPicture}
                             alt={'Receipt Picture'}
                         />
                         <div
-                            className='absolute bg-[#1F2D80] text-white text-[27.8px] font-kalameh500 rounded-[82px] py-2 px-4 border-t-[2px] border-white bottom-[-18px] inset-x-0 w-fit mx-auto'>
+                            className='absolute bg-[#1F2D80] text-white text-[12px] sm:text-[27.8px] font-kalameh500 rounded-[82px] py-2 px-4 border-t-[2px] border-white bottom-[-18px] inset-x-0 w-fit mx-auto'>
                             {isVilla ? (
                                 <p>
                                     رزرو شما با <span className='text-orange font-kalameh700'>موفقیت</span> ثبت شــد
@@ -47,11 +47,11 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
 
                     <div className='flex item-center justify-between pt-[54px] px-8'>
                         <div>
-                            <div className='text-[25.5px] flex items-center'>
+                            <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>به نام :</p>
                                 <p>امیرمحمدی</p>
                             </div>
-                            <div className='text-[25.5px] flex items-center'>
+                            <div className='sm:text-[25.5px] flex items-center'>
                                 {isVilla ? (
                                     <p className='text-[#777575]'>مدت اقامت :</p>
                                 ) : (
@@ -59,22 +59,22 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
                                 )}
                                 <p>3 روزه</p>
                             </div>
-                            <div className='text-[25.5px] flex items-center'>
+                            <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
                                 <p>1.800.000</p>
                             </div>
                         </div>
                         <div>
                             <div>
-                                <div className='text-[25.5px] flex items-center'>
+                                <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ رفت : </p>
                                     <p>17 آبان ماه</p>
                                 </div>
-                                <div className='text-[25.5px] flex items-center'>
+                                <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ برگشت : </p>
                                     <p>17 آبان ماه</p>
                                 </div>
-                                <div className='text-[25.5px] flex items-center'>
+                                <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تعداد مسافران : </p>
                                     <p>3 نفر</p>
                                 </div>

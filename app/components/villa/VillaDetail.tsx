@@ -5,7 +5,7 @@ import Picture from '@/public/images/TakhfifPicture.png'
 import Picture1 from '@/public/images/VillaHomePicture.png'
 import Stepper from "@/app/components/Stepper";
 import UserProfile from '@/public/images/UserProfile.png'
-import SelectDropDown from "@/app/components/inputs/SelectDropDown";
+import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import Map from "@/app/components/Map";
 import Comments from "@/app/components/Comments";
 import Footer from "@/app/components/footer/footer";
@@ -177,6 +177,7 @@ const VillaDetail = () => {
                             <div
                                 className='flex flex-col sm:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
                                 <Calendar
+                                    buttons={false}
                                     disableYearPicker
                                     disableMonthPicker
                                     value={dates}
@@ -185,6 +186,7 @@ const VillaDetail = () => {
                                     locale={persian_fa}
                                 />
                                 <Calendar
+                                    buttons={false}
                                     readOnly
                                     calendar={persian}
                                     locale={persian_fa}
@@ -214,7 +216,9 @@ const VillaDetail = () => {
                                     <br/>نرسیده به علی آباد ...</p>
                             </div>
                         </div>
-                        <Comments disabled/>
+                        <div className='pt-20'>
+                            <Comments disabled/>
+                        </div>
                     </section>
                     <section
                         className='hidden lg:block sticky h-[360px] top-[10rem] w-[40%] rounded-[15px] bg-[#D9D9D9]'>

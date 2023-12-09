@@ -1,10 +1,10 @@
+'use client'
 import React, {useState} from 'react'
 import Button from "@/app/components/Button";
 
 type DropDownType = {
     children: React.ReactNode,
     styles?: string,
-    onClick: () => void,
     label: string
 }
 
@@ -12,7 +12,6 @@ const DropDown: React.FC<DropDownType> = ({
                                               children,
                                               label,
                                               styles,
-                                              onClick
                                           }) => {
     const [isOpen, setIsOpen] = useState(false)
     return (

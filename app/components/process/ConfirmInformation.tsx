@@ -12,7 +12,7 @@ const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla}) => {
     return (
         <div>
             <Stepper isVilla={isVilla}/>
-            <div className='w-[60%] bg-[#FAFAF9] rounded-[14px] mx-auto mt-[10rem] shadow-md '>
+            <div className='md:w-[60%] bg-[#FAFAF9] rounded-[14px] mx-auto mt-[10rem] shadow-md '>
                 <div className='p-4'>
                     <table className='text-center w-full'>
                         <tbody className='text-center'>

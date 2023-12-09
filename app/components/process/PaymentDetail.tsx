@@ -14,8 +14,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
     return (
         <div>
             <Stepper isVilla={isVilla}/>
-            <div className='flex flex-col-reverse md:flex-row items-center gap-x-[6rem] w-[80%] mx-auto mt-[10rem]'>
-                <div className='flex flex-col gap-y-6 w-[40%] border-b-[1px] pb-8 border-[#BFBFBF]'>
+            <div className='flex flex-col-reverse md:flex-row items-center gap-x-[6rem] w-[80%] mx-auto mt-4 md:mt-[10rem]'>
+                <div className='flex flex-col gap-y-6 w-[50%] border-b-[1px] pb-8 border-[#BFBFBF]'>
                     <h1 className='md:text-[28.2px] font-kalameh400 border-b-[1px] border-[#BFBFBF] py-4'>جزئـیات خـریـد
                         شـما</h1>
                     <div className='flex items-center gap-3'>
@@ -141,7 +141,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                         </div>
                     </div>
                 </div>
-                <div className='md:w-[50%] bg-[#F9F9F9] px-[56px] py-[32px] rounded-[12px] shadow-md'>
+                <div className='md:w-[40%] bg-[#F9F9F9] px-[30px] lg:pr-[56px] py-[32px] rounded-[12px] shadow-md'>
                     <div className='flex max-md:items-center flex-col lg:flex-row gap-x-6'>
                         <Image
                             className='w-[50%] rounded-[15px]'
