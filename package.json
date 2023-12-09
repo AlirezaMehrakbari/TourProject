@@ -16,6 +16,7 @@
     "aos": "^2.3.4",
     "chart.js": "^4.4.1",
     "chartjs": "^0.3.24",
+    "jalali-moment": "^3.3.11",
     "leaflet": "^1.9.4",
     "modules": "^0.4.0",
     "next": "^14.0.5-canary.1",

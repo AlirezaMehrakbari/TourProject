@@ -18,12 +18,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, {Calendar} from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import DateObject from "react-date-object";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_en from "react-date-object/locales/arabic_en";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import indian from "react-date-object/calendars/indian";
-import indian_en from "react-date-object/locales/indian_en";
+import moment from "jalali-moment";
 
 const TourHomePage = () => {
     const tourData = [
@@ -155,15 +150,26 @@ const TourHomePage = () => {
     //     day: values[0]?.day
     // })
 
-   const persianDate = new DateObject({
-       //@ts-ignore
-       year : values[0]?.year,
-       //@ts-ignore
-       month : values[0]?.month,
-       //@ts-ignore
-           day: values[0]?.day
-       }).convert(indian,indian_en).format()
-    console.log(persianDate)
+    const persianDate_i = new DateObject({
+        //@ts-ignore
+        year: values[0]?.year,
+        //@ts-ignore
+        month: values[0]?.month,
+        //@ts-ignore
+        day: values[0]?.day,
+
+    }).format()
+    const persianDate_j = new DateObject({
+        //@ts-ignore
+        year: values[0]?.year,
+        //@ts-ignore
+        month: values[0]?.month,
+        //@ts-ignore
+        day: values[0]?.day,
+
+    }).format()
+    console.log(moment.from(persianDate_i, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
+    console.log(moment.from(persianDate_j, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
 
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
@@ -218,19 +224,19 @@ const TourHomePage = () => {
                         <div>
                             <div className='flex flex-col gap-y-4'>
                                 <p className='text-[20.6px] font-kalameh700 text-white'> کِی میخوای بـری ؟!</p>
-                                    <DatePicker
-                                        inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400'
-                                        minDate={new DateObject()}
-                                        placeholder={'تاریخ سفر را مشخص کنید'}
-                                        value={values}
-                                        //@ts-ignore
-                                        onChange={setValues}
-                                        range
-                                        calendar={persian}
-                                        locale={persian_fa}
-                                        fixMainPosition={false}
-                                        calendarPosition="bottom"
-                                    />
+                                <DatePicker
+                                    inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
+                                    minDate={new DateObject()}
+                                    placeholder={'تاریخ سفر را مشخص کنید'}
+                                    value={values}
+                                    //@ts-ignore
+                                    onChange={setValues}
+                                    range
+                                    fixMainPosition={true}
+                                    calendar={persian}
+                                    locale={persian_fa}
+                                    calendarPosition="bottom"
+                                />
                             </div>
                         </div>
                         <div>
