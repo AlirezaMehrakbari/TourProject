@@ -1,6 +1,3 @@
-'use client'
-import DropDown from '@/app/components/navbar/DropDown'
-import ButtnosAdmin from '@/app/components/profile/ProfileNavbar'
 import Reserve from '@/app/components/profile/Reserve'
 import Sidebar from '@/app/components/profile/Sidebar'
 import Link from 'next/link'
@@ -10,9 +7,6 @@ import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 const prevReserve = () => {
     return (
         <div className='w-[90%] mx-auto flex flex-col'>
-            <div className="py-8">
-                <ButtnosAdmin />
-            </div>
             <h1 className="font-kalameh700 mr-[338px]">سفر های من</h1>
             <div className="w-[full]  flex flex-row-reverse justify-between pb-10 pt-7">
                 <div className="w-[70%] mr-[70px] mx-auto flex flex-col rounded-md  py-8">
@@ -59,7 +53,6 @@ const prevReserve = () => {
                         <Reserve />
                     </div>
                 </div>
-                <Sidebar />
             </div>
 
         </div>

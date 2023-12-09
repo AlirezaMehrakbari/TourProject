@@ -1,10 +1,6 @@
-'use client'
-import Button from "@/app/components/Button";
 import Sidebar from "../../components/profile/Sidebar";
-import ProfileNavbar from "../../components/profile/ProfileNavbar";
 import imageee from '../../../public/images/TakhfifPicture1.png'
 import Image from "next/image";
-import { IoStarHalfOutline } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 
 import { TfiMoney } from "react-icons/tfi";
@@ -102,22 +98,15 @@ const Favorite = () => {
         },
     ]
     return (
-        <div className='w-[90%] mx-auto flex flex-col justify-center '>
-            <div className="py-8 pb-14">
-            <ProfileNavbar />
-            </div>
-
-
+        <div className='md:w-[60%] px-4 items-center w-full flex flex-col justify-center'>
             <div className="w-full flex flex-col justify-between pb-10 pt-7 md:flex-row gap-x-8">
-                <Sidebar />
-
                 <div className='w-full mx-auto flex flex-col rounded-md  md:mt-[-38px]'>
                     <h1 className="font-kalameh700 pb-12 max-md:pt-10 max-md:text-center">مورد علاقه ها</h1>
                     <div className="w-full mx-auto flex flex-col items-center rounded-md justify-between md:mt-[-2rem] md:flex md:flex-row md:flex-wrap md:w-[100%]">
 
                         {
                             villa.map((item) => (
-                                <div className="w-[60%] flex flex-col text-[#706E6E] hover:text-[#000] md:w-[28%] px-1 ">
+                                <div className="w-[60%] flex flex-col text-[#706E6E] hover:text-[#000] md:w-[50%] lg:w-[32%] px-1 ">
                                     <Image
                                         className='rounded-md w-full max-h-[160px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer '
                                         src={item.image}

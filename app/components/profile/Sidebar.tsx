@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -7,8 +8,8 @@ const sidebar = () => {
   const pathName = usePathname()
 
   return (
-    <div className="w-[80%] mx-auto h-full rounded-md shadow-xl bg-[#F0F0F0] md:w-[25%] ">
-      <div className='w-[80%] flex flex-col mx-auto divide-y divide-[#D3D3D3] gap-y-4 py-[30px] md:mx-auto '>
+    <div className="relative mr-20 h-fit rounded-md shadow-xl bg-[#F0F0F0] max-md:w-[80%] md:w-[250px] lg:w-[300px] top-10">
+      <div className='w-[80%] flex flex-col mx-auto divide-y divide-[#D3D3D3] gap-y-4 py-[30px]'>
         <div className='flex justify-center items-center'>
           <Link className={`${pathName === '/profile/travels' && 'text-orange'}`} href={'/profile/travels'}>
             <h2 className="font-kalameh500 text-[12px] text-right item-center ">سفرهای من</h2>

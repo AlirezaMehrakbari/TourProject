@@ -1,12 +1,11 @@
 import React from 'react'
 import Button from '../Button'
-import DropDown from '../navbar/DropDown'
 import Link from 'next/link'
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 
 const ProfileNavbar = () => {
     return (
-        <div className="w-full flex flex-row justify-end mt-4">
+        <div className="w-[90%] mx-auto flex flex-row justify-end pt-10 pb-20">
             <div className="mx-1">
                 <Link href={'/'}>
                 <Button outline styles={'w-[100px] rounded-md'}>صفحه اصلی</Button>
