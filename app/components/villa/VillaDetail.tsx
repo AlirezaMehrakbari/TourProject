@@ -177,6 +177,7 @@ const VillaDetail = () => {
                             <div
                                 className='flex flex-col sm:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
                                 <Calendar
+                                    buttons={false}
                                     disableYearPicker
                                     disableMonthPicker
                                     value={dates}
@@ -185,6 +186,7 @@ const VillaDetail = () => {
                                     locale={persian_fa}
                                 />
                                 <Calendar
+                                    buttons={false}
                                     readOnly
                                     calendar={persian}
                                     locale={persian_fa}

@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import DropDown from "@/app/components/navbar/DropDown";
 import LineChart from "@/app/components/chart/LineChart";
 import PolarChart from "@/app/components/chart/PolarChart";
+import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 
 const FinancialReportPage = () => {
     const financialReport = [
@@ -127,22 +128,37 @@ const FinancialReportPage = () => {
     return (
         <div className='w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto pt-[10rem]'>
             <div className='flex items-center justify-between'>
-                <p className='text-[30px] font-kalameh400'><span className='font-kalameh700'>گزارش مــالی</span> شما</p>
-                {/*<DropDown*/}
-                {/*    styles='bg-[#465297]'*/}
-                {/*    label={'گزارش مالی بر اساس'}>*/}
-                {/*    sd*/}
-                {/*</DropDown>*/}
+                <p className='text-[20px] sm:text-[30px] font-kalameh400'><span className='font-kalameh700'>گزارش مــالی</span> شما</p>
+                <SelectDropDown label={'گزارش مالی براساس'}
+                                styles={'relative bg-[#465297] text-white px-4 py-2 cursor-pointer rounded-[8px] flex flex-col items-center'}
+                                dropDownStyles={'bg-[#465297] absolute w-full bottom-[-5.9rem] rounded-bl-[8px] rounded-br-[8px] py-2 px-4 text-[12px]'}
+                                labelStyles={'text-[10px] sm:text-[13px]'}
+                >
+                        <ul className='flex flex-col gap-y-1'>
+                            <li>ماه جــاری</li>
+                            <li>دو ماه اخـیر</li>
+                            <li>شـش ماه اخـیر</li>
+                            <li>یک سال اخـیر</li>
+                        </ul>
+                </SelectDropDown>
             </div>
 
             {/*قسمت جداول*/}
             <div className='py-8'>
                 <h1 className='sm:text-[20px] flex items-center gap-x-2 py-4'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
-                        <path d="M0.698516 19.4463L0.698516 21.4138L4.63352 21.4138L4.63352 19.4463L0.698516 19.4463ZM4.63351 5.67379C4.63351 4.58717 3.75264 3.70629 2.66601 3.70629C1.57939 3.70629 0.698515 4.58717 0.698515 5.67379L4.63351 5.67379ZM4.63352 19.4463L4.63351 5.67379L0.698515 5.67379L0.698516 19.4463L4.63352 19.4463Z" fill="black"/>
-                        <path d="M5.61648 19.4463L5.61648 21.4138L9.55148 21.4138L9.55148 19.4463L5.61648 19.4463ZM9.55148 2.72254C9.55148 1.63592 8.6706 0.755039 7.58398 0.755039C6.49736 0.755039 5.61648 1.63592 5.61648 2.72254L9.55148 2.72254ZM9.55148 19.4463L9.55148 2.72254L5.61648 2.72254L5.61648 19.4463L9.55148 19.4463Z" fill="black"/>
-                        <path d="M10.5364 19.4463L10.5364 21.4138L14.4714 21.4138L14.4714 19.4463L10.5364 19.4463ZM14.4714 10.5925C14.4714 9.50592 13.5905 8.62504 12.5039 8.62504C11.4173 8.62504 10.5364 9.50592 10.5364 10.5925L14.4714 10.5925ZM14.4714 19.4463L14.4714 10.5925L10.5364 10.5925L10.5364 19.4463L14.4714 19.4463Z" fill="black"/>
-                        <path d="M15.4544 19.4463L15.4544 21.4138L19.3894 21.4138L19.3894 19.4463L15.4544 19.4463ZM19.3894 7.64129C19.3894 6.55467 18.5085 5.67379 17.4219 5.67379C16.3353 5.67379 15.4544 6.55467 15.4544 7.64129L19.3894 7.64129ZM19.3894 19.4463L19.3894 7.64129L15.4544 7.64129L15.4544 19.4463L19.3894 19.4463Z" fill="black"/>
+                        <path
+                            d="M0.698516 19.4463L0.698516 21.4138L4.63352 21.4138L4.63352 19.4463L0.698516 19.4463ZM4.63351 5.67379C4.63351 4.58717 3.75264 3.70629 2.66601 3.70629C1.57939 3.70629 0.698515 4.58717 0.698515 5.67379L4.63351 5.67379ZM4.63352 19.4463L4.63351 5.67379L0.698515 5.67379L0.698516 19.4463L4.63352 19.4463Z"
+                            fill="black"/>
+                        <path
+                            d="M5.61648 19.4463L5.61648 21.4138L9.55148 21.4138L9.55148 19.4463L5.61648 19.4463ZM9.55148 2.72254C9.55148 1.63592 8.6706 0.755039 7.58398 0.755039C6.49736 0.755039 5.61648 1.63592 5.61648 2.72254L9.55148 2.72254ZM9.55148 19.4463L9.55148 2.72254L5.61648 2.72254L5.61648 19.4463L9.55148 19.4463Z"
+                            fill="black"/>
+                        <path
+                            d="M10.5364 19.4463L10.5364 21.4138L14.4714 21.4138L14.4714 19.4463L10.5364 19.4463ZM14.4714 10.5925C14.4714 9.50592 13.5905 8.62504 12.5039 8.62504C11.4173 8.62504 10.5364 9.50592 10.5364 10.5925L14.4714 10.5925ZM14.4714 19.4463L14.4714 10.5925L10.5364 10.5925L10.5364 19.4463L14.4714 19.4463Z"
+                            fill="black"/>
+                        <path
+                            d="M15.4544 19.4463L15.4544 21.4138L19.3894 21.4138L19.3894 19.4463L15.4544 19.4463ZM19.3894 7.64129C19.3894 6.55467 18.5085 5.67379 17.4219 5.67379C16.3353 5.67379 15.4544 6.55467 15.4544 7.64129L19.3894 7.64129ZM19.3894 19.4463L19.3894 7.64129L15.4544 7.64129L15.4544 19.4463L19.3894 19.4463Z"
+                            fill="black"/>
                     </svg>
                     <span className='md:text-[28.4px] font-kalameh500'>مهرماه - 1402</span> تا این لحظه
                 </h1>
@@ -243,9 +259,9 @@ const FinancialReportPage = () => {
             </div>
 
             {/*قسمت چارت*/}
-            <div className='w-full flex items-center py-8'>
-                <div className='w-[40%]'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="234" height="233" viewBox="0 0 234 233" fill="none">
+            <div className='w-full flex flex-col sm:flex-row items-center py-8 gap-y-8'>
+                <div className='w-[40%] flex flex-col items-center'>
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="234" height="233" viewBox="0 0 234 233" fill="none">
                         <path
                             d="M219.319 116.597C219.319 92.9841 211.147 70.0991 196.191 51.8267C181.235 33.5543 160.417 21.0206 137.27 16.3534L117.058 116.597H219.319Z"
                             fill="url(#paint0_linear_949_6734)"/>
@@ -321,7 +337,8 @@ const FinancialReportPage = () => {
                     <LineChart
                         chartData={userData}
                     />
-                    <p className='whitespace-pre pt-8 text-[16.7px] text-[#000]'>در این نمودار میتوانید بهترین زمــان<br/>
+                    <p className='whitespace-pre pt-8 text-[16.7px] text-[#000]'>در این نمودار میتوانید بهترین
+                        زمــان<br/>
                         اجاره ماه اخیر خود را مشاهده کنید</p>
                 </div>
             </div>

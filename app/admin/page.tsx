@@ -1,5 +1,3 @@
-import React from 'react'
-
 const AdminPage = () => {
     return (
         <div className='flex flex-col mt-[5rem] w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%] mx-auto'>

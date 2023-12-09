@@ -10,6 +10,12 @@ type Inputs = {
 
 }
 const RegisterModal = () => {
+    const registerModal = useRegisterModal()
+    const {register, handleSubmit} = useForm<Inputs>()
+    const [phoneNumber, setPhoneNumber] = useState<number>()
+    const [isLoading, setIsLoading] = useState(false)
+    const [step, setStep] = useState(0)
+
     const handleFirstStep: SubmitHandler<Inputs> = (data) => {
         console.log(data)
         setStep(prev => prev + 1)
@@ -22,11 +28,6 @@ const RegisterModal = () => {
         registerModal.onClose()
     }
 
-    const registerModal = useRegisterModal()
-    const {register, handleSubmit} = useForm<Inputs>()
-    const [phoneNumber, setPhoneNumber] = useState<number>()
-    const [isLoading, setIsLoading] = useState(false)
-    const [step, setStep] = useState(0)
     let content;
     switch (step) {
         case 0 : {

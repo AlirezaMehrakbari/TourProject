@@ -175,7 +175,7 @@ const Comments: React.FC<CommentsProps> = ({
                                     }
                                 </div>
                                 {reply &&
-                                    <div className='relative'>
+                                    <form className='relative'>
                                         <input
                                             className='bg-[#5E5E5E] mb-16 placeholder:text-[26px] placeholder:font-kalameh500 px-4 py-3 rounded-[6px] text-white outline-none'
                                             placeholder='پاسخ شما'
@@ -186,7 +186,7 @@ const Comments: React.FC<CommentsProps> = ({
                                                 d="M2.29379 18.7818C-0.369758 17.4149 -0.369757 13.6076 2.29379 12.2406L23.6514 1.27992C26.0977 0.0244675 29.006 1.80083 29.006 4.55049V26.4719C29.006 29.2216 26.0977 30.998 23.6514 29.7425L2.29379 18.7818Z"
                                                 fill="#5E5E5E"/>
                                         </svg>
-                                    </div>
+                                    </form>
                                 }
                             </div>
                         )

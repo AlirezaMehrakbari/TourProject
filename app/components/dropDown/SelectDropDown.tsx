@@ -52,7 +52,7 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
             className={
                 `
                 ${main ? (
-                    "relative border-b-[1px]  justify-between rounded-md py-[4px] px-2 gap-x-2 items-baseline text-white text-[14px] font-kalameh400 cursor-pointer flex inset-x-0 mx-auto"
+                    "flex flex-col items-center relative border-b-[1px] rounded-md py-[4px] px-2 text-white text-[14px] font-kalameh400 cursor-pointer"
                 ) : (
                     styles
                 )}
