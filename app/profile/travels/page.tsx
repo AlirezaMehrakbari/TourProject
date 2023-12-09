@@ -7,10 +7,10 @@ import Link from 'next/link'
 
 const Travels = () => {
     return (
-        <div className='w-[70%]  flex flex-col'>
-            <h1 className="font-kalameh700 ml-[300px] md:mr-[338px]">سفر های من</h1>
+        <div className='w-full md:w-[60%] flex flex-col pr-8'>
+            <h1 className="font-kalameh700 ">سفر های من</h1>
             <div className="w-full  flex flex-col justify-between pb-10 pt-7 md:flex-row">
-                <div className="w-[70%] mr-[70px] mx-auto flex flex-col rounded-md  py-8">
+                <div className="w-[70%] flex flex-col rounded-md  py-8">
                     <div className='flex w-[100%] border-b border-[#D3D3D3] md:w-[40%] '>
                         <Link href={'./travels'}>
 
