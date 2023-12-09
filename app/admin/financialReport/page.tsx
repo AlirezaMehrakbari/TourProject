@@ -135,10 +135,10 @@ const FinancialReportPage = () => {
                                 labelStyles={'text-[10px] sm:text-[13px]'}
                 >
                         <ul className='flex flex-col gap-y-1'>
-                            <li>ماه جــاری</li>
-                            <li>دو ماه اخـیر</li>
-                            <li>شـش ماه اخـیر</li>
-                            <li>یک سال اخـیر</li>
+                            <li className='hover:text-[#FFE712]'>ماه جــاری</li>
+                            <li className='hover:text-[#FFE712]'>دو ماه اخـیر</li>
+                            <li className='hover:text-[#FFE712]'>شـش ماه اخـیر</li>
+                            <li className='hover:text-[#FFE712]'>یک سال اخـیر</li>
                         </ul>
                 </SelectDropDown>
             </div>

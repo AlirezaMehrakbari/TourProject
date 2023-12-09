@@ -2,17 +2,8 @@
 import Button from "@/app/components/Button";
 import Sidebar from "../components/profile/Sidebar";
 import ProfileNavbar from "../components/profile/ProfileNavbar";
-
-
-type Option = {
-    value: string,
-    label: string
-}
+x
 const ProfilePage = () => {
-    const options: Option[] = [
-        { value: 'اطلاعات حساب کاربری', label: 'اطلاعات حساب کاربری' },
-        { value: 'خروج از حساب کاربری', label: 'خروج از حساب کاربری' }
-    ]
     return (
         <div className='w-[90%] mx-auto flex flex-col'>
             <div className="py-8">
@@ -78,7 +69,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage
-
-{/* <div className='w-full mx-auto flex justify-center items-center'>
-<Button outline styles={'w-[100px] rounded-md'}>نام کاربری</Button>
-</div> */}
