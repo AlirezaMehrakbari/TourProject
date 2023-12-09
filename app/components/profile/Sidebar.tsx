@@ -8,7 +8,7 @@ const sidebar = () => {
   const pathName = usePathname()
 
   return (
-    <div className="relative mr-20 h-fit rounded-md shadow-xl bg-[#F0F0F0] max-md:w-[80%] md:w-[250px] lg:w-[300px] top-10">
+    <div className="relative md:mr-20 h-fit rounded-md shadow-xl bg-[#F0F0F0] max-md:mx-auto w-[70%] md:w-[250px] lg:w-[300px] top-10">
       <div className='w-[80%] flex flex-col mx-auto divide-y divide-[#D3D3D3] gap-y-4 py-[30px]'>
         <div className='flex justify-center items-center'>
           <Link className={`${pathName === '/profile/travels' && 'text-orange'}`} href={'/profile/travels'}>

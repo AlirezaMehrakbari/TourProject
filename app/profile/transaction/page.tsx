@@ -8,9 +8,9 @@ import ProfileNavbar from "@/app/components/profile/ProfileNavbar";
 const Transaction = () => {
     const data = [1, 2, 3]
     return (
-        <div className='w-[60%] flex flex-col'>
+        <div className='w-[90%] md:w-[65%] sm:w-[70%] mx-auto flex flex-col'>
             <div className="w-full  flex flex-col justify-between pb-10 pt-7 md:flex-row">
-                <div className="w-[80%] mx-auto flex flex-col rounded-md  md:mt-[-2rem]">
+                <div className="w-full flex flex-col rounded-md  md:mt-[-2rem]">
                     <h1 className="font-kalameh700 pb-8 max-md:pt-8 max-md:text-center">تراکنش های من</h1>
 
                     <div className='flex pb-4'>
@@ -19,7 +19,7 @@ const Transaction = () => {
                             <path d="M730 1L0.999991 1" stroke="#D3D3D3" strokeWidth="0.5" strokeLinecap="round" />
                         </svg>
                     </div>
-                    <div className='w-full flex flex-col gap-y-4'>
+                    <div className='flex flex-col gap-y-4'>
                         {data.map(item => {
                             return (
                                 <PaymentDetails />
