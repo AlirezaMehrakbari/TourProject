@@ -9,7 +9,7 @@ const Navbar = () => {
         <div
             className='w-full flex justify-between items-center px-[2rem] xl:px-[10rem] py-8 shadow-lg rounded-br-[30px] rounded-bl-[30px] fixed bg-white z-50'>
             <div className='flex items-center'>
-                <Link href={'/'} className='pl-6'><Logo width={'w-[190px] h-[90px]'}/></Link>
+                <Link href={'/'} className='pl-6'><Logo width={'w-[100px] h-[60px] sm:w-[190px] sm:h-[90px]'}/></Link>
                 <ul className='hidden items-center lg:text-[20.6px] font-kalameh400 lg:gap-x-[53px] lg:flex'>
                     <Link href={'/villa'} className={(pathname === '/villa' ? 'active' : '')}>
                         <li>ویلا</li>

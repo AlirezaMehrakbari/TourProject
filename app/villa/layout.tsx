@@ -8,16 +8,14 @@ export const metadata: Metadata = {
 
 }
 
-export default function RootLayout({
+export default function VillaLayout({
                                        children,
                                    }: {
     children: React.ReactNode
 }) {
     return (
-        <html lang="fa">
-        <body className='font-body'>
-        {children}
-        </body>
-        </html>
+       <section>
+           {children}
+       </section>
     )
 }
