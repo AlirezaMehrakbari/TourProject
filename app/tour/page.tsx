@@ -19,6 +19,10 @@ import DatePicker, {Calendar} from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import DateObject from "react-date-object";
 import moment from "jalali-moment";
+//@ts-ignore
+import opacity from "react-element-popper/animations/opacity"
+import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+
 
 const TourHomePage = () => {
     const tourData = [
@@ -139,19 +143,13 @@ const TourHomePage = () => {
 
     const [origin, setOrigin] = useState('مبدا')
     const [destination, setDestination] = useState('مقصد')
-    const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
     const [filterValue , setFilterValue] = useState('فیلتر')
 
 
-    // const date1 = new DateObject({
-    //     year : values[0]?.year,
-    //     month : values[0]?.month,
-    //     day: values[0]?.day
-    // })
 
-    const persianDate_i = new DateObject({
+    const entryDate = new DateObject({
         //@ts-ignore
         year: values[0]?.year,
         //@ts-ignore
@@ -160,18 +158,17 @@ const TourHomePage = () => {
         day: values[0]?.day,
 
     }).format()
-    const persianDate_j = new DateObject({
+    const exitDate = new DateObject({
         //@ts-ignore
-        year: values[0]?.year,
+        year: values[1]?.year,
         //@ts-ignore
-        month: values[0]?.month,
+        month: values[1]?.month,
         //@ts-ignore
-        day: values[0]?.day,
+        day: values[1]?.day,
 
     }).format()
-    console.log(moment.from(persianDate_i, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
-    console.log(moment.from(persianDate_j, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
-
+    // console.log(moment.from(entryDate, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
+    // console.log(moment.from(exitDate, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
     }
@@ -185,7 +182,7 @@ const TourHomePage = () => {
     return (
         <div className='flex flex-col'>
             <Navbar/>
-            <Image w-full
+            <Image
                 className='rounded-xl mt-[12rem] max-h-[564px] xl:max-w-[1164px] lg:max-w-[900px] md:max-w-[700px] mx-auto object-cover'
                 src={TourHomePicture}
                 alt='Tour Picture'/>
@@ -222,10 +219,14 @@ const TourHomePage = () => {
                                 </SelectDropDown>
                             </div>
                         </div>
-                        <div>
+                        <div className='z-0'>
                             <div className='flex flex-col gap-y-4'>
                                 <p className='text-[20.6px] font-kalameh700 text-white'> کِی میخوای بـری ؟!</p>
                                 <DatePicker
+                                    //@ts-ignore
+                                    plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                    dateSeparator=' تا '
+                                    animations={[opacity()]}
                                     inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
                                     minDate={new DateObject()}
                                     placeholder={'تاریخ سفر را مشخص کنید'}

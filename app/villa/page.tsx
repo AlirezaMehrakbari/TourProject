@@ -13,10 +13,14 @@ import DatePicker from "react-multi-date-picker";
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+//@ts-ignore
+import opacity from "react-element-popper/animations/opacity"
+import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+
+
 
 const VillaHomePage = () => {
     const [destination, setDestination] = useState('مقصد')
-    const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
     const provinces = [
@@ -143,6 +147,25 @@ const VillaHomePage = () => {
         setPassengers(prev => prev - 1)
     }
 
+    const entryDate = new DateObject({
+        //@ts-ignore
+        year: values[0]?.year,
+        //@ts-ignore
+        month: values[0]?.month,
+        //@ts-ignore
+        day: values[0]?.day,
+
+    }).format()
+    const exitDate = new DateObject({
+        //@ts-ignore
+        year: values[1]?.year,
+        //@ts-ignore
+        month: values[1]?.month,
+        //@ts-ignore
+        day: values[1]?.day,
+
+    }).format()
+
     return (
         <div>
             <Navbar/>
@@ -179,6 +202,10 @@ const VillaHomePage = () => {
                                         <p className='sm:text-[20.6px] font-kalameh700 text-white'>کِـی میخوای
                                             بـری؟!</p>
                                         <DatePicker
+                                            //@ts-ignore
+                                            plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                            dateSeparator=' تا '
+                                            animations={[opacity()]}
                                             inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
                                             minDate={new DateObject()}
                                             placeholder={'تاریخ سفر را مشخص کنید'}
