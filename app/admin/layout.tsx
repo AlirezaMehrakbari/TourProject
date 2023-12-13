@@ -6,17 +6,15 @@ export const metadata: Metadata = {
     title: 'پنل ادمین',
 }
 
-export default function RootLayout({
-                                       children,
-                                   }: {
+export default function AdminLayout({
+                                        children,
+                                    }: {
     children: React.ReactNode
 }) {
     return (
-        <html lang="fa">
-        <body className='font-body'>
-        <AdminNavbar/>
-        {children}
-        </body>
-        </html>
+        <section>
+            <AdminNavbar/>
+            {children}
+        </section>
     )
 }

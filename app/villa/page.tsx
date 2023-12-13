@@ -9,8 +9,20 @@ import imageee from "@/public/images/TakhfifPicture1.png";
 import VillaList from "@/app/components/villa/VillaList";
 import Footer from "@/app/components/footer/footer";
 import {Metadata} from "next";
+import DatePicker from "react-multi-date-picker";
+import DateObject from "react-date-object";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+//@ts-ignore
+import opacity from "react-element-popper/animations/opacity"
+import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+
+
 
 const VillaHomePage = () => {
+    const [destination, setDestination] = useState('مقصد')
+    const [passengers, setPassengers] = useState(0)
+    const [values, setValues] = useState([])
     const provinces = [
         {
             id: 1,
@@ -33,9 +45,6 @@ const VillaHomePage = () => {
             provinceName: 'البرز'
         },
     ]
-    const [destination, setDestination] = useState('مقصد')
-    const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
-    const [passengers, setPassengers] = useState(0)
     const villa = [
         {
             id: 1,
@@ -138,22 +147,43 @@ const VillaHomePage = () => {
         setPassengers(prev => prev - 1)
     }
 
+    const entryDate = new DateObject({
+        //@ts-ignore
+        year: values[0]?.year,
+        //@ts-ignore
+        month: values[0]?.month,
+        //@ts-ignore
+        day: values[0]?.day,
+
+    }).format()
+    const exitDate = new DateObject({
+        //@ts-ignore
+        year: values[1]?.year,
+        //@ts-ignore
+        month: values[1]?.month,
+        //@ts-ignore
+        day: values[1]?.day,
+
+    }).format()
+
     return (
         <div>
             <Navbar/>
             <section className='w-[80%] mx-auto'>
-                <div className='pt-[12rem] relative'>
+                <div className='pt-[12rem] relative max-xl:pb-[16rem]'>
                     <Image
                         className='rounded-[25px] max-h-[564px] object-cover'
                         src={VillaHomePicture}
                         alt={'Villa Home Picture'}
                     />
-                    <div className='w-[90%] mx-auto absolute bottom-[-30px] inset-x-0'>
+                    <div className='w-[90%] mx-auto absolute bottom-0 xl:bottom-[-2rem] inset-x-0'>
                         <Layout>
-                            <form className='flex justify-between items-center gap-x-8 w-full'>
+                            <form
+                                className='flex flex-col xl:flex-row justify-between items-center gap-x-8 gap-y-6 w-full'>
                                 <div>
                                     <div className='flex flex-col gap-y-4'>
-                                        <p className='text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری ؟!</p>
+                                        <p className='sm:text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری
+                                            ؟!</p>
                                         <SelectDropDown main label={destination}
                                                         dropDownStyles={'absolute bg-[#FFF] top-10 w-full shadow-md rounded-md text-[#000] left-[2px] px-4 py-2'}>
                                             <div className='flex flex-col divide-y divide-[#D3D3D3]'>
@@ -169,23 +199,30 @@ const VillaHomePage = () => {
                                 </div>
                                 <div>
                                     <div className='flex flex-col gap-y-4'>
-                                        <p className='text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری ؟!</p>
-                                        <SelectDropDown main label={date}
-                                                        dropDownStyles={'absolute bg-[#FFF] top-10 w-full shadow-md rounded-md text-[#000] left-[2px] px-4 py-2'}>
-                                            <div className='flex flex-col divide-y divide-[#D3D3D3]'>
-                                                {provinces.map(province => {
-                                                    return (
-                                                        <div key={province.id} className='py-2 cursor-pointer'
-                                                             onClick={() => setDestination(province.provinceName)}>{province.provinceName}</div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </SelectDropDown>
+                                        <p className='sm:text-[20.6px] font-kalameh700 text-white'>کِـی میخوای
+                                            بـری؟!</p>
+                                        <DatePicker
+                                            //@ts-ignore
+                                            plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                            dateSeparator=' تا '
+                                            animations={[opacity()]}
+                                            inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
+                                            minDate={new DateObject()}
+                                            placeholder={'تاریخ سفر را مشخص کنید'}
+                                            value={values}
+                                            //@ts-ignore
+                                            onChange={setValues}
+                                            range
+                                            fixMainPosition={true}
+                                            calendar={persian}
+                                            locale={persian_fa}
+                                            calendarPosition="bottom"
+                                        />
                                     </div>
                                 </div>
                                 <div>
                                     <div className='flex flex-col gap-y-4'>
-                                        <p className='text-[20.6px] font-kalameh700 text-white'>چند نفـر ؟!</p>
+                                        <p className='sm:text-[20.6px] font-kalameh700 text-white'>چند نفـر ؟!</p>
                                         <SelectDropDown main isCounter
                                                         label={(passengers > 0 ? `${passengers} مسافر` : 'تعداد مسافران')}
                                                         dropDownStyles={'absolute bg-[#FFF] top-10 w-[300px] inset-x-0  rounded-md text-[#000] mx-auto shadow-md px-4 py-2'}>
@@ -233,9 +270,9 @@ const VillaHomePage = () => {
                         </Layout>
                     </div>
                 </div>
-                {/*قسمت اجاره ویلا*/}
-                <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
-                <VillaList data={villa}/>
+                    {/*قسمت اجاره ویلا*/}
+                    <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
+                    <VillaList data={villa}/>
             </section>
             <Footer/>
         </div>

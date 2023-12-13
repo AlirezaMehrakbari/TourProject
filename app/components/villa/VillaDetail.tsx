@@ -1,5 +1,5 @@
-import {Calendar} from "react-multi-date-picker"
-import React, {useState} from 'react'
+import DatePicker, {Calendar} from "react-multi-date-picker"
+import React, {useEffect, useState} from 'react'
 import Image from "next/image";
 import Picture from '@/public/images/TakhfifPicture.png'
 import Picture1 from '@/public/images/VillaHomePicture.png'
@@ -14,15 +14,21 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DateObject from "react-date-object";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
+import toast from "react-hot-toast";
 
 const VillaDetail = () => {
     const step = useStep()
-    const [dates, setDates] = useState([
+    const [firstMonth, setFirstMonth] = useState([
         new DateObject({calendar: persian}).setDay(5),
         new DateObject({calendar: persian}).setDay(12),
-        new DateObject({calendar: persian}).setDay(14).add(1, "month"),
-        new DateObject({calendar: persian}).setDay(23).add(1, "month"),
     ])
+    const [secondMonth, setSecondMonth] = useState([
+        new DateObject({calendar: persian}).add(1, "month"),
+    ])
+    const [entryDate, setEntryDate] = useState()
+    const [outDate, setOutDate] = useState()
+    const [passengers, setPassengers] = useState<number>(0)
+
     const pictures = [
         {id: 1, src: Picture1},
         {id: 2, src: Picture1},
@@ -37,6 +43,7 @@ const VillaDetail = () => {
         {id: 5, possibility: 'لوازم سرو غذا'},
         {id: 6, possibility: 'سرویس فرنگی '},
     ]
+
     return (
         <div>
             <Stepper isVilla/>
@@ -175,18 +182,17 @@ const VillaDetail = () => {
                             </div>
                             {/*قسمت روزهای رزرو شده باید اصلاح گردد*/}
                             <div
-                                className='flex flex-col sm:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
+                                className='flex flex-col xl:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
                                 <Calendar
                                     buttons={false}
-                                    disableYearPicker
-                                    disableMonthPicker
-                                    value={dates}
+                                    value={firstMonth}
                                     readOnly
                                     calendar={persian}
                                     locale={persian_fa}
                                 />
                                 <Calendar
                                     buttons={false}
+                                    value={secondMonth}
                                     readOnly
                                     calendar={persian}
                                     locale={persian_fa}
@@ -219,12 +225,234 @@ const VillaDetail = () => {
                         <div className='pt-20'>
                             <Comments disabled/>
                         </div>
+                        {/*حالت موبایل انتخاب رزرو*/}
+                        <div
+                            className='flex lg:hidden sticky h-[320px] top-[10rem] w-[70%] rounded-[15px] bg-[#D9D9D9] mx-auto'>
+                            <form className='flex flex-col w-[90%] mx-auto gap-y-[3px] pt-4'>
+                                <div className='w-full flex items-center gap-x-[3px] overflow-hidden'>
+                                    <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-tr-[17px]'>
+                                        <p className='flex items-center'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none">
+                                                <path
+                                                    d="M21 6.30566H3C1.89543 6.30566 1 7.22597 1 8.36122V20.6946C1 21.8298 1.89543 22.7501 3 22.7501H21C22.1046 22.7501 23 21.8298 23 20.6946V8.36122C23 7.22597 22.1046 6.30566 21 6.30566Z"
+                                                    stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                                <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2"
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"/>
+                                                <path
+                                                    d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                                    fill="#FF7512"/>
+                                                <path
+                                                    d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                                    fill="#FF7512"/>
+                                            </svg>
+                                            <span className='pr-2'>تــاریـخ ورود</span>
+                                        </p>
+                                        <DatePicker
+                                            inputClass='bg-transparent outline-none mt-8'
+                                            minDate={new DateObject()}
+                                            placeholder={'روز  /  مــاه  /  سـال'}
+                                            value={entryDate}
+                                            //@ts-ignore
+                                            onChange={setEntryDate}
+                                            fixMainPosition={true}
+                                            calendar={persian}
+                                            locale={persian_fa}
+                                            calendarPosition="bottom"
+                                        />
+                                    </div>
+                                    <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-tl-[17px]'>
+                                        <p className='flex items-center'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none">
+                                                <path
+                                                    d="M21 6.30566H3C1.89543 6.30566 1 7.22597 1 8.36122V20.6946C1 21.8298 1.89543 22.7501 3 22.7501H21C22.1046 22.7501 23 21.8298 23 20.6946V8.36122C23 7.22597 22.1046 6.30566 21 6.30566Z"
+                                                    stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                                <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2"
+                                                      strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path
+                                                    d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                                    fill="#FF7512"/>
+                                                <path
+                                                    d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                                    fill="#FF7512"/>
+                                            </svg>
+                                            <span className='pr-2'>تــاریـخ خروج</span>
+                                        </p>
+                                        <DatePicker
+                                            disabled={!entryDate}
+                                            inputClass={`bg-transparent outline-none mt-8`}
+                                            //@ts-ignore
+                                            minDate={new DateObject(entryDate)}
+                                            placeholder={'روز  /  مــاه  /  سـال'}
+                                            value={outDate}
+                                            //@ts-ignore
+                                            onChange={setOutDate}
+                                            fixMainPosition={true}
+                                            calendar={persian}
+                                            locale={persian_fa}
+                                            calendarPosition="bottom"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    className='flex justify-between w-full bg-[#EFEFEF]  pt-4 pb-10 px-6 rounded-br-[17px] rounded-bl-[17px]'>
+                                    <div className='flex items-cneter'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="0 0 26 22"
+                                             fill="none">
+                                            <path
+                                                d="M18.4545 21.1823V18.9399C18.4545 17.7505 17.9948 16.6097 17.1764 15.7687C16.3581 14.9276 15.2482 14.4551 14.0909 14.4551H5.36363C4.20632 14.4551 3.09642 14.9276 2.27808 15.7687C1.45974 16.6097 1 17.7505 1 18.9399V21.1823"
+                                                stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                            <path
+                                                d="M9.7274 9.96969C12.1374 9.96969 14.091 7.96175 14.091 5.48484C14.091 3.00793 12.1374 1 9.7274 1C7.31743 1 5.36377 3.00793 5.36377 5.48484C5.36377 7.96175 7.31743 9.96969 9.7274 9.96969Z"
+                                                stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                            <path
+                                                d="M24.9998 21.1821V18.9397C24.9991 17.946 24.6773 16.9807 24.0849 16.1953C23.4925 15.4099 22.6632 14.849 21.7271 14.6006"
+                                                stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                            <path
+                                                d="M17.3638 1.14551C18.3024 1.39251 19.1344 1.95357 19.7285 2.74022C20.3226 3.52687 20.645 4.49437 20.645 5.4902C20.645 6.48603 20.3226 7.45353 19.7285 8.24018C19.1344 9.02683 18.3024 9.58789 17.3638 9.83489"
+                                                stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                        </svg>
+                                        <span>تعداد نفرات</span>
+                                    </div>
+                                    <div className='flex items-center gap-x-2'>
+                                        <button className='border-2 px-2 rounded-md'
+                                                onClick={() => setPassengers(prev => prev + 1)} type='button'>+
+                                        </button>
+                                        <span>{passengers}</span>
+                                        <button className='border-2 px-2 rounded-md' onClick={() => setPassengers(prev => {
+                                            return prev === 0 ? 0 : prev - 1
+                                        })}  type='button'>-
+                                        </button>
+                                    </div>
+                                </div>
+                                <Button onClick={step.increase2Step} styles='w-full mx-auto rounded-lg mt-2 py-6'>
+                                    انتخاب تاریخ رزرو
+                                </Button>
+                            </form>
+                        </div>
                     </section>
+
                     <section
-                        className='hidden lg:block sticky h-[360px] top-[10rem] w-[40%] rounded-[15px] bg-[#D9D9D9]'>
-                        <Button onClick={step.increase2Step} styles='w-[90%] mx-auto rounded-lg'>
-                            انتخاب تاریخ رزرو
-                        </Button>
+                        className='hidden lg:block sticky lg:h-[450px] xl:h-[320px] top-[10rem] w-[40%] rounded-[15px] bg-[#D9D9D9]'>
+                        <form className='flex flex-col w-[90%] mx-auto gap-y-[3px] pt-4'>
+                            <div className='w-full flex flex-col xl:flex-row items-center gap-x-[3px] overflow-hidden gap-y-2'>
+                                <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tr-[17px]'>
+                                    <p className='flex items-center'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none">
+                                            <path
+                                                d="M21 6.30566H3C1.89543 6.30566 1 7.22597 1 8.36122V20.6946C1 21.8298 1.89543 22.7501 3 22.7501H21C22.1046 22.7501 23 21.8298 23 20.6946V8.36122C23 7.22597 22.1046 6.30566 21 6.30566Z"
+                                                stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                            <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"/>
+                                            <path
+                                                d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                                fill="#FF7512"/>
+                                            <path
+                                                d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                                fill="#FF7512"/>
+                                        </svg>
+                                        <span className='pr-2'>تــاریـخ ورود</span>
+                                    </p>
+                                    <DatePicker
+                                        inputClass='bg-transparent outline-none mt-8'
+                                        minDate={new DateObject()}
+                                        placeholder={'روز  /  مــاه  /  سـال'}
+                                        value={entryDate}
+                                        //@ts-ignore
+                                        onChange={setEntryDate}
+                                        fixMainPosition={true}
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        calendarPosition="bottom"
+                                    />
+                                </div>
+                                <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tl-[17px]'>
+                                    <p className='flex items-center'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M21 6.30566H3C1.89543 6.30566 1 7.22597 1 8.36122V20.6946C1 21.8298 1.89543 22.7501 3 22.7501H21C22.1046 22.7501 23 21.8298 23 20.6946V8.36122C23 7.22597 22.1046 6.30566 21 6.30566Z"
+                                                stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                                strokeLinejoin="round"/>
+                                            <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2"
+                                                  strokeLinecap="round" strokeLinejoin="round"/>
+                                            <path
+                                                d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                                fill="#FF7512"/>
+                                            <path
+                                                d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                                fill="#FF7512"/>
+                                        </svg>
+                                        <span className='pr-2'>تــاریـخ خروج</span>
+                                    </p>
+                                    <DatePicker
+                                        disabled={!entryDate}
+                                        inputClass={`bg-transparent outline-none mt-8`}
+                                        //@ts-ignore
+                                        minDate={new DateObject(entryDate)}
+                                        placeholder={'روز  /  مــاه  /  سـال'}
+                                        value={outDate}
+                                        //@ts-ignore
+                                        onChange={setOutDate}
+                                        fixMainPosition={true}
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        calendarPosition="bottom"
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                className='flex justify-between w-full bg-[#EFEFEF]  pt-4 pb-10 px-6 rounded-br-[17px] rounded-bl-[17px]'>
+                                <div className='flex items-cneter'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="0 0 26 22"
+                                         fill="none">
+                                        <path
+                                            d="M18.4545 21.1823V18.9399C18.4545 17.7505 17.9948 16.6097 17.1764 15.7687C16.3581 14.9276 15.2482 14.4551 14.0909 14.4551H5.36363C4.20632 14.4551 3.09642 14.9276 2.27808 15.7687C1.45974 16.6097 1 17.7505 1 18.9399V21.1823"
+                                            stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                        <path
+                                            d="M9.7274 9.96969C12.1374 9.96969 14.091 7.96175 14.091 5.48484C14.091 3.00793 12.1374 1 9.7274 1C7.31743 1 5.36377 3.00793 5.36377 5.48484C5.36377 7.96175 7.31743 9.96969 9.7274 9.96969Z"
+                                            stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                        <path
+                                            d="M24.9998 21.1821V18.9397C24.9991 17.946 24.6773 16.9807 24.0849 16.1953C23.4925 15.4099 22.6632 14.849 21.7271 14.6006"
+                                            stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                        <path
+                                            d="M17.3638 1.14551C18.3024 1.39251 19.1344 1.95357 19.7285 2.74022C20.3226 3.52687 20.645 4.49437 20.645 5.4902C20.645 6.48603 20.3226 7.45353 19.7285 8.24018C19.1344 9.02683 18.3024 9.58789 17.3638 9.83489"
+                                            stroke="#FF7512" strokeWidth="1.57091" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                    </svg>
+                                    <span>تعداد نفرات</span>
+                                </div>
+                                <div className='flex items-center gap-x-2'>
+                                    <button className='border-2 px-2 rounded-md'
+                                            onClick={() => setPassengers(prev => prev + 1)} type='button'>+
+                                    </button>
+                                    <span>{passengers}</span>
+                                    <button className='border-2 px-2 rounded-md' onClick={() => setPassengers(prev => {
+                                        return prev === 0 ? 0 : prev - 1
+                                    })}  type='button'>-
+                                    </button>
+                                </div>
+                            </div>
+                            <Button onClick={step.increase2Step} styles='w-full mx-auto rounded-lg mt-2 py-6'>
+                                انتخاب تاریخ رزرو
+                            </Button>
+                        </form>
                     </section>
                 </section>
             </div>

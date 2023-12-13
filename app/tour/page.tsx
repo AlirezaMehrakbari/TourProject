@@ -19,6 +19,10 @@ import DatePicker, {Calendar} from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import DateObject from "react-date-object";
 import moment from "jalali-moment";
+//@ts-ignore
+import opacity from "react-element-popper/animations/opacity"
+import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+
 
 const TourHomePage = () => {
     const tourData = [
@@ -139,18 +143,13 @@ const TourHomePage = () => {
 
     const [origin, setOrigin] = useState('مبدا')
     const [destination, setDestination] = useState('مقصد')
-    const [date, setDate] = useState('تاریخ سفـر مشخص کنید')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
+    const [filterValue , setFilterValue] = useState('فیلتر')
 
 
-    // const date1 = new DateObject({
-    //     year : values[0]?.year,
-    //     month : values[0]?.month,
-    //     day: values[0]?.day
-    // })
 
-    const persianDate_i = new DateObject({
+    const entryDate = new DateObject({
         //@ts-ignore
         year: values[0]?.year,
         //@ts-ignore
@@ -159,18 +158,17 @@ const TourHomePage = () => {
         day: values[0]?.day,
 
     }).format()
-    const persianDate_j = new DateObject({
+    const exitDate = new DateObject({
         //@ts-ignore
-        year: values[0]?.year,
+        year: values[1]?.year,
         //@ts-ignore
-        month: values[0]?.month,
+        month: values[1]?.month,
         //@ts-ignore
-        day: values[0]?.day,
+        day: values[1]?.day,
 
     }).format()
-    console.log(moment.from(persianDate_i, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
-    console.log(moment.from(persianDate_j, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
-
+    // console.log(moment.from(entryDate, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
+    // console.log(moment.from(exitDate, 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD'))
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
     }
@@ -190,7 +188,7 @@ const TourHomePage = () => {
                 alt='Tour Picture'/>
             <div className='mx-auto mt-[-30px]'>
                 <Layout>
-                    <form className='xl:w-[1020px] flex items-center gap-x-8 justify-between'>
+                    <form className='xl:w-[1020px] grid xl:grid-cols-5 md:grid-cols-2 gap-8'>
                         <div className='flex flex-col gap-y-4'>
                             <p className='text-[20.6px] font-kalameh700 text-white'>از کجا میخوای بـری؟!</p>
                             <SelectDropDown main label={origin}
@@ -221,10 +219,14 @@ const TourHomePage = () => {
                                 </SelectDropDown>
                             </div>
                         </div>
-                        <div>
+                        <div className='z-0'>
                             <div className='flex flex-col gap-y-4'>
                                 <p className='text-[20.6px] font-kalameh700 text-white'> کِی میخوای بـری ؟!</p>
                                 <DatePicker
+                                    //@ts-ignore
+                                    plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                    dateSeparator=' تا '
+                                    animations={[opacity()]}
                                     inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
                                     minDate={new DateObject()}
                                     placeholder={'تاریخ سفر را مشخص کنید'}
@@ -282,9 +284,12 @@ const TourHomePage = () => {
                                 </SelectDropDown>
                             </div>
                         </div>
-                        <button className='text-[22px] font-kalameh500 bg-[#83734E] text-white px-8 py-2 rounded-full'>
-                            جست و جو
-                        </button>
+                        <div className='flex justify-center items-center md:col-span-2 xl:col-span-1'>
+                            <button
+                                className='text-[22px] font-kalameh500 bg-[#83734E] text-white px-8 py-2 rounded-full'>
+                                جست و جو
+                            </button>
+                        </div>
                     </form>
                 </Layout>
             </div>
@@ -292,37 +297,65 @@ const TourHomePage = () => {
             {/*قسمت تورها*/}
             <section className='w-[70%] mx-auto'>
                 {/*قسمت فیلتر تورها*/}
-                <div className='flex justify-between pt-20'>
-                    <h4 className='text-[20.6px] font-kalameh700'>دسـته بندی بر اسـاس</h4>
-                    <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 px-10 py-2'>پیـشــنهاد
-                        مــا
-                    </button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
-                        <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
-                              strokeLinecap="round"/>
-                    </svg>
-                    <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 px-10 py-2'>به روزترین
-                    </button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
-                        <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
-                              strokeLinecap="round"/>
-                    </svg>
-                    <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 px-10 py-2'>ارزانترین
-                    </button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
-                        <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
-                              strokeLinecap="round"/>
-                    </svg>
-                    <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 px-10 py-2'>گران ترین
-                    </button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
-                        <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
-                              strokeLinecap="round"/>
-                    </svg>
-                    <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 px-10 py-2'>نزدیک ترین
-                        تاریـخ
-                    </button>
+                <div className='flex justify-between pt-20 '>
+                    <h4 className='sm:text-[20.6px] font-kalameh700 flex justify-center items-center'>دسـته بندی بر اسـاس</h4>
+                    {/*768 به بالا*/}
+                    <div className='hidden lg:flex items-center justify-between lg:gap-x-2 xl:w-[70%]'>
+                        <button
+                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>پیـشــنهاد
+                            مــا
+                        </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
+                            <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
+                                  strokeLinecap="round"/>
+                        </svg>
+                        <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>به
+                            روزترین
+                        </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
+                            <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
+                                  strokeLinecap="round"/>
+                        </svg>
+                        <button
+                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>ارزانترین
+                        </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
+                            <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
+                                  strokeLinecap="round"/>
+                        </svg>
+                        <button
+                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>گران
+                            ترین
+                        </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
+                            <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
+                                  strokeLinecap="round"/>
+                        </svg>
+                        <button
+                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>نزدیک
+                            ترین
+                            تاریـخ
+                        </button>
+                    </div>
+                    <SelectDropDown
+                        label={filterValue}
+                        styles={'flex lg:hidden relative bg-orange text-white px-4 py-2 rounded-[8px] flex flex-col items-center cursor-pointer w-[40%] sm:w-[20%]'}
+                        labelStyles={'font-kalameh500'}
+                        dropDownStyles={'absolute w-full text-[12px]'}
+                    >
+                        <div
+                            className='absolute bg-orange text-white top-[22px] py-4 px-2 w-full rounded-br-[7.6px] rounded-bl-[7.6px] font-kalameh500'>
+                            <ul className='flex flex-col gap-y-2 justify-center items-center'>
+                             <li>پیـشــنهاد مــا</li>
+                             <li>به روز تریــن</li>
+                             <li>ارزانترین</li>
+                             <li>گران ترین</li>
+                             <li>نزدیک ترین تاریخ</li>
+                            </ul>
+                        </div>
+                    </SelectDropDown>
                 </div>
+                {/*قسمت فیلتر برای موبایل*/}
                 <TourList data={tourData}/>
                 <div className='flex flex-col justify-center items-center pt-4'>
                     <p className='text-[22.4px] font-kalameh500 text-cblue pb-2'>مشاهده تورهای بیشتر</p>

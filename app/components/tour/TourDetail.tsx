@@ -54,7 +54,7 @@ const TourDetail = () => {
     return (
         <div>
             <Stepper/>
-            <div className='w-[80%] mx-auto md:pt-[10rem]'>
+            <div className='w-[95%] xl:w-[80%] mx-auto md:pt-[10rem]'>
                 <div className='flex item-center justify-between w-full py-8 h-full'>
                     <Image
                         className='w-[70%] object-cover rounded-[12px]'
@@ -245,14 +245,199 @@ const TourDetail = () => {
                                 })}
                             </div>
 
+
+                            {/*قسمت موبایل انتخاب تاریخ تور*/}
+                            <div
+                                className='flex md:hidden flex-col gap-y-4 top-[10rem] rounded-[12px] md:w-[30%] bg-[#F1F1F1] p-4 mt-4 h-full overflow-hidden'>
+                                <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-6'> انتخـاب
+                                    تاریـخ
+                                    تـور</h1>
+                                <div className='flex items-center gap-x-[8px]'>
+                                    <button
+                                        className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آبان'}</button>
+                                    <button
+                                        className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آذر'}</button>
+                                </div>
+                                <SelectDropDown
+                                    arrowBlack
+                                    label={travelDate}
+                                    styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
+                                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                               viewBox="0 0 24 24"
+                                               fill="none">
+                                        <path
+                                            d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"
+                                            stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                        <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                        <path
+                                            d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                            fill="#FF7512"/>
+                                        <path
+                                            d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                            fill="#FF7512"/>
+                                    </svg>}
+                                    dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
+                                    labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
+                                >
+                                    <div
+                                        className='text-[18px] text-[#616161] divide-y-[1px] flex flex-col gap-y-2 py-2 divide-[#D0D0D0]'>
+                                        <div onClick={() => setTravelDate('17 آبـان - 20 آبـان')}>17 آبـان - 20 آبـان
+                                        </div>
+                                        <div onClick={() => setTravelDate('22 آبـان - 25 آبـان')}>22 آبـان - 25 آبـان
+                                        </div>
+                                    </div>
+                                </SelectDropDown>
+                                <SelectDropDown
+                                    isCounter
+                                    arrowBlack
+                                    label={`${quantity > 0 ? `${quantity} مسافر` : 'تعداد مسافران'}`}
+                                    styles='flex flex-col items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
+                                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                               viewBox="0 0 24 24"
+                                               fill="none">
+                                        <path
+                                            d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"
+                                            stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                        <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
+                                              strokeLinejoin="round"/>
+                                        <path
+                                            d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
+                                            fill="#FF7512"/>
+                                        <path
+                                            d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
+                                            fill="#FF7512"/>
+                                    </svg>}
+                                    dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
+                                    labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
+                                >
+                                    <div className='flex flex-col gap-y-2 text-[18px] text-[#616161]'>
+                                        <div className='flex items-center justify-between'>
+                                            <p>بزرگسال در اتاق دو تخته</p>
+                                            <div className='flex items-center gap-x-2'>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        adult2: prevState.adult2 + 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    +
+                                                </button>
+                                                <span>{passengers.adult2}</span>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        adult2: prevState.adult2 === 0 ? 0 : prevState.adult2 - 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center justify-between'>
+                                            <p>بزرگسال در اتاق یک تخته</p>
+                                            <div className='flex items-center gap-x-2'>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        adult1: prevState.adult1 + 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    +
+                                                </button>
+                                                <span>{passengers.adult1}</span>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        adult1: prevState.adult1 === 0 ? 0 : prevState.adult1 - 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center justify-between'>
+                                            <p>کودک 2 تا 12 سال</p>
+                                            <div className='flex items-center gap-x-2'>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        childFrom2to12: prevState.childFrom2to12 + 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    +
+                                                </button>
+                                                <span>{passengers.childFrom2to12}</span>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        childFrom2to12: prevState.childFrom2to12 === 0 ? 0 : prevState.childFrom2to12 - 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center justify-between'>
+                                            <p>کودک زیر 2 سال</p>
+                                            <div className='flex items-center gap-x-2'>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        child2: prevState.child2 + 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    +
+                                                </button>
+                                                <span>{passengers.child2}</span>
+                                                <button
+                                                    onClick={() => setPassengers(prevState => ({
+                                                        ...prevState,
+                                                        child2: prevState.child2 === 0 ? 0 : prevState.child2 - 1
+                                                    }))}
+                                                    className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                                    type='button'
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </SelectDropDown>
+                                <div className='flex items-center justify-between'>
+                                    <p className='text-[17.5px] font-kalameh400'>مجموع قیمت :</p>
+                                    <p className='text-[22.8px] font-kalameh500'> 5.000.000 تومـان</p>
+                                </div>
+                                <Button styles='text-[24px] font-kalameh400 rounded-[5px] h-[56px]'
+                                        onClick={handleStep}>
+                                    تایید و ادامـه
+                                </Button>
+                            </div>
                             {/*قسمت ثبت نظر*/} {/*قسمت کامنت ها*/}
                             <div className='pt-20'>
                                 <Comments disabled={true}/>
                             </div>
                         </div>
                     </div>
+                    {/*قسمت دکستاپ*/}
                     <div
-                        className='hidden md:flex flex-col gap-y-4 sticky top-[10rem] rounded-[12px] md:w-[30%] bg-[#F1F1F1] p-4 max-h-[500px] overflow-hidden'>
+                        className='hidden md:flex flex-col gap-y-4 sticky top-[10rem] rounded-[12px] md:w-[30%] bg-[#F1F1F1] p-4 h-full overflow-hidden'>
                         <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-6'> انتخـاب تاریـخ
                             تـور</h1>
                         <div className='flex items-center gap-x-[8px]'>
@@ -289,8 +474,9 @@ const TourDetail = () => {
                             </div>
                         </SelectDropDown>
                         <SelectDropDown
+                            isCounter
                             arrowBlack
-                            label={`${quantity > 0 ? quantity : 'تعداد مسافران'}`}
+                            label={`${quantity > 0 ? `${quantity} مسافر` : 'تعداد مسافران'}`}
                             styles='flex flex-col items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
                             icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                        fill="none">
@@ -309,9 +495,104 @@ const TourDetail = () => {
                             dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
                             labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
                         >
-                            <div className='text-[18px] text-[#616161]'>
-                                <div>17 آبـان - 20 آبـان</div>
-                                <div>22 آبـان - 25 آبـان</div>
+                            <div className='flex flex-col gap-y-2 text-[18px] text-[#616161]'>
+                                <div className='flex items-center justify-between'>
+                                    <p>بزرگسال در اتاق دو تخته</p>
+                                    <div className='flex items-center gap-x-2'>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                adult2: prevState.adult2 + 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                        >
+                                            +
+                                        </button>
+                                        <span>{passengers.adult2}</span>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                adult2: prevState.adult2 === 0 ? 0 : prevState.adult2 - 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='flex items-center justify-between'>
+                                    <p>بزرگسال در اتاق یک تخته</p>
+                                    <div className='flex items-center gap-x-2'>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                adult1: prevState.adult1 + 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                        >
+                                            +
+                                        </button>
+                                        <span>{passengers.adult1}</span>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                adult1: prevState.adult1 === 0 ? 0 : prevState.adult1 - 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='flex items-center justify-between'>
+                                    <p>کودک 2 تا 12 سال</p>
+                                    <div className='flex items-center gap-x-2'>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                childFrom2to12: prevState.childFrom2to12 + 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                        >
+                                            +
+                                        </button>
+                                        <span>{passengers.childFrom2to12}</span>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                childFrom2to12: prevState.childFrom2to12 === 0 ? 0 : prevState.childFrom2to12 - 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='flex items-center justify-between'>
+                                    <p>کودک زیر 2 سال</p>
+                                    <div className='flex items-center gap-x-2'>
+                                        <button
+                                            type='button'
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                child2: prevState.child2 + 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#15247B] text-white rounded-full'
+                                        >
+                                            +
+                                        </button>
+                                        <span>{passengers.child2}</span>
+                                        <button
+                                            onClick={() => setPassengers(prevState => ({
+                                                ...prevState,
+                                                child2: prevState.child2 === 0 ? 0 : prevState.child2 - 1
+                                            }))}
+                                            className='flex justify-center items-center w-[21px] h-[21px] bg-[#5663A9] text-white rounded-full'
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </SelectDropDown>
                         <div className='flex items-center justify-between'>
