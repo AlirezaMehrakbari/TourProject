@@ -14,15 +14,15 @@ const SuperAdminSidebar =
     return (
         <div className='w-[23%] flex flex-col justify-start gap-y-10  '>
             <Link
-                className={`${pathName.startsWith('/superAdmin/ResidencePanel') && 'text-white bg-orange rounded-l-full' }`}
-                href={'/superAdmin/ResidencePanel'}>
+                className={`${pathName.startsWith('/superadmin/residencepanel') && 'text-white bg-orange rounded-l-full' }`}
+                href={'/superadmin/residencepanel'}>
                 <div className='flex justify-center'>
                     <p className='font-kalameh500 py-3 text-[28px]'>پنل های اقامتگاه</p>
                 </div>
             </Link>
             <Link
-                className={`${pathName.startsWith('/superAdmin/RunningTours') && 'text-white bg-orange rounded-l-full'}`}
-                href={'/superAdmin/RunningTours'}>
+                className={`${pathName.startsWith('/superadmin/runningtours') && 'text-white bg-orange rounded-l-full'}`}
+                href={'/superadmin/runningtours'}>
                 <div className='flex justify-center'>
                     <p className='font-kalameh500 py-3 text-[28px]'>توردرحال اجرا</p>
                 </div>

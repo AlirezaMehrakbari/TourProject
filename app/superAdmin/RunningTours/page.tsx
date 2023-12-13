@@ -76,8 +76,8 @@ const ResidencePanel = () => {
     return (
         <div>
             <SuperAdminNavbar
-titelea= 'داخلی' titeleb='خارجی' titelec='' titeled=''  villaPath = '/superAdmin/RunningTours'
-            apartmentsPath = '/superAdmin/RunningTours/Foreign'
+titelea= 'داخلی' titeleb='خارجی' titelec='' titeled=''  villaPath = '/superadmin/runningtours'
+            apartmentsPath = '/superadmin/runningtours/foreign'
             />
             <div className='w-full justify-start py-8 flex gap-x-[7%]'>
                 <SuperAdminSidebar/>

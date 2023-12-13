@@ -76,7 +76,7 @@ const ResidencePanel = () => {
     return (
         <div>
             <SuperAdminNavbar
-                villaPath = '/superAdmin/ResidencePanel'
+                villaPath = '/superadmin/residencepanel'
             />
             <div className='w-full justify-start py-8 flex gap-x-[7%]'>
                 <SuperAdminSidebar/>
