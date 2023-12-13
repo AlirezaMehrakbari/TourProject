@@ -6,7 +6,7 @@ import Button from "@/app/components/Button";
 
 
 
-const SuperAdminSidbar =
+const SuperAdminSidebar =
     (
 
 ) => {
@@ -46,4 +46,4 @@ const SuperAdminSidbar =
         </div>
     )
 }
-export default SuperAdminSidbar
+export default SuperAdminSidebar

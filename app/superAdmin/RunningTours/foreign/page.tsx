@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
-import SuperAdminSidbar from "@/app/components/superAdmin/SuperAdminSidbar";
+import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 
 const ResidencePanel = () => {
     const pathName = usePathname()
@@ -80,7 +80,7 @@ const ResidencePanel = () => {
                 apartmentsPath = '/superAdmin/RunningTours/Foreign'
             />
             <div className='w-full justify-start py-8 flex gap-x-[7%]'>
-                <SuperAdminSidbar/>
+                <SuperAdminSidebar/>
                 {/*<div className='w-[23%] flex flex-col justify-start gap-y-10  '>*/}
                 {/*    <Link*/}
                 {/*        className={`${pathName === '/superAdmin/ResidencePanel' && 'text-white bg-orange rounded-l-full'}`}*/}
