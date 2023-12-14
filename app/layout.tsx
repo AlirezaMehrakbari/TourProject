@@ -3,6 +3,7 @@ import './globals.css'
 import Footer from "@/app/components/footer/footer";
 import ReduxProvider from "@/app/redux/provider";
 import dynamic from "next/dynamic";
+import ReactQueryProvider from "@/app/utils/ReactQueryProvider";
 
 const RegisterModal = dynamic(() => import('@/app/components/modals/RegisterModal'), {ssr: false})
 
@@ -18,14 +19,16 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="fa">
-        <body className='font-body'>
-        <ReduxProvider>
-            {children}
-            <RegisterModal/>
-        </ReduxProvider>
-        {/*<Footer/>*/}
-        </body>
-        </html>
+        <ReactQueryProvider>
+            <html lang="fa">
+            <body className='font-body'>
+            <ReduxProvider>
+                {children}
+                <RegisterModal/>
+            </ReduxProvider>
+            {/*<Footer/>*/}
+            </body>
+            </html>
+        </ReactQueryProvider>
     )
 }
