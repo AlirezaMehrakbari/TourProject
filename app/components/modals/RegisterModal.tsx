@@ -11,7 +11,7 @@ type Inputs = {
 }
 const RegisterModal = () => {
     const registerModal = useRegisterModal()
-    const {register, handleSubmit} = useForm<Inputs>()
+    const {register, handleSubmit,reset} = useForm<Inputs>()
     const [phoneNumber, setPhoneNumber] = useState<number>()
     const [isLoading, setIsLoading] = useState(false)
     const [step, setStep] = useState(0)
@@ -20,6 +20,7 @@ const RegisterModal = () => {
         console.log(data)
         setStep(prev => prev + 1)
         setPhoneNumber(data.phoneNumber)
+        reset()
     }
     const handleSecondStep: SubmitHandler<Inputs> = (data) => {
         setStep(prev => prev + 1)
@@ -72,20 +73,20 @@ const RegisterModal = () => {
                     </div>
                     <div className='flex items-center justify-between py-2'>
                         <input
-                            className='w-[20%] bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
+                            className='w-[20%] text-center bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
                             type={"number"}
 
                         />
                         <input
-                            className='w-[20%] bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
+                            className='w-[20%] text-center bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
                             type={"number"}
                         />
                         <input
-                            className='w-[20%] bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
+                            className='w-[20%] text-center bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
                             type={"number"}
                         />
                         <input
-                            className='w-[20%] bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
+                            className='w-[20%] text-center bg-[#EDECEC] outline-none px-2 py-3 rounded-[5px]'
                             type={"number"}
                         />
                     </div>
