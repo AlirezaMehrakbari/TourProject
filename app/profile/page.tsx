@@ -1,16 +1,27 @@
 'use client'
-import Button from "@/app/components/Button";
-import Sidebar from "../components/profile/Sidebar";
-import ProfileNavbar from "../components/profile/ProfileNavbar";
 import DatePicker from "react-multi-date-picker";
-import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import React, {useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
+import {useAppSelector} from "@/app/redux/store";
+import {redirect, useRouter} from "next/navigation";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import {router} from "next/client";
 
 
 const ProfilePage = () => {
+    const router = useRouter()
     const [dateBirth, setDateBirth] = useState()
+    const userSession = useAppSelector(state => state.userSlice)
+    const registerModal = useRegisterModal()
+    useLayoutEffect(() => {
+        if(!userSession.value.isLoggedIn){
+            router.push('/')
+            registerModal.onOpen()
+        }
+    }, []);
+
+
     return (
         <div className='md:w-[60%] flex flex-col max-md:w-[80%] mx-auto'>
             <div className="w-full flex flex-col pb-10 gap-8 md:pl-4">

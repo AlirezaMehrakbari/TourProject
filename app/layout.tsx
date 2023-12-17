@@ -4,6 +4,8 @@ import Footer from "@/app/components/footer/footer";
 import ReduxProvider from "@/app/redux/provider";
 import dynamic from "next/dynamic";
 import ReactQueryProvider from "@/app/utils/ReactQueryProvider";
+import {ToastContainer} from "react-toastify";
+import React from "react";
 
 const RegisterModal = dynamic(() => import('@/app/components/modals/RegisterModal'), {ssr: false})
 

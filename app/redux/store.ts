@@ -1,9 +1,9 @@
 
 import {configureStore} from "@reduxjs/toolkit";
-import StepSliceReducer from '@/app/redux/StepSlice'
+import UserSliceReducer from '@/app/redux/slices/user-slice'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 const store = configureStore({
-    reducer : {stepSlice : StepSliceReducer}
+    reducer : {userSlice : UserSliceReducer}
 })
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
