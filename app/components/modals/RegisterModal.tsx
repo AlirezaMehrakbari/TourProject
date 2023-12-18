@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Logo from "@/app/components/navbar/Logo";
 import Button from "@/app/components/Button";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
@@ -24,14 +24,37 @@ type Inputs = {
 }
 const RegisterModal = () => {
     const BASE_URL = 'https://triptour.v1r.ir/api'
+    const [input, setInput] = useState()
+    const inputRef = useRef(null)
+    const inputRefTwo = useRef(null)
+    const inputRefThree = useRef(null)
     const dispatch = useAppDispatch()
     const registerModal = useRegisterModal()
-    const {register, handleSubmit, reset, formState: {errors}} = useForm<Inputs>()
+    const {register, handleSubmit, reset, formState: {errors},setFocus} = useForm<Inputs>()
     const [phoneNumber, setPhoneNumber] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
     const [step, setStep] = useState(0)
     const [verificationCodeExpired, setVerificationCodeExpired] = useState<boolean>()
     const [userExists, setUserExists] = useState<boolean>()
+    const handleInputFocus = (e:any) => {
+        setInput(e.target.value);
+        if (e.target.value.length >= 1) {
+            setFocus('digit2')
+        }
+    }
+    const handleInputTwoFocus = (e:any) => {
+        setInput(e.target.value);
+        if (e.target.value.length >= 1) {
+            setFocus('digit3')
+        }
+    }
+    const handleInputThreeFocus = (e:any) => {
+        setInput(e.target.value);
+        if (e.target.value.length >= 1) {
+            setFocus('digit4')
+        }
+    }
+
     const handleFirstStep: SubmitHandler<Inputs> = (data) => {
         let regexPhoneNumber = new RegExp("^(?:0|98|\\+98|\\+980|0098|098|00980)?(9\\d{9})$");
         if (data.phoneNumber.length > 11 || data.phoneNumber.length < 11 || !regexPhoneNumber.test(data.phoneNumber)) {
@@ -65,17 +88,19 @@ const RegisterModal = () => {
                     phoneNumber: phoneNumber
                 }).then(res => {
                     // toast.success('خوش اومدی :)')
+                    console.log(res)
                     dispatch(logIn(
                         {
                             id: res.data.user.id,
                             firstName: res.data.user.firstName,
                             lastName: res.data.user.lastName,
                             phoneNumber: res.data.user.phoneNumber,
-                            role: res.data.role,
-                            token: res.data.token
+                            role: res.data.user.role[0],
+                            token: res.data.token,
+                            nationalCode : res.data.nationalCode,
+                            birthDate : res.data.birthDate
                         }))
                     registerModal.onClose()
-                    reset()
                     setStep(0)
                 })
             } else {
@@ -85,9 +110,9 @@ const RegisterModal = () => {
             }
         }).catch(error => {
             toast.error('کد تایید وارد شده نادرست است !', {position: toast.POSITION.TOP_LEFT})
-            reset()
         }).finally(() => {
             setIsLoading(false)
+            reset()
         })
     }
     const handleThirdStep: SubmitHandler<Inputs> = (data) => {
@@ -106,7 +131,7 @@ const RegisterModal = () => {
                     lastName: res.data.user.lastName,
                     phoneNumber: res.data.user.phoneNumber,
                     role: res.data.role,
-                    token: res.data.token
+                    token: res.data.token,
                 }))
             setStep(0)
         }).catch(error => {
@@ -158,7 +183,7 @@ const RegisterModal = () => {
                     <div
                         className='flex items-center justify-between bg-[#EDECEC] py-3 px-4 rounded-[5px] mt-4 w-full'>
                         <button type='button' onClick={() => setStep(prev => prev - 1)}
-                                className='text-[14px] text-[#979797]'>
+                                className='text-[14px] text-[#979797] hover:text-orange'>
                             ویرایش شماره
                         </button>
                         <p className='text-[14px] text-[#979797] font-kalameh500'>{phoneNumber}</p>
@@ -172,7 +197,7 @@ const RegisterModal = () => {
                             max={9}
                             maxLength={1}
                             {...register('digit1', {required: true})}
-
+                            onChange={handleInputFocus}
                         />
                         <input
                             className='w-[20%] text-center bg-[#EDECEC] focus:bg-[#FFF] px-2 py-3 rounded-[5px] focus:outline-orange'
@@ -182,6 +207,7 @@ const RegisterModal = () => {
                             max={9}
                             maxLength={1}
                             {...register('digit2', {required: true})}
+                            onChange={handleInputTwoFocus}
                         />
                         <input
                             className='w-[20%] text-center bg-[#EDECEC] focus:bg-[#FFF] px-2 py-3 rounded-[5px] focus:outline-orange'
@@ -191,6 +217,7 @@ const RegisterModal = () => {
                             max={9}
                             maxLength={1}
                             {...register('digit3', {required: true})}
+                            onChange={handleInputThreeFocus}
                         />
                         <input
                             className='w-[20%] text-center bg-[#EDECEC] focus:bg-[#FFF] px-2 py-3 rounded-[5px] focus:outline-orange'
@@ -202,7 +229,7 @@ const RegisterModal = () => {
                     </div>
                     <div className='flex items-center justify-between w-full py-2'>
                         {verificationCodeExpired ? (
-                            <button className='flex items-center'>
+                            <button type='button' className='flex items-center'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 15"
                                      fill="none">
                                     <path d="M1 1.73047V6.15191H5.42144" stroke="black" strokeLinecap="round"
@@ -222,7 +249,7 @@ const RegisterModal = () => {
                             </div>
                         )}
                     </div>
-                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] py-6'>
+                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] py-6' type='submit'>
                         {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>ادامه</span>}
                     </Button>
                 </form>
@@ -249,7 +276,7 @@ const RegisterModal = () => {
                             {...register('lastName', {required: true})}
                         />
                     </div>
-                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] mt-10 py-6'>
+                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] mt-10 py-6' type='submit'>
                         {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>ادامه</span>}
                     </Button>
                 </form>
@@ -261,7 +288,8 @@ const RegisterModal = () => {
     return (
         <div
             className={`${registerModal.isOpen ? 'block' : 'hidden'} translate duration-300 fixed bg-neutral-800/70 inset-0 z-50 overflow-y-hidden flex justify-center items-center`}>
-            <div className="relative inset-x-0 mx-auto w-[80%] bg-[#FFF] rounded-[5px] lg:w-[40%]">
+            <ToastContainer rtl bodyClassName={() => 'flex items-center font-kalameh700'}/>
+            <div className="relative inset-x-0 mx-auto w-[95%] md:w-[80%] bg-[#FFF] rounded-[5px] lg:w-[40%]">
                 <button
                     onClick={() => {
                         registerModal.onClose();

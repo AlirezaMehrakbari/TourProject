@@ -5,13 +5,16 @@ import Link from 'next/link'
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {logOut} from "@/app/redux/slices/user-slice";
-import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
+import {toast} from "react-hot-toast";
 
 const ProfileNavbar = () => {
+    const router = useRouter()
     const userSession = useAppSelector(state => state.userSlice)
     const dispatch = useAppDispatch()
     return (
         <div className="w-[90%] mx-auto flex flex-row justify-end pt-10 pb-20">
+
             <div className="mx-1">
                 <Link href={'/'}>
                     <Button outline styles={'w-[100px] rounded-md'}>صفحه اصلی</Button>
@@ -34,7 +37,7 @@ const ProfileNavbar = () => {
                                     className='hover:text-[#2C2AAF] cursor-pointer'
                                     onClick={() => {
                                         dispatch(logOut())
-                                        toast.warn('از حساب کاربری خود خارج شدید.')
+                                        router.push('/')
                                     }}
                                 >
                                     خروج از حساب کاربری

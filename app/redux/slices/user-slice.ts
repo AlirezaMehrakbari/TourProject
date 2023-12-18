@@ -9,7 +9,9 @@ type UserAuthState = {
     phoneNumber: string,
     role: string,
     isLoggedIn :boolean,
-    fullName : string
+    fullName : string,
+    birthDate : string,
+    nationalCode : string
 }
 type InitialState = {
  value : UserAuthState
@@ -21,19 +23,23 @@ const initialState: InitialState = {
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        role: 'user',
+        role: '',
         isLoggedIn: false,
-        fullName : ''
+        fullName : '',
+        birthDate : '',
+        nationalCode : ''
     }
 
 }
 type Action = {
     id: null,
-    token: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    role: 'user',
+    token: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    role: string,
+    birthDate? : string,
+    nationalCode? : string
 }
 
 export const userSlice = createSlice({
@@ -44,10 +50,16 @@ export const userSlice = createSlice({
             state.value.id = action.payload.id
             state.value.firstName = action.payload.firstName
             state.value.lastName = action.payload.lastName
+            state.value.token = action.payload.token
             state.value.phoneNumber = action.payload.phoneNumber
             state.value.role = action.payload.role
+            if(action.payload.nationalCode && action.payload.birthDate){
+            state.value.nationalCode = action.payload.nationalCode
+            state.value.birthDate = action.payload.birthDate
+            }
             state.value.isLoggedIn = true
             state.value.fullName = state.value.firstName + ' ' + state.value.lastName
+
         },
         logOut: (state) => {
             state.value.token = ''

@@ -14,12 +14,16 @@ const ProfilePage = () => {
     const [dateBirth, setDateBirth] = useState()
     const userSession = useAppSelector(state => state.userSlice)
     const registerModal = useRegisterModal()
+
     useLayoutEffect(() => {
         if(!userSession.value.isLoggedIn){
             router.push('/')
-            registerModal.onOpen()
+            return
         }
-    }, []);
+        // if(userSession.value.nationalCode || userSession.value.birthDate){
+        //
+        // }
+    }, [userSession.value.isLoggedIn]);
 
 
     return (
@@ -55,10 +59,10 @@ const ProfilePage = () => {
                                 <div className='flex justify-between w-[95%] sm:w-[70%] gap-x-4'>
                                     <input
                                         className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
-                                        type="text" placeholder="نام"/>
+                                        type="text" placeholder="نام" value={userSession.value.firstName}/>
                                     <input
                                         className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
-                                        type="text" placeholder="نام خانوادگی"/>
+                                        type="text" placeholder="نام خانوادگی" value={userSession.value.lastName}/>
                                 </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-y-4 items-center justify-between">
@@ -85,11 +89,10 @@ const ProfilePage = () => {
                                 <p className="font-kalameh400 text-[12px]">شماره همراه</p>
                                 <input
                                     className="w-[95%] sm:w-[70%] py-2 rounded-md border border-solid bg-transparent text-center"
-                                    type="number"/>
+                                    type="number" value={userSession.value.phoneNumber} disabled/>
                             </div>
-                            <div className="flex flex-row pt-7 pr-[60px] sm:pr-[168px] gap-x-4">
-                                    <button className='w-[100px] rounded-md bg-[#000] text-white py-2'>ثبت</button>
-                                    <button className='w-[100px] rounded-md bg-[#B1B1B1] border-none text-white'>انصراف</button>
+                            <div className="flex w-full pt-7 gap-x-4">
+                                    <button className='w-[30%] mx-auto rounded-md bg-[#000] text-white py-2'>ثبت</button>
                             </div>
                         </div>
                     </form>
