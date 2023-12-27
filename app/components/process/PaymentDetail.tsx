@@ -8,9 +8,8 @@ import {useAppSelector} from "@/app/redux/store";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {tripTourApi} from "@/axios-instances";
 import DateObject from "react-date-object";
-import moment from "jalali-moment";
-import {toast} from "react-toastify";
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
+import {useRouter} from "next/navigation";
 
 type PaymentDetailProps = {
     isVilla?: boolean,
@@ -20,7 +19,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
     const step = useStep()
     const villaReserveDetail = useAppSelector(state => state.villaReserve)
     const userSession = useAppSelector(state => state.userSlice)
-
+    const router = useRouter()
 
     let checkIn = formatDateToShamsi(new DateObject(
         {
@@ -55,8 +54,15 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                 Authorization: `Bearer ${userSession.value.token}`
             }
         }).then(res => {
-            step.nextStep()
-            toast.success('رزور شما با موفقیت انجام شد.')
+            // step.nextStep()
+            // toast.success('رزور شما با موفقیت انجام شد.')
+            tripTourApi.post(`transactions/pay/${res.data.data.id}`,{},{
+                headers : {
+                    Authorization : `Bearer ${userSession.value.token}`
+                }
+            }).then(res=>{
+                router.push(`${res.data.paymentUrl}`)
+            })
         }).catch(error => {
             console.log(error)
         })

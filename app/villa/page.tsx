@@ -95,10 +95,6 @@ const VillaHomePage = () => {
         })
         setFilteredVilla(res.data)
     }
-    // const {data: filteredVillaData} = useQuery({
-    //     queryKey: ['filteredVillaData'],
-    //     queryFn: () => fetchFilteredVilla()
-    // })
     const {data: villaData, isLoading, isError} = useQuery({
         queryKey: ['VillaData', currentPage],
         queryFn: () => fetchVilla(currentPage)
