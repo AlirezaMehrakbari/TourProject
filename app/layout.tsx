@@ -6,6 +6,7 @@ import ReactQueryProvider from "@/app/utils/ReactQueryProvider";
 import {ToastContainer} from "react-toastify";
 import React from "react";
 import RegisterModal from "@/app/components/modals/RegisterModal";
+import ToastContainerApp from "@/app/utils/ToastContainer";
 
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
             <html lang="fa">
             <body className='font-body'>
             <ReduxProvider>
+                <ToastContainerApp/>
                 {children}
                 <RegisterModal/>
             </ReduxProvider>

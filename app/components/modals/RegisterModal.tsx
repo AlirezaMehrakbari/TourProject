@@ -30,25 +30,25 @@ const RegisterModal = () => {
     const inputRefThree = useRef(null)
     const dispatch = useAppDispatch()
     const registerModal = useRegisterModal()
-    const {register, handleSubmit, reset, formState: {errors},setFocus} = useForm<Inputs>()
+    const {register, handleSubmit, reset, formState: {errors}, setFocus} = useForm<Inputs>()
     const [phoneNumber, setPhoneNumber] = useState<string>()
     const [isLoading, setIsLoading] = useState(false)
     const [step, setStep] = useState(0)
     const [verificationCodeExpired, setVerificationCodeExpired] = useState<boolean>()
     const [userExists, setUserExists] = useState<boolean>()
-    const handleInputFocus = (e:any) => {
+    const handleInputFocus = (e: any) => {
         setInput(e.target.value);
         if (e.target.value.length >= 1) {
             setFocus('digit2')
         }
     }
-    const handleInputTwoFocus = (e:any) => {
+    const handleInputTwoFocus = (e: any) => {
         setInput(e.target.value);
         if (e.target.value.length >= 1) {
             setFocus('digit3')
         }
     }
-    const handleInputThreeFocus = (e:any) => {
+    const handleInputThreeFocus = (e: any) => {
         setInput(e.target.value);
         if (e.target.value.length >= 1) {
             setFocus('digit4')
@@ -56,39 +56,42 @@ const RegisterModal = () => {
     }
 
     const handleFirstStep: SubmitHandler<Inputs> = (data) => {
-        let regexPhoneNumber = new RegExp("^(?:0|98|\\+98|\\+980|0098|098|00980)?(9\\d{9})$");
-        if (data.phoneNumber.length > 11 || data.phoneNumber.length < 11 || !regexPhoneNumber.test(data.phoneNumber)) {
-            toast.error('لطفا شماره موبایل معتبر وارد کنید.', {position: toast.POSITION.TOP_LEFT})
+        let regexPhoneNumber = new RegExp("^(?:|98|\\+98|\\+980|0098|098|00980)?(9\\d{9})$");
+        if (data.phoneNumber.length > 10 || data.phoneNumber.length < 10 || !regexPhoneNumber.test(data.phoneNumber)) {
+            toast.error('لطفا شماره موبایل معتبر وارد کنید.')
             return
         }
         setIsLoading(true)
         Axios.post(`${BASE_URL}/auth/enter-phoneNumber`, {
-            phoneNumber: data.phoneNumber
+            phoneNumber: `0${data.phoneNumber}`
         }).then(res => {
-            toast.success('کد تایید به شماره موبایل وارد شده ارسال شد.', {position: toast.POSITION.TOP_LEFT})
+            toast.success('کد تایید به شماره موبایل وارد شده ارسال شد.')
             setStep(prev => prev + 1)
             setUserExists(res.data.userExists)
             setPhoneNumber(data.phoneNumber)
         }).catch(error => {
-            toast.error('لطفا اتصال اینترنت خود را بررسی کنید.', {position: toast.POSITION.TOP_LEFT})
+            if (error.message === 'Network Error') {
+            toast.error('لطفا اتصال اینترنت خود را بررسی کنید.')
+                return
+            }
+            toast.error('شماره تلفن همراه خود را بصورت صحیح وارد کنید.')
         }).finally(() => {
             setIsLoading(false)
+            reset()
         })
-        reset()
     }
     const handleSecondStep: SubmitHandler<Inputs> = (data) => {
         const allDigit = data.digit1 + data.digit2 + data.digit3 + data.digit4
         setIsLoading(true)
         Axios.post(`${BASE_URL}/auth/phoneNumber-verification`, {
-            phoneNumber: phoneNumber,
+            phoneNumber: `0${phoneNumber}`,
             code: allDigit
         }).then(res => {
             if (userExists) {
                 Axios.post(`${BASE_URL}/auth/login`, {
-                    phoneNumber: phoneNumber
+                    phoneNumber: `0${phoneNumber}`
                 }).then(res => {
-                    // toast.success('خوش اومدی :)')
-                    console.log(res)
+                    localStorage.setItem('token', res.data.token)
                     dispatch(logIn(
                         {
                             id: res.data.user.id,
@@ -97,22 +100,27 @@ const RegisterModal = () => {
                             phoneNumber: res.data.user.phoneNumber,
                             role: res.data.user.role[0],
                             token: res.data.token,
-                            nationalCode : res.data.nationalCode,
-                            birthDate : res.data.birthDate
+                            nationalCode: res.data.nationalCode,
+                            birthDate: res.data.birthDate
                         }))
-                    registerModal.onClose()
-                    setStep(0)
+                    toast.success('خوش اومدی :)')
+                    setTimeout(() => {
+                        setIsLoading(false)
+                        registerModal.onClose()
+                        setStep(0)
+                        toast.dismiss()
+                        reset()
+                    }, 3000)
                 })
             } else {
                 setStep(prev => prev + 1)
-                toast.success('لطفا مشخصات خود را وارد کنید.', {position: toast.POSITION.TOP_LEFT})
+                toast.success('لطفا مشخصات خود را وارد کنید.')
                 reset()
+                setIsLoading(false)
             }
         }).catch(error => {
-            toast.error('کد تایید وارد شده نادرست است !', {position: toast.POSITION.TOP_LEFT})
-        }).finally(() => {
+            toast.error('کد تایید وارد شده نادرست است !')
             setIsLoading(false)
-            reset()
         })
     }
     const handleThirdStep: SubmitHandler<Inputs> = (data) => {
@@ -120,10 +128,10 @@ const RegisterModal = () => {
         Axios.post(`${BASE_URL}/auth/register`, {
             firstName: data.firstName,
             lastName: data.lastName,
-            phoneNumber: phoneNumber,
+            phoneNumber: `0${phoneNumber}`,
             role: 'user'
         }).then(res => {
-            toast.success('ثبت نام شما با موفقیت انجام شد.', {position: toast.POSITION.TOP_LEFT})
+            toast.success('ثبت نام شما با موفقیت انجام شد.')
             dispatch(logIn(
                 {
                     id: res.data.user.id,
@@ -134,8 +142,9 @@ const RegisterModal = () => {
                     token: res.data.token,
                 }))
             setStep(0)
+            registerModal.onClose()
         }).catch(error => {
-            toast.error('مشکلی رخ داده است !!', {position: toast.POSITION.TOP_LEFT})
+            toast.error('مشکلی رخ داده است !!')
         }).finally(() => {
             setIsLoading(false)
         })
@@ -157,9 +166,10 @@ const RegisterModal = () => {
                             className={`bg-transparent outline-0 pl-4`}
                             type='number'
                             inputMode={'tel'}
-                            placeholder='09XXXXXXXXX'
+                            placeholder='9XXXXXXXXX'
                             dir={'ltr'}
                             {...register('phoneNumber', {required: true})}
+                            disabled={isLoading}
                         />
                         <p className='border-r-[1px] px-4 text-[18px]'>98</p>
                     </div>
@@ -249,7 +259,8 @@ const RegisterModal = () => {
                             </div>
                         )}
                     </div>
-                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] py-6' type='submit'>
+                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] py-6'
+                            type='submit'>
                         {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>ادامه</span>}
                     </Button>
                 </form>
@@ -276,7 +287,8 @@ const RegisterModal = () => {
                             {...register('lastName', {required: true})}
                         />
                     </div>
-                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] mt-10 py-6' type='submit'>
+                    <Button disabled={isLoading} styles='w-full text-[20px] font-kalameh700 rounded-[5px] mt-10 py-6'
+                            type='submit'>
                         {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>ادامه</span>}
                     </Button>
                 </form>
@@ -288,12 +300,13 @@ const RegisterModal = () => {
     return (
         <div
             className={`${registerModal.isOpen ? 'block' : 'hidden'} translate duration-300 fixed bg-neutral-800/70 inset-0 z-50 overflow-y-hidden flex justify-center items-center`}>
-            <ToastContainer rtl bodyClassName={() => 'flex items-center font-kalameh700'}/>
-            <div className="relative inset-x-0 mx-auto w-[95%] md:w-[80%] bg-[#FFF] rounded-[5px] lg:w-[40%]">
+            <div
+                className="animate-openModal relative inset-x-0 mx-auto w-[95%] md:w-[80%] bg-[#FFF] rounded-[5px] lg:w-[40%]">
                 <button
                     onClick={() => {
                         registerModal.onClose();
                         setStep(0)
+                        toast.dismiss()
                     }
                     }
                     className="btn btn-sm btn-ghost absolute left-6 top-6 bg-[#F00] text-white flex justify-center items-center">✕

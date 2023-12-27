@@ -57,13 +57,13 @@ export const userSlice = createSlice({
             state.value.nationalCode = action.payload.nationalCode
             state.value.birthDate = action.payload.birthDate
             }
-            state.value.isLoggedIn = true
+            state.value.isLoggedIn = !!state.value.token
             state.value.fullName = state.value.firstName + ' ' + state.value.lastName
 
         },
         logOut: (state) => {
             state.value.token = ''
-            state.value.isLoggedIn = false
+            state.value.isLoggedIn = !!state.value.token
         }
     }
 })

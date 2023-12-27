@@ -2,7 +2,7 @@
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import React, {useLayoutEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import {useAppSelector} from "@/app/redux/store";
 import {redirect, useRouter} from "next/navigation";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
@@ -14,16 +14,12 @@ const ProfilePage = () => {
     const [dateBirth, setDateBirth] = useState()
     const userSession = useAppSelector(state => state.userSlice)
     const registerModal = useRegisterModal()
-
+    let content ;
     useLayoutEffect(() => {
         if(!userSession.value.isLoggedIn){
-            router.push('/')
-            return
+            redirect('/')
         }
-        // if(userSession.value.nationalCode || userSession.value.birthDate){
-        //
-        // }
-    }, [userSession.value.isLoggedIn]);
+    }, [])
 
 
     return (

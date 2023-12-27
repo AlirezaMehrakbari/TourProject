@@ -1,20 +1,71 @@
 import Image from "next/image";
 import PaymentDetailPicture from '@/public/images/PaymentDetailPicture.png'
-import Button from "@/app/components/Button";
 import Footer from "@/app/components/footer/footer";
 import useStep from "@/app/hooks/useStep";
 import Stepper from "@/app/components/Stepper";
 import React from "react";
+import {useAppSelector} from "@/app/redux/store";
+import formatCurrency from "@/app/utils/FormatCurrency";
+import {tripTourApi} from "@/axios-instances";
+import DateObject from "react-date-object";
+import moment from "jalali-moment";
+import {toast} from "react-toastify";
+import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 
 type PaymentDetailProps = {
-    isVilla?: boolean
+    isVilla?: boolean,
+    villaDetails?: VillaDetails
 }
-const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
+const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) => {
     const step = useStep()
+    const villaReserveDetail = useAppSelector(state => state.villaReserve)
+    const userSession = useAppSelector(state => state.userSlice)
+
+
+    let checkIn = formatDateToShamsi(new DateObject(
+        {
+            //@ts-ignore
+            year: villaReserveDetail.entryDate?.year,
+            //@ts-ignore
+            month: villaReserveDetail.entryDate?.month,
+            //@ts-ignore
+            day: villaReserveDetail.entryDate?.day,
+
+        }).format())
+    let checkOut = formatDateToShamsi(new DateObject(
+        {
+            //@ts-ignore
+            year: villaReserveDetail.exitDate?.year,
+            //@ts-ignore
+            month: villaReserveDetail.exitDate?.month,
+            //@ts-ignore
+            day: villaReserveDetail.exitDate?.day,
+
+        }).format())
+    const handlePayment = (e: any) => {
+        e.preventDefault()
+        tripTourApi.post('reservations/reservationPlace', {
+            place_id: villaDetails?.id,
+            checkIn,
+            checkOut,
+            number: villaReserveDetail.passengers
+        }, {
+            headers: {
+                "Content-Type": 'application/json',
+                Authorization: `Bearer ${userSession.value.token}`
+            }
+        }).then(res => {
+            step.nextStep()
+            toast.success('رزور شما با موفقیت انجام شد.')
+        }).catch(error => {
+            console.log(error)
+        })
+    }
     return (
         <div>
             <Stepper isVilla={isVilla}/>
-            <div className='flex flex-col-reverse md:flex-row items-center gap-x-[6rem] w-[80%] mx-auto mt-4 md:mt-[10rem]'>
+            <form
+                className='flex flex-col-reverse md:flex-row items-center gap-x-[6rem] w-[80%] mx-auto mt-4 md:mt-[10rem]'>
                 <div className='flex flex-col gap-y-6 w-[50%] border-b-[1px] pb-8 border-[#BFBFBF]'>
                     <h1 className='md:text-[28.2px] font-kalameh400 border-b-[1px] border-[#BFBFBF] py-4'>جزئـیات خـریـد
                         شـما</h1>
@@ -35,7 +86,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تـاریـخ سفـر</p>
-                            <p className='font-kalameh500'>17 آبــان</p>
+                            {//@ts-ignore
+                                <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name}</p>}
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -56,7 +108,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تعـداد مسافران</p>
-                            <p className='font-kalameh500'>3 نفــر</p>
+                            <p className='font-kalameh500'>{villaReserveDetail.passengers} نفــر</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -74,7 +126,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>اطلاعات کاربــر</p>
-                            <p className='font-kalameh500'>امیر محمـدی</p>
+                            <p className='font-kalameh500'>{userSession.value.fullName}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -92,7 +144,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                             <p className='text-[11.2px] text-[#777]'>
                                 {isVilla ? 'هزینه اقامت هرشب' : 'هزینه پرداختی'}
                             </p>
-                            <p className='font-kalameh500'>2.400.000 تومـان</p>
+                            <p className='font-kalameh500'>{villaDetails && formatCurrency(+villaDetails.pricePerNight)} تومـان</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -130,7 +182,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                             {isVilla ? (
                                 <>
                                     <p className='text-[11.2px] text-[#777]'>مـدت اقامـت</p>
-                                    <p className='font-kalameh500'>2 شـب</p>
+                                    <p className='font-kalameh500'>{villaReserveDetail.duration} شـب</p>
                                 </>
                             ) : (
                                 <>
@@ -151,15 +203,15 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                         <div className='flex flex-col py-2'>
                             {isVilla ? (
                                 <>
-                                    <p className='text-[14.3px] font-kalameh400'>ویلای دوخوابه</p>
-                                    <p className='text-[11px] text-[#777676]'>گیـلان ، آستارا</p>
+                                    <p className='text-[14.3px] font-kalameh400'>{villaDetails?.title}</p>
+                                    <p className='text-[11px] text-[#777676]'>{villaDetails?.address.state}</p>
                                 </>
-                                ): (
+                            ) : (
                                 <>
                                     <p className='text-[14.3px] font-kalameh400'>تـور زمینی تهران - استانبول</p>
                                     <p className='text-[11px] text-[#777676]'>هـتل پنج ســتاره استانبول</p>
                                 </>
-                                )}
+                            )}
                         </div>
                     </div>
                     <div className='flex flex-col lg:w-[70%] pt-6 gap-y-2'>
@@ -175,7 +227,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                                     <p>600.000 تومــان</p>
                                 </div>
                             </>
-                        ):(
+                        ) : (
                             <>
                                 <div className='text-[10.6px] text-[#808080] flex justify-between'>
                                     <p>مسافر 1 : امیـر محمدی</p>
@@ -194,12 +246,12 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla}) => {
                     </div>
                     <button
                         className='bg-[#15C431] mt-8 w-full lg:w-[80%] rounded-[15px] text-[31px] font-kalameh500 py-2 text-white'
-                        onClick={step.nextStep}
+                        onClick={handlePayment}
                     >
                         پــــرداخــــت
                     </button>
                 </div>
-            </div>
+            </form>
             <Footer/>
 
         </div>

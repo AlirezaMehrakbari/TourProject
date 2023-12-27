@@ -7,7 +7,7 @@ import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import Button from "@/app/components/Button";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import {logOut} from "@/app/redux/slices/user-slice";
-import {toast} from "react-hot-toast";
+import {toast, ToastContainer} from "react-toastify";
 
 const Navbar = () => {
     const pathname = usePathname()
@@ -54,7 +54,7 @@ const Navbar = () => {
                                 </Link>
                                 <Link href={'/profile'}>
                                     <li className='hover:text-[#2C2AAF] cursor-pointer' onClick={()=>{dispatch(logOut())
-                                        toast.error('از حساب کاربری خود خارج شدید.')}}>خروج از حساب کاربری</li>
+                                        toast.warning('از حساب کاربری خود خارج شدید.')}}>خروج از حساب کاربری</li>
                                 </Link>
                             </ul>
                         </div>

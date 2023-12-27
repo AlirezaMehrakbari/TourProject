@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import React from "react";
 import {logOut} from "@/app/redux/slices/user-slice";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 
 const LandingNavbar = () => {
     const registerModal = useRegisterModal()
@@ -44,7 +44,7 @@ const LandingNavbar = () => {
                                                 </li>
                                             </Link>
                                                 <li className='hover:text-[#2C2AAF] cursor-pointer' onClick={()=>{dispatch(logOut())
-                                                    toast.warn('از حساب کاربری خود خارج شدید.')}}>خروج از حساب
+                                                    toast.warning('از حساب کاربری خود خارج شدید.')}}>خروج از حساب
                                                     کاربری
                                                 </li>
                                         </ul>

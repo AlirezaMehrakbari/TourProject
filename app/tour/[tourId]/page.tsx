@@ -6,8 +6,6 @@ import Passengers from "@/app/components/process/Passengers";
 import ConfirmInformation from "@/app/components/process/ConfirmInformation";
 import PaymentDetail from "@/app/components/process/PaymentDetail";
 import Receipt from "@/app/components/process/Receipt";
-import {useAppDispatch, useAppSelector} from "@/app/redux/store";
-import {resetStep} from "@/app/redux/StepSlice";
 const TourDetailPage = () => {
     // const step = useAppSelector(state=>state.stepSlice.step)
     // const dispatch = useAppDispatch()

@@ -4,11 +4,9 @@ import Image from "next/image";
 import VillaHomePicture from '@/public/images/VillaHomePicture.png'
 import Layout from "@/app/components/Layout";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
-import React, {useState} from "react";
-import imageee from "@/public/images/TakhfifPicture1.png";
+import React, {useEffect, useState} from "react";
 import VillaList from "@/app/components/villa/VillaList";
 import Footer from "@/app/components/footer/footer";
-import {Metadata} from "next";
 import DatePicker from "react-multi-date-picker";
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
@@ -16,13 +14,20 @@ import persian_fa from "react-date-object/locales/persian_fa";
 //@ts-ignore
 import opacity from "react-element-popper/animations/opacity"
 import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
-
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import Loading from "@/app/components/Loading";
+import {Pagination} from "@mui/material";
+import {tripTourApi} from "@/axios-instances";
+import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 
 
 const VillaHomePage = () => {
+    const queryClient = useQueryClient()
     const [destination, setDestination] = useState('مقصد')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [filteredVilla, setFilteredVilla] = useState<Villa[]>([])
     const provinces = [
         {
             id: 1,
@@ -43,100 +48,62 @@ const VillaHomePage = () => {
         {
             id: 5,
             provinceName: 'البرز'
-        },
-    ]
-    const villa = [
-        {
-            id: 1,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 2,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 3,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 4,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
+        }, {
             id: 5,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 6,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 7,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 8,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
-        },
-        {
-            id: 9,
-            image: imageee,
-            title: 'اجاره ویلا دو خواب فول امکانات',
-            province: 'استان گیلان',
-            city: 'آستارا',
-            price: 1500000,
-            opinion: 20,
-            Satisfaction: 5.7
+            provinceName: 'آستارا'
         },
     ]
+    const checkIn = new DateObject({
+        //@ts-ignore
+        year: values[0]?.year,
+        //@ts-ignore
+        month: values[0]?.month,
+        //@ts-ignore
+        day: values[0]?.day,
+
+    }).format()
+    const checkOut = new DateObject({
+        //@ts-ignore
+        year: values[1]?.year,
+        //@ts-ignore
+        month: values[1]?.month,
+        //@ts-ignore
+        day: values[1]?.day,
+
+    }).format()
+
+    useEffect(() => {
+        const nextPage = currentPage + 1
+        queryClient.prefetchQuery({queryKey: ['VillaData', nextPage], queryFn: () => fetchVilla(nextPage)})
+    }, [currentPage]);
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        window.scrollTo({top: 700, behavior: 'smooth'})
+        setCurrentPage(value)
+    }
+    const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
+        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`)
+        return res.data
+    }
+    const fetchFilteredVilla = async (e: any) => {
+        e.preventDefault()
+         const res = await tripTourApi.post('reservations/findAvailablePlaces', {
+            checkIn: formatDateToShamsi(checkIn),
+            checkOut: formatDateToShamsi(checkOut),
+            number: passengers,
+            city: destination
+        })
+        setFilteredVilla(res.data)
+    }
+    // const {data: filteredVillaData} = useQuery({
+    //     queryKey: ['filteredVillaData'],
+    //     queryFn: () => fetchFilteredVilla()
+    // })
+    const {data: villaData, isLoading, isError} = useQuery({
+        queryKey: ['VillaData', currentPage],
+        queryFn: () => fetchVilla(currentPage)
+    })
+
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
     }
@@ -147,24 +114,12 @@ const VillaHomePage = () => {
         setPassengers(prev => prev - 1)
     }
 
-    const entryDate = new DateObject({
-        //@ts-ignore
-        year: values[0]?.year,
-        //@ts-ignore
-        month: values[0]?.month,
-        //@ts-ignore
-        day: values[0]?.day,
 
-    }).format()
-    const exitDate = new DateObject({
-        //@ts-ignore
-        year: values[1]?.year,
-        //@ts-ignore
-        month: values[1]?.month,
-        //@ts-ignore
-        day: values[1]?.day,
-
-    }).format()
+    if (isLoading) return <Loading/>
+    if (isError) return <p className='flex justify-center items-center' dir={'ltr'}>Something went Wrong!!!</p>
+    if (!villaData) {
+        return
+    }
 
     return (
         <div>
@@ -179,7 +134,8 @@ const VillaHomePage = () => {
                     <div className='w-[90%] mx-auto absolute bottom-0 xl:bottom-[-2rem] inset-x-0'>
                         <Layout>
                             <form
-                                className='flex flex-col xl:flex-row justify-between items-center gap-x-8 gap-y-6 w-full'>
+                                className='flex flex-col xl:flex-row justify-between items-center gap-x-8 gap-y-6 w-full'
+                                onSubmit={fetchFilteredVilla}>
                                 <div>
                                     <div className='flex flex-col gap-y-4'>
                                         <p className='sm:text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری
@@ -203,7 +159,8 @@ const VillaHomePage = () => {
                                             بـری؟!</p>
                                         <DatePicker
                                             //@ts-ignore
-                                            plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                            plugins={[<DatePickerPlugin entryDate={checkIn} exitDate={checkOut} position='top'/>
+                                            ]}
                                             dateSeparator=' تا '
                                             animations={[opacity()]}
                                             inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
@@ -270,10 +227,12 @@ const VillaHomePage = () => {
                         </Layout>
                     </div>
                 </div>
-                    {/*قسمت اجاره ویلا*/}
-                    <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
-                    <VillaList data={villa}/>
+                {/*قسمت اجاره ویلا*/}
+                <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
+                {filteredVilla.length > 1 ? <VillaList data={filteredVilla}/> : <VillaList data={villaData.data}/>}
             </section>
+            <Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'
+                        count={villaData.meta.last_page}/>
             <Footer/>
         </div>
     )

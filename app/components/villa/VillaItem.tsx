@@ -1,40 +1,77 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Image, {StaticImageData} from "next/image";
-import {CiLocationOn} from "react-icons/ci";
-import {TfiMoney} from "react-icons/tfi";
 import Link from "next/link";
-import useStep from "@/app/hooks/useStep";
+import {useAppSelector} from "@/app/redux/store";
+import {tripTourApi} from "@/axios-instances";
+import {toast} from "react-toastify";
+
 
 export type VillaItemProps = {
-    id : number
-    image : StaticImageData,
-    title : string,
-    Satisfaction : number,
-    opinion : number,
-    province : string,
-    city : string,
-    price : number
+    id: number
+    image: StaticImageData,
+    title: string,
+    Satisfaction: number,
+    opinion: number,
+    province: string,
+    city: string,
+    price: string,
+    onClickFavorite: () => void,
+    favoriteList: FavoriteListProp[]
 }
-const VillaItem : React.FC<VillaItemProps> = ({
-                       image, title, opinion, Satisfaction, province, city, price,id
-                   }) => {
+type FavoriteListProp = {
+    id: number
+}
+const VillaItem: React.FC<VillaItemProps> = ({
+                                                 image,
+                                                 title,
+                                                 opinion,
+                                                 Satisfaction,
+                                                 province,
+                                                 city,
+                                                 price,
+                                                 id,
+                                                 onClickFavorite,
+                                                 favoriteList
+                                             }) => {
+    const userSession = useAppSelector(state => state.userSlice)
+
+
     return (
-        <Link href={`/villa/${id}`}>
-            <div className="flex flex-col hover:text-[#000] group">
-                <div className='relative'>
+        <div className="flex flex-col hover:text-[#000] group">
+            <div className='relative'>
+                <Link href={`/villa/${id}`}>
                     <Image
                         className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer'
                         src={image}
                         alt={title}
                     />
-                    <svg className='absolute left-[24px] top-[24px] group-hover:cursor-pointer'
-                         xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21" fill="none">
-                        <path
-                            d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
-                            fill="black" fillOpacity="0.3" stroke="white" strokeWidth="2" strokeLinecap="round"
-                            strokeLinejoin="round"/>
-                    </svg>
-                </div>
+                </Link>
+
+                { userSession.value.isLoggedIn ?
+                    favoriteList.find(item => item.id === id) ? (
+                        <svg className='absolute left-[15px] top-[18px]' onClick={onClickFavorite}
+                             xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 23 21" fill="none">
+                            <path
+                                d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
+                                fill="#EC0606" stroke="#EC0606" strokeWidth="2" strokeLinecap="round"
+                                strokeLinejoin="round"/>
+                        </svg>
+
+                    ) : (
+                        <svg className='absolute left-[15px] top-[18px]' onClick={onClickFavorite}
+                             xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 23 21" fill="none">
+                            <path
+                                d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
+                                fill="black" fillOpacity="0.3" stroke="white" strokeWidth="2" strokeLinecap="round"
+                                strokeLinejoin="round"/>
+                        </svg>
+                    )
+                    : ''
+                }
+
+
+            </div>
+            <Link href={`/villa/${id}`}>
                 <div className="flex flex-row justify-between py-2 px-[2.98px]">
                     <div className="flex text-[16.5px]">
                         <p>{opinion}</p>
@@ -85,8 +122,9 @@ const VillaItem : React.FC<VillaItemProps> = ({
                         <p className="text-[14px] font-kalameh400 text-[#706E6E] group-hover:text-[#000] group-hover:font-kalameh500">{price} تومان</p>
                     </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
+
     )
 }
 

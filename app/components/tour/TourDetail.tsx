@@ -431,7 +431,7 @@ const TourDetail = () => {
                             </div>
                             {/*قسمت ثبت نظر*/} {/*قسمت کامنت ها*/}
                             <div className='pt-20'>
-                                <Comments disabled={true}/>
+                                {/*<Comments disabled={true}/>*/}
                             </div>
                         </div>
                     </div>
