@@ -14,10 +14,14 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DateObject from "react-date-object";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
-import toast from "react-hot-toast";
+import formatCurrency from "@/app/utils/FormatCurrency";
+import {toast, ToastContainer} from "react-toastify";
+import {useAppDispatch, useAppSelector} from "@/app/redux/store";
+import {setVillaReserve} from "@/app/redux/slices/villaReserve-slice";
 
-const VillaDetail = () => {
+const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const step = useStep()
+    const dispatch = useAppDispatch()
     const [firstMonth, setFirstMonth] = useState([
         new DateObject({calendar: persian}).setDay(5),
         new DateObject({calendar: persian}).setDay(12),
@@ -25,8 +29,8 @@ const VillaDetail = () => {
     const [secondMonth, setSecondMonth] = useState([
         new DateObject({calendar: persian}).add(1, "month"),
     ])
-    const [entryDate, setEntryDate] = useState()
-    const [outDate, setOutDate] = useState()
+    const [entryDate, setEntryDate] = useState('')
+    const [exitDate, setExitDate] = useState('')
     const [passengers, setPassengers] = useState<number>(0)
 
     const pictures = [
@@ -35,15 +39,46 @@ const VillaDetail = () => {
         {id: 3, src: Picture1},
 
     ]
-    const possibilities = [
-        {id: 1, possibility: 'منظره مناسب'},
-        {id: 2, possibility: 'سیستم گرمایشی'},
-        {id: 3, possibility: 'سیستم سرمایشی'},
-        {id: 4, possibility: 'پارکینگ'},
-        {id: 5, possibility: 'لوازم سرو غذا'},
-        {id: 6, possibility: 'سرویس فرنگی '},
-    ]
 
+    const handleReserve = (e: any) => {
+        e.preventDefault()
+        if (entryDate === '' || exitDate === '') {
+            toast.warn('لطفا تاریخ ورود و خروج خود را مشخص کنید.')
+            return
+        }
+        if (passengers === 0) {
+            toast.warn('لطفا تعداد مسافران خود را انتخاب کنید.')
+            return
+        }
+        let duration;
+        //@ts-ignore
+        if (entryDate.month.number !== exitDate.month.number) {
+            //@ts-ignore
+            if (entryDate.month.number <= 6) {
+                //@ts-ignore
+                duration = (31 - entryDate.day) + (exitDate.day)
+                //@ts-ignore
+            } else if (entryDate.month.number > 6) {
+                //@ts-ignore
+                duration = (30 - entryDate.day) + (exitDate.day)
+                //@ts-ignore
+            } else if (entryDate.month.number === 12) {
+                //@ts-ignore
+                duration = (30 - entryDate.day) + (exitDate.day)
+            }
+            //@ts-ignore
+        } else {
+            //@ts-ignore
+            duration = exitDate.day - entryDate.day
+        }
+        dispatch(setVillaReserve({
+            entryDate: entryDate,
+            exitDate: exitDate,
+            passengers: passengers,
+            duration: duration
+        }))
+        step.increase2Step()
+    }
     return (
         <div>
             <Stepper isVilla/>
@@ -82,26 +117,26 @@ const VillaDetail = () => {
                                 })}
                             </div>
                         </div>
-                        <div className='w-full lg:w-[30%] lg:pr-6 self-center max-lg:py-4'>
+                        <div className='w-full lg:w-[30%] lg:pr-6 max-lg:py-4'>
                             <div className="relative flex pb-4 items-center">
                                 <div className="lg:hidden flex-grow border-t border-[#DDD]"></div>
                                 <span className="flex-shrink pl-4 text-[17px] font-kalameh700">امـکانات اقـامتگاه</span>
                                 <div className="flex-grow border-t border-[#DDD]"></div>
                             </div>
-                            <div className='flex flex-col gap-y-4 lg:gap-y-8 lg:pt-4 '>
-                                {possibilities.map(item => {
+                            <div className='flex flex-col justify-between gap-y-4 lg:gap-y-8 lg:pt-4    '>
+                                {villaDetails.facilities.map(item => {
                                     return (
                                         <p
                                             key={item.id}
-                                            className='text-[17px] font-kalameh400 last:line-through'>
-                                            {item.possibility}
+                                            className='text-[17px] font-kalameh400'>
+                                            {item.facility}
                                         </p>
                                     )
                                 })}
-                                <button
+                                {villaDetails.facilities.length > 6 && <button
                                     className='self-end text-[17px] text-[#4E69CA] border-[0.3px] border-[#9A9A9A] rounded-[12px] px-3'>
                                     مشاهده همـه امکانــات
-                                </button>
+                                </button>}
                             </div>
                         </div>
                     </div>
@@ -129,35 +164,42 @@ const VillaDetail = () => {
                         <div className='w-full lg:w-[50%] flex flex-col gap-y-4'>
                             <div
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>متراژ</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.meter}</p>
                                 </div>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>مناسب برای</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.suitableFor}</p>
                                 </div>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>تعداد اتاق</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.numberOfRooms}</p>
                                 </div>
                             </div>
                             <div
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>ظرفیت</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.capacity} نفر</p>
                                 </div>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>سال ساخت</p>
                                 </div>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>طبـقه</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.layer}</p>
                                 </div>
                             </div>
                             <div
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر شب</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerNight)}</p>
                                 </div>
-                                <div className='bg-[#F8F8F8] w-full rounded-[6px]'>
+                                <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر نفر</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerAdditionalPerson)}</p>
                                 </div>
                             </div>
                         </div>
@@ -215,22 +257,27 @@ const VillaDetail = () => {
                                 <h2 className='lg:text-[32px] font-kalameh400 pr-2'>موقعیـت مکانــی</h2>
                             </div>
                             <div className='pt-4'>
-                                <Map position={[35.7, 51.5]} popup={'ویلا'}/>
-                                <p className='whitespace-pre  lg:text-[24px] text-[#888888]'>گیلان ، آسـتارا ،جاده
-                                    مهدیخان
-                                    محله
-                                    <br/>نرسیده به علی آباد ...</p>
+                                <Map position={[+villaDetails.address.lng, +villaDetails.address.lat]} popup={'ویلا'}/>
+                                <p className='whitespace-pre  lg:text-[24px] text-[#888888]'>
+                                    {villaDetails.address.state}،
+                                    {villaDetails.address.city}،
+                                    خیابان {villaDetails.address.street}،
+                                    کوچه {villaDetails.address.alley}
+                                </p>
                             </div>
                         </div>
                         <div className='pt-20'>
-                            <Comments disabled/>
+                            {villaDetails.comments.length > 1 ? <Comments comments={villaDetails.comments}/> :
+                                <p>دیدگاهی موجود نیست</p>}
                         </div>
                         {/*حالت موبایل انتخاب رزرو*/}
                         <div
-                            className='flex lg:hidden sticky h-[320px] top-[10rem] w-[70%] rounded-[15px] bg-[#D9D9D9] mx-auto'>
+                            className='flex lg:hidden sticky h-full top-[10rem] w-full rounded-[15px] bg-[#D9D9D9] mx-auto'>
                             <form className='flex flex-col w-[90%] mx-auto gap-y-[3px] pt-4'>
-                                <div className='w-full flex items-center gap-x-[3px] overflow-hidden'>
-                                    <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-tr-[17px]'>
+                                <div
+                                    className='w-full flex flex-col sm:flex-row items-center gap-x-[3px] overflow-hidden'>
+                                    <div
+                                        className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-lg sm:rounded-tr-[17px]'>
                                         <p className='flex items-center'>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24"
@@ -264,7 +311,8 @@ const VillaDetail = () => {
                                             calendarPosition="bottom"
                                         />
                                     </div>
-                                    <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-tl-[17px]'>
+                                    <div
+                                        className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-lg max-sm:mt-4 sm:rounded-tl-[17px]'>
                                         <p className='flex items-center'>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24" fill="none">
@@ -289,9 +337,9 @@ const VillaDetail = () => {
                                             //@ts-ignore
                                             minDate={new DateObject(entryDate)}
                                             placeholder={'روز  /  مــاه  /  سـال'}
-                                            value={outDate}
+                                            value={exitDate}
                                             //@ts-ignore
-                                            onChange={setOutDate}
+                                            onChange={setExitDate}
                                             fixMainPosition={true}
                                             calendar={persian}
                                             locale={persian_fa}
@@ -302,7 +350,8 @@ const VillaDetail = () => {
                                 <div
                                     className='flex justify-between w-full bg-[#EFEFEF]  pt-4 pb-10 px-6 rounded-br-[17px] rounded-bl-[17px]'>
                                     <div className='flex items-cneter'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="22" viewBox="0 0 26 22"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="22"
+                                             viewBox="0 0 26 22"
                                              fill="none">
                                             <path
                                                 d="M18.4545 21.1823V18.9399C18.4545 17.7505 17.9948 16.6097 17.1764 15.7687C16.3581 14.9276 15.2482 14.4551 14.0909 14.4551H5.36363C4.20632 14.4551 3.09642 14.9276 2.27808 15.7687C1.45974 16.6097 1 17.7505 1 18.9399V21.1823"
@@ -328,9 +377,10 @@ const VillaDetail = () => {
                                                 onClick={() => setPassengers(prev => prev + 1)} type='button'>+
                                         </button>
                                         <span>{passengers}</span>
-                                        <button className='border-2 px-2 rounded-md' onClick={() => setPassengers(prev => {
-                                            return prev === 0 ? 0 : prev - 1
-                                        })}  type='button'>-
+                                        <button className='border-2 px-2 rounded-md'
+                                                onClick={() => setPassengers(prev => {
+                                                    return prev === 0 ? 0 : prev - 1
+                                                })} type='button'>-
                                         </button>
                                     </div>
                                 </div>
@@ -343,9 +393,11 @@ const VillaDetail = () => {
 
                     <section
                         className='hidden lg:block sticky lg:h-[450px] xl:h-[320px] top-[10rem] w-[40%] rounded-[15px] bg-[#D9D9D9]'>
-                        <form className='flex flex-col w-[90%] mx-auto gap-y-[3px] pt-4'>
-                            <div className='w-full flex flex-col xl:flex-row items-center gap-x-[3px] overflow-hidden gap-y-2'>
-                                <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tr-[17px]'>
+                        <form onSubmit={handleReserve} className='flex flex-col w-[90%] mx-auto gap-y-[3px] pt-4'>
+                            <div
+                                className='w-full flex flex-col xl:flex-row items-center gap-x-[3px] overflow-hidden gap-y-2'>
+                                <div
+                                    className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tr-[17px]'>
                                     <p className='flex items-center'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                              viewBox="0 0 24 24"
@@ -367,7 +419,7 @@ const VillaDetail = () => {
                                         <span className='pr-2'>تــاریـخ ورود</span>
                                     </p>
                                     <DatePicker
-                                        inputClass='bg-transparent outline-none mt-8'
+                                        inputClass='bg-transparent outline-none mt-8 placeholder:text-[14px]'
                                         minDate={new DateObject()}
                                         placeholder={'روز  /  مــاه  /  سـال'}
                                         value={entryDate}
@@ -379,7 +431,8 @@ const VillaDetail = () => {
                                         calendarPosition="bottom"
                                     />
                                 </div>
-                                <div className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tl-[17px]'>
+                                <div
+                                    className='w-full flex flex-col bg-[#EFEFEF] pt-4 pb-10 px-6 rounded-md xl:rounded-tl-[17px]'>
                                     <p className='flex items-center'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                              viewBox="0 0 24 24" fill="none">
@@ -400,13 +453,13 @@ const VillaDetail = () => {
                                     </p>
                                     <DatePicker
                                         disabled={!entryDate}
-                                        inputClass={`bg-transparent outline-none mt-8`}
+                                        inputClass={`bg-transparent outline-none mt-8 placeholder:text-[14px]`}
                                         //@ts-ignore
                                         minDate={new DateObject(entryDate)}
-                                        placeholder={'روز  /  مــاه  /  سـال'}
-                                        value={outDate}
+                                        placeholder={entryDate ? 'روز  /  مــاه  /  سـال' : 'ابتدا تاریخ ورود انتخاب نمایید'}
+                                        value={exitDate}
                                         //@ts-ignore
-                                        onChange={setOutDate}
+                                        onChange={setExitDate}
                                         fixMainPosition={true}
                                         calendar={persian}
                                         locale={persian_fa}
@@ -445,17 +498,20 @@ const VillaDetail = () => {
                                     <span>{passengers}</span>
                                     <button className='border-2 px-2 rounded-md' onClick={() => setPassengers(prev => {
                                         return prev === 0 ? 0 : prev - 1
-                                    })}  type='button'>-
+                                    })} type='button'>-
                                     </button>
                                 </div>
                             </div>
-                            <Button onClick={step.increase2Step} styles='w-full mx-auto rounded-lg mt-2 py-6'>
+                            <Button type='submit' styles='w-full mx-auto rounded-lg mt-2 py-6'>
                                 انتخاب تاریخ رزرو
                             </Button>
                         </form>
                     </section>
                 </section>
             </div>
+            <ToastContainer
+                rtl
+            />
             <Footer/>
         </div>
     )

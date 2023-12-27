@@ -3,12 +3,29 @@ import Footer from "@/app/components/footer/footer";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
 import Stepper from "@/app/components/Stepper";
+import {useAppSelector} from "@/app/redux/store";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import {toast, ToastContainer} from "react-toastify";
 
 type ConfirmInformationProps = {
-    isVilla?: boolean
+    isVilla?: boolean,
+    villaDetails?: VillaDetails
 }
-const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla}) => {
+const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla, villaDetails}) => {
+    const villaReserveDetail = useAppSelector(state => state.villaReserve)
     const step = useStep()
+    const userSession = useAppSelector(state => state.userSlice)
+    const registerModal = useRegisterModal()
+
+    const handleSubmit = () => {
+        if (!userSession.value.isLoggedIn) {
+            toast.warn('برای ادامه لطفا وارد حساب کاربری خود شوید.')
+            registerModal.onOpen()
+            return
+        }
+
+        step.nextStep()
+    }
     return (
         <div>
             <Stepper isVilla={isVilla}/>
@@ -26,31 +43,32 @@ const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla}) => {
                                 </tr>
                                 <tr className='border-b-[1px] border-[#D2D2D2]'>
                                     <td className='border-l-[1px] border-[#D2D2D2]  text-[20px] font-kalameh400 pb-6 pt-6'>مقصد</td>
-                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>گیلان - آسـتارا</td>
+                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>{villaDetails?.address.state} - {villaDetails?.address.city}</td>
                                 </tr>
                                 <tr className='border-b-[1px] border-[#D2D2D2]'>
                                     <td className='border-l-[1px] border-[#D2D2D2]  text-[20px] font-kalameh400 pb-6 pt-6'>
                                         متـراژ
                                     </td>
-                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>250 متر</td>
+                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>{villaDetails?.meter} متر</td>
                                 </tr>
                                 <tr className='border-b-[1px] border-[#D2D2D2]'>
                                     <td className='border-l-[1px] border-[#D2D2D2]  text-[20px] font-kalameh400 pb-6 pt-6'>
                                         تعداد خواب
                                     </td>
-                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>3 خوابه</td>
+                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>{villaDetails?.numberOfRooms} خوابه</td>
                                 </tr>
                                 <tr className='border-b-[1px] border-[#D2D2D2]'>
                                     <td className='border-l-[1px] border-[#D2D2D2]  text-[20px] font-kalameh400 pb-6 pt-6'>
                                         ظرفیت
                                     </td>
-                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>حداکثر 10 نفر</td>
+                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>حداکثر {villaDetails?.capacity} نفر</td>
                                 </tr>
                                 <tr>
                                     <td className='border-l-[1px] border-[#D2D2D2]  text-[20px] font-kalameh400 pb-6 pt-6'>
                                         تاریخ سفر
                                     </td>
-                                    <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>7 آبان - 9 آبان</td>
+                                    {//@ts-ignore
+                                        <td className='text-[20px] font-kalameh500 pr-20 pb-6 pt-6'>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} - {villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name}</td>}
                                 </tr>
                             </>
                         ) : (
@@ -96,7 +114,7 @@ const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla}) => {
 
             <Button
                 styles='text-[28px] font-kalameh500 mx-auto px-8 py-6 rounded-[16px] mt-20'
-                onClick={step.nextStep}
+                onClick={handleSubmit}
             >
                 تایید اطلاعات سفر
             </Button>

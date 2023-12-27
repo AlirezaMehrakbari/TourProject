@@ -1,116 +1,15 @@
 type CommentsProps = {
     disabled?: boolean,
     reply?: boolean
+    comments: Comments[]
 }
 
 const Comments: React.FC<CommentsProps> = ({
                                                disabled,
-                                               reply
+                                               reply,
+                                               comments
+
                                            }) => {
-
-    const comments = [
-        {
-            id: 1,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        },
-        {
-            id: 2,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        },
-        {
-            id: 3,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        },
-        {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        }, {
-            id: 4,
-            username: 'علی',
-            text: 'سلام \n' +
-                'واقعااااااا عالی بود \n' +
-                'ممنون از میزبانی خوبتون'
-        },
-    ]
-
     return (
         <div className='pb-8'>
             {!reply &&
@@ -133,7 +32,6 @@ const Comments: React.FC<CommentsProps> = ({
                 className='relative bg-[#F7F6F6] p-4 h-[724px] hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px] '>
                 <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
                     <div className='hidden sm:block absolute w-[1px] bg-[#CFCFCF] h-full'/>
-
                     {comments.map(item => {
                         return (
                             <div className='w-fit h-fit' key={item.id}>
@@ -160,10 +58,10 @@ const Comments: React.FC<CommentsProps> = ({
                                                 strokeLinecap="round" strokeLinejoin="round"/>
                                         </svg>
                                     </div>
-                                    <p className='bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>{item.username}</p>
+                                    <p className='bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>علی</p>
                                 </div>
                                 <div className='flex flex-row-reverse'>
-                                    <p className='whitespace-pre py-[35px] pr-10'>{item.text}</p>
+                                    <p className='whitespace-pre py-[35px] pr-10'>{item.comment}</p>
                                     {reply &&
                                         <svg xmlns="http://www.w3.org/2000/svg" width="4" height="112"
                                              viewBox="0 0 4 112"

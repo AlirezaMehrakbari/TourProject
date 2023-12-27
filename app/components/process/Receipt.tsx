@@ -2,11 +2,16 @@ import ReceiptPicture from '@/public/images/ReceiptPicture.png'
 import Image from "next/image";
 import Stepper from "@/app/components/Stepper";
 import React from "react";
+import {useAppSelector} from "@/app/redux/store";
+import formatCurrency from "@/app/utils/FormatCurrency";
 
 type ReceiptProps = {
-    isVilla?: boolean
+    isVilla?: boolean,
+    villaDetails?: VillaDetails
 }
-const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
+const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
+    const userSession = useAppSelector(state=>state.userSlice)
+    const villaReserveDetail = useAppSelector(state=>state.villaReserve)
     return (
         <div className='bg-[#F5F5F5] min-h-screen flex flex-col items-center'>
             <Stepper isVilla={isVilla}/>
@@ -49,7 +54,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
                         <div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>به نام :</p>
-                                <p>امیرمحمدی</p>
+                                <p>{userSession.value.fullName}</p>
                             </div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 {isVilla ? (
@@ -61,22 +66,24 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla}) => {
                             </div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
-                                <p>1.800.000</p>
+                                <p>{isVilla && villaDetails ? formatCurrency(+(villaReserveDetail.duration) * +(villaDetails?.pricePerNight)) : ''}</p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ رفت : </p>
-                                    <p>17 آبان ماه</p>
+                                    {//@ts-ignore
+                                        <p>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} ماه</p>}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ برگشت : </p>
-                                    <p>17 آبان ماه</p>
+                                    {//@ts-ignore
+                                    <p>{villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name} ماه</p>}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تعداد مسافران : </p>
-                                    <p>3 نفر</p>
+                                    <p>{villaReserveDetail.passengers} نفر</p>
                                 </div>
                             </div>
                         </div>

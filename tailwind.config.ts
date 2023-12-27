@@ -21,12 +21,28 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        openModal: {
+          "0%": {opacity: '0', transform: "translateY(-100%)"},
+          "50%": {opacity: '1', transform: "translateY(-10%)"},
+          "100%": {opacity: '1', transform: "translateY(0)"}
+        },
+        closeModal: {
+          "0%": {opacity: '0', transform: "translateY(0)"},
+          "50%": {opacity: '1', transform: "translateY(60%)"},
+          "100%": {opacity: '1', transform: "translateY(-100%)"}
+        }
+      },
+      animation: {
+        openModal: "openModal 0.5s ease-out forwards",
+        closeModal: "closeModal 0.5s ease-out forwards"
+      }
     },
-    colors : {
-      'orange' : '#FF7512',
-      'white' : '#FFF',
-      'cblue' : '#5397D6'
-    }
+    colors: {
+      'orange': '#FF7512',
+      'white': '#FFF',
+      'cblue': '#5397D6'
+    },
   },
       plugins: [require("daisyui")],
 }

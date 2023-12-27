@@ -33,7 +33,6 @@ const Button: React.FC<ButtonProps> = ({
                 items-center
                 justify-center
             disabled:opacity-70
-            disabled:cursor-not-allowed
             h-[40px]
             ${styles ? `${styles}` : ''}
             ${outline ? 'bg-white' : 'bg-orange'}

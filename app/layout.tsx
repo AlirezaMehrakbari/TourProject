@@ -1,10 +1,12 @@
 import type {Metadata} from 'next'
 import './globals.css'
-import Footer from "@/app/components/footer/footer";
 import ReduxProvider from "@/app/redux/provider";
 import dynamic from "next/dynamic";
-
-const RegisterModal = dynamic(() => import('@/app/components/modals/RegisterModal'), {ssr: false})
+import ReactQueryProvider from "@/app/utils/ReactQueryProvider";
+import {ToastContainer} from "react-toastify";
+import React from "react";
+import RegisterModal from "@/app/components/modals/RegisterModal";
+import ToastContainerApp from "@/app/utils/ToastContainer";
 
 
 export const metadata: Metadata = {
@@ -18,14 +20,16 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="fa">
-        <body className='font-body'>
-        <ReduxProvider>
-            {children}
-            <RegisterModal/>
-        </ReduxProvider>
-        {/*<Footer/>*/}
-        </body>
-        </html>
+        <ReactQueryProvider>
+            <html lang="fa">
+            <body className='font-body'>
+            <ReduxProvider>
+                <ToastContainerApp/>
+                {children}
+                <RegisterModal/>
+            </ReduxProvider>
+            </body>
+            </html>
+        </ReactQueryProvider>
     )
 }

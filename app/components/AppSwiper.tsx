@@ -37,6 +37,7 @@ const AppSwiper: React.FC<AppSwiperProps> = ({data}) => {
     // const swiper = useSwiper()
     return (
         <Swiper
+            slidesPerView={1}
             modules={[Autoplay]}
             autoplay={{
                 delay: 2000,
@@ -45,8 +46,8 @@ const AppSwiper: React.FC<AppSwiperProps> = ({data}) => {
             }}
             breakpoints={{
                 // when window width is >= 320px\
-                320: {
-                    slidesPerView: 1,
+                600: {
+                    slidesPerView: 2,
                     spaceBetween: 100,
                 },
                 750: {

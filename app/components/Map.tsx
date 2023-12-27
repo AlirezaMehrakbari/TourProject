@@ -10,9 +10,6 @@ type MapProps = {
 
 const Map: React.FC<MapProps> = ({position, popup}) => {
     const [userLocation, setUserLocation] = useState<LatLngExpression>()
-    useEffect(() => {
-        console.log(userLocation)
-    }, [userLocation])
     const LocationFinderDummy = () => {
         const map = useMapEvents({
             click(e) {
@@ -27,7 +24,7 @@ const Map: React.FC<MapProps> = ({position, popup}) => {
         iconSize: [38, 38]
     })
     return (
-        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={15}
+        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={12}
                       zoomControl={false}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,16 +1,27 @@
 'use client'
-import Button from "@/app/components/Button";
-import Sidebar from "../components/profile/Sidebar";
-import ProfileNavbar from "../components/profile/ProfileNavbar";
 import DatePicker from "react-multi-date-picker";
-import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import React, {useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
+import {useAppSelector} from "@/app/redux/store";
+import {redirect, useRouter} from "next/navigation";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import {router} from "next/client";
 
 
 const ProfilePage = () => {
+    const router = useRouter()
     const [dateBirth, setDateBirth] = useState()
+    const userSession = useAppSelector(state => state.userSlice)
+    const registerModal = useRegisterModal()
+    let content ;
+    useLayoutEffect(() => {
+        if(!userSession.value.isLoggedIn){
+            redirect('/')
+        }
+    }, [])
+
+
     return (
         <div className='md:w-[60%] flex flex-col max-md:w-[80%] mx-auto'>
             <div className="w-full flex flex-col pb-10 gap-8 md:pl-4">
@@ -44,10 +55,10 @@ const ProfilePage = () => {
                                 <div className='flex justify-between w-[95%] sm:w-[70%] gap-x-4'>
                                     <input
                                         className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
-                                        type="text" placeholder="نام"/>
+                                        type="text" placeholder="نام" value={userSession.value.firstName}/>
                                     <input
                                         className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
-                                        type="text" placeholder="نام خانوادگی"/>
+                                        type="text" placeholder="نام خانوادگی" value={userSession.value.lastName}/>
                                 </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-y-4 items-center justify-between">
@@ -74,11 +85,10 @@ const ProfilePage = () => {
                                 <p className="font-kalameh400 text-[12px]">شماره همراه</p>
                                 <input
                                     className="w-[95%] sm:w-[70%] py-2 rounded-md border border-solid bg-transparent text-center"
-                                    type="number"/>
+                                    type="number" value={userSession.value.phoneNumber} disabled/>
                             </div>
-                            <div className="flex flex-row pt-7 pr-[60px] sm:pr-[168px] gap-x-4">
-                                    <button className='w-[100px] rounded-md bg-[#000] text-white py-2'>ثبت</button>
-                                    <button className='w-[100px] rounded-md bg-[#B1B1B1] border-none text-white'>انصراف</button>
+                            <div className="flex w-full pt-7 gap-x-4">
+                                    <button className='w-[30%] mx-auto rounded-md bg-[#000] text-white py-2'>ثبت</button>
                             </div>
                         </div>
                     </form>
