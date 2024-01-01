@@ -10,6 +10,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
         disableDevLogs: true
     }
 });
-const nextConfig = {}
+const nextConfig = {
+    output: 'standalone'
+}
 
 module.exports = withPWA(nextConfig)
