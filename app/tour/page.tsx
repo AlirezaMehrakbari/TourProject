@@ -270,7 +270,7 @@ const TourHomePage = () => {
                                             </svg>
                                             <p className='font-kalameh400'>تعداد نفــرات</p>
                                         </div>
-                                        <div className='flex items-center'>
+                                        <div className='flex items-center justify-between w-[80px]'>
                                             <button type='button' onClick={handleIncreasePassenger}
                                                     className='w-[24px] h-[24px] bg-[#1270B0] rounded-full text-white'>+
                                             </button>

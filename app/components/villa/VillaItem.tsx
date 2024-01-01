@@ -41,7 +41,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
             <div className='relative'>
                 <Link href={`/villa/${id}`}>
                     <Image
-                        className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer'
+                        className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer h-[250px]'
                         src={image}
                         alt={title}
                     />

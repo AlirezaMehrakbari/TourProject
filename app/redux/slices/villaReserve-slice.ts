@@ -1,17 +1,28 @@
 import {createSlice} from "@reduxjs/toolkit";
+type durationType = {
+    weekDay : {
+        name : string
+    }
+    month : {
+        number : number,
+        name : string
+    }
+    year : number
+
+}
 
 type InitialState = {
     passengers : number,
     entryDate : string,
     exitDate : string,
-    duration : string
+    duration : durationType[]
 }
 
 const initialState : InitialState = {
     passengers: 0,
     entryDate: '',
     exitDate: '',
-    duration : ''
+    duration : []
 }
 
 export const VillaReserveSlice = createSlice({

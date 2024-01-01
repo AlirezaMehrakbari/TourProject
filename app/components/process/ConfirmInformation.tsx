@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Footer from "@/app/components/footer/footer";
 import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
@@ -16,6 +16,13 @@ const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla, villaDe
     const step = useStep()
     const userSession = useAppSelector(state => state.userSlice)
     const registerModal = useRegisterModal()
+
+    useEffect(() => {
+        if(userSession.value.isLoggedIn){
+            step.nextStep()
+        }
+
+    }, [userSession.value.isLoggedIn]);
 
     const handleSubmit = () => {
         if (!userSession.value.isLoggedIn) {

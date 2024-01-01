@@ -85,16 +85,6 @@ const VillaHomePage = () => {
         const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`)
         return res.data
     }
-    const fetchFilteredVilla = async (e: any) => {
-        e.preventDefault()
-         const res = await tripTourApi.post('reservations/findAvailablePlaces', {
-            checkIn: formatDateToShamsi(checkIn),
-            checkOut: formatDateToShamsi(checkOut),
-            number: passengers,
-            city: destination
-        })
-        setFilteredVilla(res.data)
-    }
     const {data: villaData, isLoading, isError} = useQuery({
         queryKey: ['VillaData', currentPage],
         queryFn: () => fetchVilla(currentPage)
@@ -130,8 +120,7 @@ const VillaHomePage = () => {
                     <div className='w-[90%] mx-auto absolute bottom-0 xl:bottom-[-2rem] inset-x-0'>
                         <Layout>
                             <form
-                                className='flex flex-col xl:flex-row justify-between items-center gap-x-8 gap-y-6 w-full'
-                                onSubmit={fetchFilteredVilla}>
+                                className='flex flex-col xl:flex-row justify-between items-center gap-x-8 gap-y-6 w-full'>
                                 <div>
                                     <div className='flex flex-col gap-y-4'>
                                         <p className='sm:text-[20.6px] font-kalameh700 text-white'> کجـا میخوای بـری
@@ -178,7 +167,7 @@ const VillaHomePage = () => {
                                         <p className='sm:text-[20.6px] font-kalameh700 text-white'>چند نفـر ؟!</p>
                                         <SelectDropDown main isCounter
                                                         label={(passengers > 0 ? `${passengers} مسافر` : 'تعداد مسافران')}
-                                                        dropDownStyles={'absolute bg-[#FFF] top-10 w-[300px] inset-x-0  rounded-md text-[#000] mx-auto shadow-md px-4 py-2'}>
+                                                        dropDownStyles={'absolute bg-[#FFF] top-10 md:w-[300px] inset-x-0  rounded-md text-[#000] mx-auto shadow-md px-4 py-2'}>
                                             <div className='flex items-center justify-between'>
                                                 <div className='flex items-center'>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="27" height="23"
@@ -202,7 +191,7 @@ const VillaHomePage = () => {
                                                     </svg>
                                                     <p className='font-kalameh400'>تعداد نفــرات</p>
                                                 </div>
-                                                <div className='flex items-center'>
+                                                <div className='flex items-center justify-between w-[80px]'>
                                                     <button type='button' onClick={handleIncreasePassenger}
                                                             className='w-[24px] h-[24px] bg-[#1270B0] rounded-full text-white'>+
                                                     </button>
@@ -225,7 +214,7 @@ const VillaHomePage = () => {
                 </div>
                 {/*قسمت اجاره ویلا*/}
                 <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
-                {filteredVilla.length > 1 ? <VillaList data={filteredVilla}/> : <VillaList data={villaData.data}/>}
+              <VillaList data={villaData.data}/>
             </section>
             <Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'
                         count={villaData.meta.last_page}/>

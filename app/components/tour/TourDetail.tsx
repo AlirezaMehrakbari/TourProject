@@ -498,7 +498,7 @@ const TourDetail = () => {
                             <div className='flex flex-col gap-y-2 text-[18px] text-[#616161]'>
                                 <div className='flex items-center justify-between'>
                                     <p>بزرگسال در اتاق دو تخته</p>
-                                    <div className='flex items-center gap-x-2'>
+                                    <div className='flex items-center justify-between w-[80px] gap-x-2'>
                                         <button
                                             onClick={() => setPassengers(prevState => ({
                                                 ...prevState,
@@ -522,7 +522,7 @@ const TourDetail = () => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>بزرگسال در اتاق یک تخته</p>
-                                    <div className='flex items-center gap-x-2'>
+                                    <div className='flex items-center justify-between w-[80px] gap-x-2'>
                                         <button
                                             onClick={() => setPassengers(prevState => ({
                                                 ...prevState,
@@ -546,7 +546,7 @@ const TourDetail = () => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>کودک 2 تا 12 سال</p>
-                                    <div className='flex items-center gap-x-2'>
+                                    <div className='flex items-center justify-between w-[80px] gap-x-2'>
                                         <button
                                             onClick={() => setPassengers(prevState => ({
                                                 ...prevState,
@@ -570,7 +570,7 @@ const TourDetail = () => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>کودک زیر 2 سال</p>
-                                    <div className='flex items-center gap-x-2'>
+                                    <div className='flex items-center justify-between w-[80px] gap-x-2'>
                                         <button
                                             type='button'
                                             onClick={() => setPassengers(prevState => ({

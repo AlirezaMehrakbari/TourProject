@@ -10,6 +10,7 @@ import {tripTourApi} from "@/axios-instances";
 import DateObject from "react-date-object";
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 import {useRouter} from "next/navigation";
+import {toast} from 'react-toastify'
 
 type PaymentDetailProps = {
     isVilla?: boolean,
@@ -54,15 +55,15 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                 Authorization: `Bearer ${userSession.value.token}`
             }
         }).then(res => {
-            // step.nextStep()
-            // toast.success('رزور شما با موفقیت انجام شد.')
-            tripTourApi.post(`transactions/pay/${res.data.data.id}`,{},{
-                headers : {
-                    Authorization : `Bearer ${userSession.value.token}`
-                }
-            }).then(res=>{
-                router.push(`${res.data.paymentUrl}`)
-            })
+            step.nextStep()
+            toast.success('رزور شما با موفقیت انجام شد.')
+            // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
+            //     headers: {
+            //         Authorization: `Bearer ${userSession.value.token}`
+            //     }
+            // }).then(res => {
+            //     router.push(`${res.data.paymentUrl}`)
+            // })
         }).catch(error => {
             console.log(error)
         })
@@ -188,7 +189,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             {isVilla ? (
                                 <>
                                     <p className='text-[11.2px] text-[#777]'>مـدت اقامـت</p>
-                                    <p className='font-kalameh500'>{villaReserveDetail.duration} شـب</p>
+                                    <p className='font-kalameh500'>{villaReserveDetail.duration.length} شـب</p>
                                 </>
                             ) : (
                                 <>
@@ -224,14 +225,14 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         <h4 className='text-[17.3px] font-kalameh500'>جزئـیات پرداخت</h4>
                         {isVilla ? (
                             <>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>دوشـنبه 5 آبــان ماه 1402</p>
-                                    <p>600.000 تومــان</p>
-                                </div>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>سه شنبه 6 آبــان ماه 1402</p>
-                                    <p>600.000 تومــان</p>
-                                </div>
+                                {villaReserveDetail.duration.map(day => {
+                                    return (
+                                        <div className='text-[10.6px] text-[#808080] flex justify-between'>
+                                            <p>{day.weekDay.name} {day.month.number} {day.month.name} ماه {day.year}</p>
+                                            <p>{villaDetails?.pricePerNight && formatCurrency(+villaDetails?.pricePerNight)} تومــان</p>
+                                        </div>
+                                    )
+                                })}
                             </>
                         ) : (
                             <>

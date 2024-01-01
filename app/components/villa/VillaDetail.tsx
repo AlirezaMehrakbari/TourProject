@@ -1,8 +1,10 @@
-import DatePicker, {Calendar} from "react-multi-date-picker"
+import DatePicker, {Calendar, getAllDatesInRange} from "react-multi-date-picker"
 import React, {useEffect, useState} from 'react'
 import Image from "next/image";
 import Picture from '@/public/images/TakhfifPicture.png'
-import Picture1 from '@/public/images/VillaHomePicture.png'
+import Picture1 from '@/public/images/test1.jpg'
+import Picture2 from '@/public/images/test2.jpg'
+import Picture3 from '@/public/images/test3.jpg'
 import Stepper from "@/app/components/Stepper";
 import UserProfile from '@/public/images/UserProfile.png'
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
@@ -32,14 +34,14 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const [entryDate, setEntryDate] = useState('')
     const [exitDate, setExitDate] = useState('')
     const [passengers, setPassengers] = useState<number>(0)
+    const [isOpen, setIsOpen] = useState()
 
     const pictures = [
         {id: 1, src: Picture1},
-        {id: 2, src: Picture1},
-        {id: 3, src: Picture1},
+        {id: 2, src: Picture2},
+        {id: 3, src: Picture3},
 
     ]
-
     const handleReserve = (e: any) => {
         e.preventDefault()
         if (entryDate === '' || exitDate === '') {
@@ -50,27 +52,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
             toast.warn('لطفا تعداد مسافران خود را انتخاب کنید.')
             return
         }
-        let duration;
-        //@ts-ignore
-        if (entryDate.month.number !== exitDate.month.number) {
-            //@ts-ignore
-            if (entryDate.month.number <= 6) {
-                //@ts-ignore
-                duration = (31 - entryDate.day) + (exitDate.day)
-                //@ts-ignore
-            } else if (entryDate.month.number > 6) {
-                //@ts-ignore
-                duration = (30 - entryDate.day) + (exitDate.day)
-                //@ts-ignore
-            } else if (entryDate.month.number === 12) {
-                //@ts-ignore
-                duration = (30 - entryDate.day) + (exitDate.day)
-            }
-            //@ts-ignore
-        } else {
-            //@ts-ignore
-            duration = exitDate.day - entryDate.day
-        }
+        let duration = getAllDatesInRange([new DateObject(entryDate), new DateObject(exitDate)]);
         dispatch(setVillaReserve({
             entryDate: entryDate,
             exitDate: exitDate,
@@ -108,7 +90,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     return (
                                         <>
                                             <Image
-                                                className='rounded-[12px] shadow-md max-lg:w-[30%]'
+                                                className='rounded-[12px] shadow-md max-lg:w-[30%] h-[100px] lg:h-[80px] xl:h-[110px] object-cover'
                                                 src={picture.src}
                                                 alt={'Villa Picture'}
                                             />
@@ -123,20 +105,53 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 <span className="flex-shrink pl-4 text-[17px] font-kalameh700">امـکانات اقـامتگاه</span>
                                 <div className="flex-grow border-t border-[#DDD]"></div>
                             </div>
-                            <div className='flex flex-col justify-between gap-y-4 lg:gap-y-8 lg:pt-4    '>
-                                {villaDetails.facilities.map(item => {
-                                    return (
-                                        <p
-                                            key={item.id}
-                                            className='text-[17px] font-kalameh400'>
-                                            {item.facility}
-                                        </p>
-                                    )
-                                })}
-                                {villaDetails.facilities.length > 6 && <button
-                                    className='self-end text-[17px] text-[#4E69CA] border-[0.3px] border-[#9A9A9A] rounded-[12px] px-3'>
-                                    مشاهده همـه امکانــات
-                                </button>}
+                            <div className='flex flex-col justify-between gap-y-4 lg:gap-y-8 lg:pt-4'>
+                                {villaDetails.facilities.filter((item, index) => {
+                                    return index < 6
+                                })
+                                    .map((item) => {
+                                        return (
+                                            <p
+                                                key={item.id}
+                                                className='text-[17px] font-kalameh400'>
+                                                {item.facility}
+                                            </p>
+                                        )
+                                    })}
+                                <div className='self-end'>
+                                    {villaDetails.facilities.length > 6 &&
+                                        <button
+                                            className="text-[17px] text-[#4E69CA] border-[0.3px] border-[#9A9A9A] rounded-[12px] px-3"
+                                            //@ts-ignore
+                                            onClick={() => document.getElementById('my_modal_2').showModal()}>
+                                            مشاهده همـه امکانــات
+                                        </button>
+                                    }
+                                </div>
+                                <dialog id="my_modal_2" className="modal">
+                                    <div className="modal-box">
+                                        <div
+                                            className='flex justify-center items-center border-b-[1px] border-[#BEBEBE] px-4'>
+                                            <h1 className='font-kalameh500 text-[25px] pb-4'>امکانات رفاهی</h1>
+                                        </div>
+                                        <div className='grid grid-cols-2 pt-4 gap-3'>
+                                            {villaDetails.facilities.map(item => {
+                                                return (
+                                                    <div className='flex items-center gap-2'>
+                                                                    <span
+                                                                        className='w-[12px] h-[12px] bg-[#47BE3C] rounded-[3px]'></span>
+                                                        <p>{item.facility}</p>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                        <form method="dialog">
+                                            <button
+                                                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕
+                                            </button>
+                                        </form>
+                                    </div>
+                                </dialog>
                             </div>
                         </div>
                     </div>
@@ -224,8 +239,9 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                             </div>
                             {/*قسمت روزهای رزرو شده باید اصلاح گردد*/}
                             <div
-                                className='flex flex-col xl:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
+                                className='flex flex-col sm:flex-row gap-y-4 items-center justify-between gap-x-4 py-10 z-0'>
                                 <Calendar
+                                    className='h-[290px]'
                                     buttons={false}
                                     value={firstMonth}
                                     readOnly
@@ -233,6 +249,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     locale={persian_fa}
                                 />
                                 <Calendar
+                                    className='h-[290px]'
                                     buttons={false}
                                     value={secondMonth}
                                     readOnly
@@ -267,8 +284,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                             </div>
                         </div>
                         <div className='pt-20'>
-                            {villaDetails.comments.length > 1 ? <Comments comments={villaDetails.comments}/> :
-                                <p>دیدگاهی موجود نیست</p>}
+                            <Comments comments={villaDetails.comments}/>
                         </div>
                         {/*حالت موبایل انتخاب رزرو*/}
                         <div
@@ -299,7 +315,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                             <span className='pr-2'>تــاریـخ ورود</span>
                                         </p>
                                         <DatePicker
-                                            inputClass='bg-transparent outline-none mt-8'
+                                            inputClass='bg-transparent outline-none mt-8 placeholder:text-[14px]'
                                             minDate={new DateObject()}
                                             placeholder={'روز  /  مــاه  /  سـال'}
                                             value={entryDate}
@@ -333,10 +349,10 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                         </p>
                                         <DatePicker
                                             disabled={!entryDate}
-                                            inputClass={`bg-transparent outline-none mt-8`}
+                                            inputClass={`bg-transparent outline-none mt-8 placeholder:text-[14px]`}
                                             //@ts-ignore
                                             minDate={new DateObject(entryDate)}
-                                            placeholder={'روز  /  مــاه  /  سـال'}
+                                            placeholder={entryDate ? 'روز  /  مــاه  /  سـال' : 'ابتدا تاریخ ورود انتخاب نمایید'}
                                             value={exitDate}
                                             //@ts-ignore
                                             onChange={setExitDate}
@@ -384,7 +400,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                         </button>
                                     </div>
                                 </div>
-                                <Button onClick={step.increase2Step} styles='w-full mx-auto rounded-lg mt-2 py-6'>
+                                <Button onClick={handleReserve} styles='w-full mx-auto rounded-lg mt-2 py-6'>
                                     انتخاب تاریخ رزرو
                                 </Button>
                             </form>
@@ -491,12 +507,12 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     </svg>
                                     <span>تعداد نفرات</span>
                                 </div>
-                                <div className='flex items-center gap-x-2'>
-                                    <button className='border-2 px-2 rounded-md'
+                                <div className='flex items-center gap-x-2 w-[100px] justify-between'>
+                                    <button className='border-2 px-2 rounded-lg'
                                             onClick={() => setPassengers(prev => prev + 1)} type='button'>+
                                     </button>
                                     <span>{passengers}</span>
-                                    <button className='border-2 px-2 rounded-md' onClick={() => setPassengers(prev => {
+                                    <button className='border-2 px-2 rounded-lg' onClick={() => setPassengers(prev => {
                                         return prev === 0 ? 0 : prev - 1
                                     })} type='button'>-
                                     </button>

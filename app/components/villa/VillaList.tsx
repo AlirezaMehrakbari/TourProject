@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import VillaItem, {VillaItemProps} from "@/app/components/villa/VillaItem";
-import image from '@/public/images/VillaHomePicture.png'
+import image from '@/public/images/test.jpg'
 import {useAppSelector} from "@/app/redux/store";
 import {toast} from "react-toastify";
 import {tripTourApi} from "@/axios-instances";
@@ -37,7 +37,6 @@ const VillaList: React.FC<VillaListProps> = ({data}) => {
             toast.error('مشکلی رخ داده است!')
         })
     }
-    console.log(favoriteList)
     return (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10">
             {data.map(item => {

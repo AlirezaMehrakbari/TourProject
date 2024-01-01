@@ -20,7 +20,7 @@ const Map: React.FC<MapProps> = ({position, popup}) => {
     };
 
     const customIcon = new Icon({
-        iconUrl: 'https://previews.123rf.com/images/i3alda/i3alda1507/i3alda150700014/42832396-map-pointer-with-home-icon-vector.jpg',
+        iconUrl: 'https://pixlok.com/wp-content/uploads/2021/02/Map-Location-Icon-SVG.jpg',
         iconSize: [38, 38]
     })
     return (

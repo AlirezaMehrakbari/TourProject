@@ -28,70 +28,73 @@ const Comments: React.FC<CommentsProps> = ({
                     <h1 className='text-[20px] md:text-[39.8px] font-kalameh400'>دیــدگاه ها</h1>
                 </div>
             }
-            <div
-                className='relative bg-[#F7F6F6] p-4 h-[724px] hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px] '>
-                <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
-                    <div className='hidden sm:block absolute w-[1px] bg-[#CFCFCF] h-full'/>
-                    {comments.map(item => {
-                        return (
-                            <div className='w-fit h-fit' key={item.id}>
-                                <div className='flex items-center relative'>
-                                    <div className='relative z-10'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50"
-                                             viewBox="0 0 51 50" fill="none">
-                                            <circle cx="25.4374" cy="24.5731" r="24.1566" fill="#D9D9D9"
-                                                    stroke="white" strokeWidth="0.832988"/>
-                                        </svg>
-                                        <svg className='absolute right-[14px] z-10 top-3'
-                                             xmlns="http://www.w3.org/2000/svg" width="23" height="24"
-                                             viewBox="0 0 23 24" fill="none">
-                                            <path
-                                                d="M21.4486 23.1774V20.6746C21.4486 19.347 20.9212 18.0738 19.9825 17.1351C19.0437 16.1963 17.7705 15.6689 16.4429 15.6689H6.43166C5.10409 15.6689 3.83088 16.1963 2.89214 17.1351C1.9534 18.0738 1.42603 19.347 1.42603 20.6746V23.1774"
-                                                fill="#D9D9D9"/>
-                                            <path
-                                                d="M21.4486 23.1774V20.6746C21.4486 19.347 20.9212 18.0738 19.9825 17.1351C19.0437 16.1963 17.7705 15.6689 16.4429 15.6689H6.43166C5.10409 15.6689 3.83088 16.1963 2.89214 17.1351C1.9534 18.0738 1.42603 19.347 1.42603 20.6746V23.1774"
-                                                stroke="#030303" strokeWidth="1.24948"
-                                                strokeLinecap="round" strokeLinejoin="round"/>
-                                            <path
-                                                d="M11.4373 10.6626C14.2018 10.6626 16.4429 8.42154 16.4429 5.65701C16.4429 2.89247 14.2018 0.651367 11.4373 0.651367C8.67274 0.651367 6.43164 2.89247 6.43164 5.65701C6.43164 8.42154 8.67274 10.6626 11.4373 10.6626Z"
-                                                fill="#D9D9D9" stroke="#030303" strokeWidth="1.24948"
-                                                strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
+            {comments.length > 1 &&
+                <div
+                    className={`relative bg-[#F7F6F6] p-4 ${comments.length > 12 ? 'h-[724px]' : 'h-full'} hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px]`}>
+                    <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
+                        <div className='hidden sm:block absolute w-[1px] bg-[#CFCFCF] h-full'/>
+                        {comments.map(item => {
+                            return (
+                                <div className='w-fit h-fit' key={item.id}>
+                                    <div className='flex items-center relative'>
+                                        <div className='relative z-10'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="50"
+                                                 viewBox="0 0 51 50" fill="none">
+                                                <circle cx="25.4374" cy="24.5731" r="24.1566" fill="#D9D9D9"
+                                                        stroke="white" strokeWidth="0.832988"/>
+                                            </svg>
+                                            <svg className='absolute right-[14px] z-10 top-3'
+                                                 xmlns="http://www.w3.org/2000/svg" width="23" height="24"
+                                                 viewBox="0 0 23 24" fill="none">
+                                                <path
+                                                    d="M21.4486 23.1774V20.6746C21.4486 19.347 20.9212 18.0738 19.9825 17.1351C19.0437 16.1963 17.7705 15.6689 16.4429 15.6689H6.43166C5.10409 15.6689 3.83088 16.1963 2.89214 17.1351C1.9534 18.0738 1.42603 19.347 1.42603 20.6746V23.1774"
+                                                    fill="#D9D9D9"/>
+                                                <path
+                                                    d="M21.4486 23.1774V20.6746C21.4486 19.347 20.9212 18.0738 19.9825 17.1351C19.0437 16.1963 17.7705 15.6689 16.4429 15.6689H6.43166C5.10409 15.6689 3.83088 16.1963 2.89214 17.1351C1.9534 18.0738 1.42603 19.347 1.42603 20.6746V23.1774"
+                                                    stroke="#030303" strokeWidth="1.24948"
+                                                    strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path
+                                                    d="M11.4373 10.6626C14.2018 10.6626 16.4429 8.42154 16.4429 5.65701C16.4429 2.89247 14.2018 0.651367 11.4373 0.651367C8.67274 0.651367 6.43164 2.89247 6.43164 5.65701C6.43164 8.42154 8.67274 10.6626 11.4373 10.6626Z"
+                                                    fill="#D9D9D9" stroke="#030303" strokeWidth="1.24948"
+                                                    strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                        </div>
+                                        <p className='bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>علی</p>
                                     </div>
-                                    <p className='bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>علی</p>
-                                </div>
-                                <div className='flex flex-row-reverse'>
-                                    <p className='whitespace-pre py-[35px] pr-10'>{item.comment}</p>
+                                    <div className='flex flex-row-reverse'>
+                                        <p className='whitespace-pre py-[35px] pr-10'>{item.comment}</p>
+                                        {reply &&
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="4" height="112"
+                                                 viewBox="0 0 4 112"
+                                                 fill="none">
+                                                <path
+                                                    d="M2.00586 0.0644113C1.10352 0.0644112 0.372029 0.795902 0.372028 1.69824C0.372028 2.60058 1.10352 3.33207 2.00586 3.33207C2.9082 3.33207 3.63969 2.60058 3.63969 1.69824C3.63969 0.795902 2.9082 0.0644113 2.00586 0.0644113ZM2.00585 111.3L3.77453 109.531L2.00585 107.762L0.237181 109.531L2.00585 111.3ZM1.69952 1.69824L1.69951 109.531L2.3122 109.531L2.3122 1.69824L1.69952 1.69824Z"
+                                                    fill="black"/>
+                                            </svg>
+                                        }
+                                    </div>
                                     {reply &&
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="4" height="112"
-                                             viewBox="0 0 4 112"
-                                             fill="none">
-                                            <path
-                                                d="M2.00586 0.0644113C1.10352 0.0644112 0.372029 0.795902 0.372028 1.69824C0.372028 2.60058 1.10352 3.33207 2.00586 3.33207C2.9082 3.33207 3.63969 2.60058 3.63969 1.69824C3.63969 0.795902 2.9082 0.0644113 2.00586 0.0644113ZM2.00585 111.3L3.77453 109.531L2.00585 107.762L0.237181 109.531L2.00585 111.3ZM1.69952 1.69824L1.69951 109.531L2.3122 109.531L2.3122 1.69824L1.69952 1.69824Z"
-                                                fill="black"/>
-                                        </svg>
+                                        <form className='relative'>
+                                            <input
+                                                className='bg-[#5E5E5E] mb-16 placeholder:text-[26px] placeholder:font-kalameh500 px-4 py-3 rounded-[6px] text-white outline-none'
+                                                placeholder='پاسخ شما'
+                                            />
+                                            <svg className='absolute top-[-0.7rem]' xmlns="http://www.w3.org/2000/svg"
+                                                 width="29" height="31" viewBox="0 0 29 31" fill="none">
+                                                <path
+                                                    d="M2.29379 18.7818C-0.369758 17.4149 -0.369757 13.6076 2.29379 12.2406L23.6514 1.27992C26.0977 0.0244675 29.006 1.80083 29.006 4.55049V26.4719C29.006 29.2216 26.0977 30.998 23.6514 29.7425L2.29379 18.7818Z"
+                                                    fill="#5E5E5E"/>
+                                            </svg>
+                                        </form>
                                     }
                                 </div>
-                                {reply &&
-                                    <form className='relative'>
-                                        <input
-                                            className='bg-[#5E5E5E] mb-16 placeholder:text-[26px] placeholder:font-kalameh500 px-4 py-3 rounded-[6px] text-white outline-none'
-                                            placeholder='پاسخ شما'
-                                        />
-                                        <svg className='absolute top-[-0.7rem]' xmlns="http://www.w3.org/2000/svg"
-                                             width="29" height="31" viewBox="0 0 29 31" fill="none">
-                                            <path
-                                                d="M2.29379 18.7818C-0.369758 17.4149 -0.369757 13.6076 2.29379 12.2406L23.6514 1.27992C26.0977 0.0244675 29.006 1.80083 29.006 4.55049V26.4719C29.006 29.2216 26.0977 30.998 23.6514 29.7425L2.29379 18.7818Z"
-                                                fill="#5E5E5E"/>
-                                        </svg>
-                                    </form>
-                                }
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
 
+                    </div>
                 </div>
-            </div>
+            }
+
             {!reply &&
                 <form
                     className='flex items-center justify-between bg-[#F7F6F6] px-8 mt-8 rounded-[15px] h-[108px]'>
