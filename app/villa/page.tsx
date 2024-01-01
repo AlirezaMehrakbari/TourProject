@@ -19,10 +19,12 @@ import Loading from "@/app/components/Loading";
 import {Pagination} from "@mui/material";
 import {tripTourApi} from "@/axios-instances";
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
+import {useAppSelector} from "@/app/redux/store";
 
 
 const VillaHomePage = () => {
     const queryClient = useQueryClient()
+    const userSession = useAppSelector(state=>state.userSlice)
     const [destination, setDestination] = useState('مقصد')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
@@ -82,11 +84,15 @@ const VillaHomePage = () => {
         setCurrentPage(value)
     }
     const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
-        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`)
+        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`,{
+            headers : {
+                Authorization : `Bearer ${userSession.value.token}`
+            }
+        })
         return res.data
     }
     const {data: villaData, isLoading, isError} = useQuery({
-        queryKey: ['VillaData', currentPage],
+        queryKey: ['VillaData',currentPage],
         queryFn: () => fetchVilla(currentPage)
     })
 
@@ -168,7 +174,7 @@ const VillaHomePage = () => {
                                         <SelectDropDown main isCounter
                                                         label={(passengers > 0 ? `${passengers} مسافر` : 'تعداد مسافران')}
                                                         dropDownStyles={'absolute bg-[#FFF] top-10 md:w-[300px] inset-x-0  rounded-md text-[#000] mx-auto shadow-md px-4 py-2'}>
-                                            <div className='flex items-center justify-between'>
+                                            <div className='flex flex-col sm:flex-row gap-y-2 items-center justify-between'>
                                                 <div className='flex items-center'>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="27" height="23"
                                                          viewBox="0 0 27 23" fill="none">

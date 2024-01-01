@@ -10,6 +10,8 @@ import Timer from "@/app/components/modals/Timer";
 import Axios from 'axios'
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {logIn} from "@/app/redux/slices/user-slice";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 
 type Inputs = {

@@ -29,6 +29,7 @@ type Villa = {
         averageRating: number,
         totalComments: number
     }
+    is_favorite : boolean
 }
 type PaginateVilla = {
     data : Villa[],

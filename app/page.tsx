@@ -166,7 +166,7 @@ export default function Home() {
 
                 <div className='px-[72px]'>
                     {/*قسمت دسته بندی (عکس های طبیعت)*/}
-                    <div className='flex py-[150px] mx-auto justify-center items-center gap-x-[47px]'>
+                    <div className='flex py-[50px] sm:py-[100px] md:py-[150px] mx-auto justify-center items-center gap-x-[47px]'>
                         <div className='overflow-hidden rounded-[20px] relative group max-xl:hidden'>
                             <Image
                                 src={NaturePicture}
@@ -287,7 +287,7 @@ export default function Home() {
 
                     {/*قسمت پیشنهاد های ویلا*/}
                     <h1 className='sm:text-[26px] font-kalameh500 py-4'>سـفر بعـدی شما میتـونه ایـنجا باشه !</h1>
-                    <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-[214px]'>
+                    <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
                         {suggestVilla.map(item => {
                             return (
                                 <div className='flex items-center gap-6'>
@@ -304,7 +304,7 @@ export default function Home() {
                         })}
                     </div>
 
-                    <div className='grid md:grid-cols-2 sm:pr-12'>
+                    <div className='grid md:grid-cols-2 sm:pr-12 pt-[50px] sm:pt-[100px] md:pt-[214px]'>
                         <div>
                             <h1 className='pb-[51px] sm:text-[26px] font-kalameh700'>اطمینان از پرداخت</h1>
                             <p className='sm:text-[19.5px]'>

@@ -26,7 +26,7 @@ export default function RootLayout({
     return (
         <ReactQueryProvider>
             <html lang="fa">
-            <body className='font-body'>
+            <body className='font-body bg-white'>
             <ReduxProvider>
                 <ToastContainerApp/>
                 {children}
