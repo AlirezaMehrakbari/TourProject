@@ -24,16 +24,16 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
+        <html lang="fa">
+        <body className='font-body bg-white text-[#000]'>
         <ReactQueryProvider>
-            <html lang="fa">
-            <body className='font-body bg-white'>
             <ReduxProvider>
                 <ToastContainerApp/>
                 {children}
                 <RegisterModal/>
             </ReduxProvider>
-            </body>
-            </html>
         </ReactQueryProvider>
+        </body>
+        </html>
     )
 }

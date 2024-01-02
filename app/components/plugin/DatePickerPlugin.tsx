@@ -7,7 +7,7 @@ type DatePickerPluginProps = {
 const DatePickerPlugin: React.FC<DatePickerPluginProps> = ({entryDate, exitDate}) => {
     return (
         <div className='relative flex py-4 px-2' dir='rtl'>
-            <div className='flex flex-col border-2 rounded-tl-lg rounded-bl-lg bg-[#FFF] z-10 px-4 py-2'>
+            <div className='flex flex-col sm:border-2 rounded-tl-lg rounded-bl-lg bg-[#FFF] z-10 px-4 py-2'>
                 <div className='flex items-center'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15" fill="none">
                         <path
@@ -26,7 +26,7 @@ const DatePickerPlugin: React.FC<DatePickerPluginProps> = ({entryDate, exitDate}
                 </div>
                 <p>{entryDate}</p>
             </div>
-            <div className='absolute right-28 flex flex-col border-2 pr-3 pl-2 py-2 rounded-tl-lg rounded-bl-lg'>
+            <div className='absolute right-28 flex flex-col sm:border-2 pr-3 pl-2 py-2 rounded-tl-lg rounded-bl-lg'>
                 <div className='flex items-center '>
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15" fill="none">
                         <path
