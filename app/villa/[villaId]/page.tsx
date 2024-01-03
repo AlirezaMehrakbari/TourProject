@@ -19,7 +19,7 @@ const VillaDetailPage = ({params: {villaId}}: any) => {
 
     const {data, isLoading, isError} = useQuery({
         queryKey: ['villaDetails'],
-        queryFn: () => fetchVillaDetails()
+        queryFn: () => fetchVillaDetails(),
     })
     useEffect(() => {
         step.resetStep()

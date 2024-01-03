@@ -29,6 +29,7 @@ type Villa = {
         averageRating: number,
         totalComments: number
     }
+    is_favorite : boolean
 }
 type PaginateVilla = {
     data : Villa[],
@@ -70,6 +71,7 @@ type Comments = {
     parent_id: string,
     created_at: string,
     updated_at: string,
+    user : User
 }
 type User = {
     id: number,

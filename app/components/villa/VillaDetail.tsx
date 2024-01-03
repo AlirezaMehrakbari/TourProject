@@ -20,10 +20,12 @@ import formatCurrency from "@/app/utils/FormatCurrency";
 import {toast, ToastContainer} from "react-toastify";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {setVillaReserve} from "@/app/redux/slices/villaReserve-slice";
+import {tripTourApi} from "@/axios-instances";
 
 const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const step = useStep()
     const dispatch = useAppDispatch()
+    const userSession = useAppSelector(state => state.userSlice)
     const [firstMonth, setFirstMonth] = useState([
         new DateObject({calendar: persian}).setDay(5),
         new DateObject({calendar: persian}).setDay(12),
@@ -34,7 +36,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const [entryDate, setEntryDate] = useState('')
     const [exitDate, setExitDate] = useState('')
     const [passengers, setPassengers] = useState<number>(0)
-    const [isOpen, setIsOpen] = useState()
+    const [comment,setComment] = useState('')
 
     const pictures = [
         {id: 1, src: Picture1},
@@ -42,6 +44,25 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
         {id: 3, src: Picture3},
 
     ]
+
+    const handleAddComment = (e: any) => {
+        e.preventDefault()
+        tripTourApi.post(`comments/comment/${villaDetails.id}`,{
+            comment
+        },{
+          headers : {
+              Authorization : `Bearer ${userSession.value.token}`
+          }
+        }).then(res=>{
+            toast.success('دیدگاه شما ثبت شد.')
+        }).catch(error=>{
+            toast.error('مشکلی رخ داده!')
+        })
+        setComment('')
+
+
+    }
+
     const handleReserve = (e: any) => {
         e.preventDefault()
         if (entryDate === '' || exitDate === '') {
@@ -199,7 +220,8 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.capacity} نفر</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
-                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>سال ساخت</p>
+                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>نوع اقامتگاه</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.type}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>طبـقه</p>
@@ -213,7 +235,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerNight)}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
-                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر نفر</p>
+                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر نفر اضافه</p>
                                     <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerAdditionalPerson)}</p>
                                 </div>
                             </div>
@@ -284,7 +306,33 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                             </div>
                         </div>
                         <div className='pt-20'>
-                            <Comments comments={villaDetails.comments}/>
+                            <Comments comments={villaDetails.comments} disabled={!userSession.value.isLoggedIn}/>
+                            <form
+                                onSubmit={handleAddComment}
+                                className='flex items-center justify-between bg-[#F7F6F6] px-8 mt-[2px] rounded-[15px] h-[108px]'>
+                                    <textarea
+                                        className='resize-none bg-[#F7F6F6] mt-8 outline-0 text-justify px-8 w-[80%]'
+                                        placeholder='نـظرخــود را ثـبت کنیـد ... '
+                                        disabled={!userSession.value.isLoggedIn}
+                                        value={comment}
+                                        onChange={(e)=>setComment(e.target.value)}
+                                    />
+                                <button type='submit' disabled={!userSession.value.isLoggedIn}>
+                                    <svg className='' xmlns="http://www.w3.org/2000/svg" width="40" height="38"
+                                         viewBox="0 0 40 38" fill="none">
+                                        <path d="M13.5527 16.8524L19.3359 22.6084L38.6131 3.42188" stroke="black"
+                                              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path
+                                            d="M36.6858 18.7708V32.2013C36.6858 33.2191 36.2796 34.1951 35.5566 34.9147C34.8335 35.6344 33.8529 36.0386 32.8303 36.0386H5.84226C4.81973 36.0386 3.83908 35.6344 3.11605 34.9147C2.39301 34.1951 1.98682 33.2191 1.98682 32.2013V5.34023C1.98682 4.32252 2.39301 3.34648 3.11605 2.62685C3.83908 1.90722 4.81973 1.50293 5.84226 1.50293H27.0472"
+                                            stroke="black" strokeWidth="2" strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                            {!userSession.value.isLoggedIn &&
+                                <p className='text-[15px] font-kalameh500 py-2 pr-2'>برای ثبت نظرات خود باید حساب کاربری
+                                    داشته باشید .</p>
+                            }
                         </div>
                         {/*حالت موبایل انتخاب رزرو*/}
                         <div
@@ -525,9 +573,6 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                     </section>
                 </section>
             </div>
-            <ToastContainer
-                rtl
-            />
             <Footer/>
         </div>
     )

@@ -10,6 +10,8 @@ import Timer from "@/app/components/modals/Timer";
 import Axios from 'axios'
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {logIn} from "@/app/redux/slices/user-slice";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 
 type Inputs = {
@@ -189,7 +191,7 @@ const RegisterModal = () => {
                 <form onSubmit={handleSubmit(handleSecondStep)}
                       className='flex flex-col items-center py-12 w-[45%] mx-auto'>
                     <h2 className='text-[21.5px] font-kalameh500 pt-12'>تایید شماره موبایل</h2>
-                    <p className='text-[14px] pt-2 text-[#000]'>کد 5 رقمی ارسـال شده را وارد کنید</p>
+                    <p className='text-[14px] pt-2 text-[#000]'>کد 4 رقمی ارسـال شده را وارد کنید</p>
                     <div
                         className='flex items-center justify-between bg-[#EDECEC] py-3 px-4 rounded-[5px] mt-4 w-full'>
                         <button type='button' onClick={() => setStep(prev => prev - 1)}

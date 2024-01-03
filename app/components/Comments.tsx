@@ -1,3 +1,5 @@
+import {tripTourApi} from "@/axios-instances";
+
 type CommentsProps = {
     disabled?: boolean,
     reply?: boolean
@@ -28,7 +30,7 @@ const Comments: React.FC<CommentsProps> = ({
                     <h1 className='text-[20px] md:text-[39.8px] font-kalameh400'>دیــدگاه ها</h1>
                 </div>
             }
-            {comments.length > 1 &&
+            {comments.length >= 1 &&
                 <div
                     className={`relative bg-[#F7F6F6] p-4 ${comments.length > 12 ? 'h-[724px]' : 'h-full'} hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px]`}>
                     <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
@@ -59,7 +61,10 @@ const Comments: React.FC<CommentsProps> = ({
                                                     strokeLinecap="round" strokeLinejoin="round"/>
                                             </svg>
                                         </div>
-                                        <p className='bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>علی</p>
+                                        <p className='flex flex-col items-center bg-orange text-white font-kalameh400 text-[12px] py-2 px-6 rounded-[8px] absolute right-10'>
+                                            <span>{item.user.firstName}</span>
+                                            <span>{item.user.lastName}</span>
+                                        </p>
                                     </div>
                                     <div className='flex flex-row-reverse'>
                                         <p className='whitespace-pre py-[35px] pr-10'>{item.comment}</p>
@@ -93,31 +98,6 @@ const Comments: React.FC<CommentsProps> = ({
 
                     </div>
                 </div>
-            }
-
-            {!reply &&
-                <form
-                    className='flex items-center justify-between bg-[#F7F6F6] px-8 mt-8 rounded-[15px] h-[108px]'>
-                                    <textarea
-                                        className='bg-[#F7F6F6] mt-8 outline-0 text-justify px-8 w-[80%]'
-                                        placeholder='نـظرخــود را ثـبت کنیـد ... '
-                                        disabled={disabled}
-                                    />
-                    <button type='submit' disabled={disabled}>
-                        <svg className='' xmlns="http://www.w3.org/2000/svg" width="40" height="38"
-                             viewBox="0 0 40 38" fill="none">
-                            <path d="M13.5527 16.8524L19.3359 22.6084L38.6131 3.42188" stroke="black"
-                                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path
-                                d="M36.6858 18.7708V32.2013C36.6858 33.2191 36.2796 34.1951 35.5566 34.9147C34.8335 35.6344 33.8529 36.0386 32.8303 36.0386H5.84226C4.81973 36.0386 3.83908 35.6344 3.11605 34.9147C2.39301 34.1951 1.98682 33.2191 1.98682 32.2013V5.34023C1.98682 4.32252 2.39301 3.34648 3.11605 2.62685C3.83908 1.90722 4.81973 1.50293 5.84226 1.50293H27.0472"
-                                stroke="black" strokeWidth="2" strokeLinecap="round"
-                                strokeLinejoin="round"/>
-                        </svg>
-                    </button>
-                </form>
-            }
-            {disabled && !reply &&
-                <p className='text-[15px] font-kalameh500 py-2'>برای ثبت نظرات خود باید حساب کاربری داشته باشید .</p>
             }
         </div>
     )

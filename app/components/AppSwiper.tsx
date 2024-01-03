@@ -10,6 +10,7 @@ import 'swiper/css/bundle'
 import 'swiper/css/autoplay'
 import Image, {StaticImageData} from "next/image";
 import Arrow from '@/public/icons/Arrow.svg'
+import {useQuery} from "@tanstack/react-query";
 
 
 export function SlideNextButton() {
@@ -24,17 +25,13 @@ export function SlideNextButton() {
     );
 }
 
-type AppSwiper = {
-    id: number,
-    title: string,
-    src: StaticImageData
-}
+
 type AppSwiperProps = {
-    data: AppSwiper[]
+    data: any[]
 }
 
 const AppSwiper: React.FC<AppSwiperProps> = ({data}) => {
-    // const swiper = useSwiper()
+    const swiper = useSwiper()
     return (
         <Swiper
             slidesPerView={1}
