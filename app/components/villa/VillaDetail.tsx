@@ -220,7 +220,8 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.capacity} نفر</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
-                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>سال ساخت</p>
+                                    <p className='text-[12px] font-kalameh400 py-[12px] px-4'>نوع اقامتگاه</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.type}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>طبـقه</p>
