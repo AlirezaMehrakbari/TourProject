@@ -24,7 +24,7 @@ const Map: React.FC<MapProps> = ({position, popup}) => {
         iconSize: [38, 38]
     })
     return (
-        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={12}
+        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={10}
                       zoomControl={false}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

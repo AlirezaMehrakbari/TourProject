@@ -21,9 +21,11 @@ import {toast, ToastContainer} from "react-toastify";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {setVillaReserve} from "@/app/redux/slices/villaReserve-slice";
 import {tripTourApi} from "@/axios-instances";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const step = useStep()
+    const registerModal = useRegisterModal()
     const dispatch = useAppDispatch()
     const userSession = useAppSelector(state => state.userSlice)
     const [firstMonth, setFirstMonth] = useState([
@@ -330,7 +332,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 </button>
                             </form>
                             {!userSession.value.isLoggedIn &&
-                                <p className='text-[15px] font-kalameh500 py-2 pr-2'>برای ثبت نظرات خود باید حساب کاربری
+                                <p className='text-[15px] font-kalameh500 py-2 pr-2 cursor-pointer' onClick={registerModal.onOpen}>برای ثبت نظرات خود باید حساب کاربری
                                     داشته باشید .</p>
                             }
                         </div>
