@@ -7,15 +7,40 @@ import {right} from "@popperjs/core";
 import Button from "@/app/components/Button";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import {Calendar} from "react-multi-date-picker";
+import DatePicker, {Calendar} from "react-multi-date-picker";
 import useStep from "@/app/hooks/useStep";
 import DateObject from "react-date-object";
+import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+
+
 const SuperAdmin = () => {
-    const step = useStep()
-    const [firstMonth, setFirstMonth] = useState([
-        new DateObject({calendar: persian}).setDay(5),
-        new DateObject({calendar: persian}).setDay(12),
+    const [values, setotherValues] = useState([
+        new DateObject({ calendar: persian }).subtract(4, "days"),
+        new DateObject({ calendar: persian }).add(4, "days")
     ])
+
+    const [valuees, setValues] = useState([])
+
+
+
+    const entryDate = new DateObject({
+        //@ts-ignore
+        year: valuees[0]?.year,
+        //@ts-ignore
+        month: valuees[0]?.month,
+        //@ts-ignore
+        day: valuees[0]?.day,
+
+    }).format()
+    const exitDate = new DateObject({
+        //@ts-ignore
+        year: valuees[1]?.year,
+        //@ts-ignore
+        month: valuees[1]?.month,
+        //@ts-ignore
+        day: valuees[1]?.day,
+
+    }).format()
     const data = [
         {
             id: 1,
@@ -229,18 +254,29 @@ const SuperAdmin = () => {
                         </div>
 
                         <div className='w-full flex flex-col gap-x-4 gap-y-7 justify-center'>
-                            <div className='flex flex-wrap justify-between'>
+                            <div className='flex flex-col flex-wrap justify-between gap-y-2'>
                                <input  placeholder='تاریخ برگذاری تور را مشخص کنید' className='bg-[#E9E9E9] w-[540px] h-[41px] rounded-md px-1'/>
-                                {/*<div className='flex flex-col w-full'>*/}
-                                {/*    <Calendar*/}
-                                {/*        className='w-[555px]'*/}
-                                {/*        buttons={false}*/}
-                                {/*        value={firstMonth}*/}
-                                {/*        calendar={persian}*/}
-                                {/*        locale={persian_fa}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
-                                <Button  styles={'w-[30%] rounded-md bg-[#533FA1]'}>افزودن تاریخ جدید + </Button>
+                               <div className='w-[80%] bg-[#F2F2F2]'>
+                                   <Calendar
+                                       //@ts-ignore
+                                       plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
+                                       dateSeparator=' تا '
+                                       minDate={new DateObject()}
+                                       value={values}
+                                       //@ts-ignore
+                                       onChange={setValues}
+                                       range
+                                       fixMainPosition={true}
+                                       calendar={persian}
+                                       locale={persian_fa}
+                                       style={{
+                                           width : '100%',
+                                           backgroundColor : '#F2F2F2'
+                                       }}
+                                   />
+                                   <Button styles={'w-[30%] rounded-md'}>افزودن تاریخ جدید + </Button>
+                               </div>
+
                             </div>
                         </div>
                     </div>
