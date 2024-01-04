@@ -209,11 +209,11 @@ const SuperAdmin = () => {
 
                             <div className='flex flex-wrap justify-between px-12'>
                                <div className='flex rounded-full bg-[#E9E9E9]'>
-                                   <p className='bg-[#E6AE07] p-2 rounded-full'>شماره پرواز</p>
+                                   <p className='bg-[#E6AE07] p-2 rounded-full text-white'>شماره پرواز</p>
                                    <input className='rounded-l-full bg-[#E9E9E9] px-2' placeholder='.........'/>
                                </div>
                                 <div className='flex rounded-full bg-[#E9E9E9]'>
-                                    <p className='bg-[#E6AE07] p-2 rounded-full'>کلاس پرواز</p>
+                                    <p className='bg-[#E6AE07] p-2 rounded-full text-white'>کلاس پرواز</p>
                                     <select className='w-[170px] rounded-l-full bg-[#E9E9E9]' name="selectedFruit">
                                         <option value="apple">هواپیما</option>
                                         <option value="banana">قطار</option>
@@ -222,14 +222,6 @@ const SuperAdmin = () => {
                                 </div>
                             </div>
 
-                            <div className='flex flex-wrap justify-between px-12'>
-                                <p className='font-kalameh400 text-[24px]'>نام تور :</p>
-                                <div className='flex justify-between gap-x-7 '>
-                                    <div className="flex items-center mb-4 gap-x-2">
-                                        <input placeholder='-------' className='bg-[#E9E9E9] w-[427px] h-[41px] rounded-md px-1'/>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div className='flex flex-wrap justify-between px-12'>
                                 <p className='font-kalameh400 text-[24px]'>مبدا :</p>
@@ -255,8 +247,8 @@ const SuperAdmin = () => {
 
                         <div className='w-full flex flex-col gap-x-4 gap-y-7 justify-center'>
                             <div className='flex flex-col flex-wrap justify-between gap-y-2'>
-                               <input  placeholder='تاریخ برگذاری تور را مشخص کنید' className='bg-[#E9E9E9] w-[540px] h-[41px] rounded-md px-1'/>
-                               <div className='w-[80%] bg-[#F2F2F2]'>
+                               <input  placeholder='تاریخ برگذاری تور را مشخص کنید' className='bg-[#E9E9E9] w-[90%] h-[41px] rounded-md px-1'/>
+                               <div className='w-[90%] bg-[#F2F2F2]'>
                                    <Calendar
                                        //@ts-ignore
                                        plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
@@ -274,8 +266,11 @@ const SuperAdmin = () => {
                                            backgroundColor : '#F2F2F2'
                                        }}
                                    />
-                                   <Button styles={'w-[30%] rounded-md'}>افزودن تاریخ جدید + </Button>
+
+                                  <div className='w-[80%] flex justify-end'> <button className='w-[20%] rounded-md bg-[#533FA1] py-2 text-white '>ثبت تاریخ </button></div>
+
                                </div>
+                                <button className='w-[30%] rounded-md bg-[#533FA1] py-2 text-white '>افزودن تاریخ جدید +</button>
 
                             </div>
                         </div>
