@@ -5,6 +5,7 @@ import {usePathname} from "next/navigation";
 import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
 import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 import Button from "@/app/components/Button";
+import Inputs from "@/app/components/superAdmin/inputs";
 
 const ResidencePanel = () => {
     const pathName = usePathname()
@@ -75,13 +76,14 @@ const ResidencePanel = () => {
 
     ];
     return (
-        <div>
+        <div className='flex flex-col gap-y-24'>
             <SuperAdminNavbar/>
             <div className='w-full justify-start py-8 flex gap-x-[7%]'>
                 <SuperAdminSidebar/>
                 <div className='w-full flex flex-col items-center gap-y-2 '>
-                    <div className='w-[90%] flex lg:justify-end justify-center mx-auto '>
-                        <Button outline styles={'w-[10%] rounded-md bg-[#533FA1] text-[#242A50] border-[#000000] '}>فیلتر </Button>
+                    <div className='w-[90%] flex justify-between  '>
+                        <Inputs className4='hidden'/>
+                        <button className='w-[10%] rounded-md bg-[#533FA1] py-2 text-white '>فیلتر</button>
                     </div>
                     <table className='w-[90%] mx-auto text-center '>
                         <thead>

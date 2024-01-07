@@ -1,0 +1,22 @@
+
+.rmdp-wrapper.ann{
+    width: 500px;
+    background-color: #F2F2F2;
+    box-shadow: none;
+}
+.rmdp-calendar{
+    background-color: #F2F2F2;
+    width: 500px;
+}
+.rmdp-day-picker{
+    display: flex !important;
+    width: 500px !important;
+    justify-content: center !important;
+}
+
+.rmdp-week {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 400px !important;
+    height: 60px !important;
+}

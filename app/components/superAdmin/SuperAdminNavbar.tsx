@@ -15,16 +15,16 @@ const SuperAdminNavbar = ({
                               titeleb = 'آپارتمان',
                               titelec = 'ساحلی',
                               titeled = 'هتل',
-                              villaPath = '/superAdmin/ResidencePanel',
-                              apartmentsPath = '/superAdmin/ResidencePanel/apartment',
-                              saheliPath = '/superAdmin/ResidencePanel/coastal',
-                              hotelPath = '/superAdmin/ResidencePanel/hotel'
+                              villaPath = '/superadmin/residencepanel',
+                              apartmentsPath = '/superadmin/residencepanel/apartment',
+                              saheliPath = '/superadmin/residencepanel/coastal',
+                              hotelPath = '/superadmin/residencepanel/hotel'
                           }) => {
     const [isOpen, setIsOpen] = useState(false)
     const pathName = usePathname()
     return (
         <div
-            className='relative flex items-center justify-between max-sm:px-8 sm:justify-around bg-[#F5F3F3] shadow-md py-4'>
+            className='relative flex items-center justify-between max-sm:px-8 sm:justify-start pr-14 gap-x-[400px] px-3 bg-[#F5F3F3] shadow-md py-4'>
             <Logo width={'w-[150px] h-[70px] md:w-[190px] md:h-[100px]'}/>
             <ul className='sm:flex items-center gap-x-[30px] md:gap-x-[40px] lg:gap-x-[60px] hidden'>
                 {/*بالا تر ازsm*/}
