@@ -47,6 +47,20 @@ const AdminNavbar = () => {
                         }
                 </Link>
                 <Link
+                    className={`${pathName === '/admin/residenceregistration' ? 'text-orange font-kalameh700' : 'text-[#000000]'} flex flex-col items-center md:text-[24px] font-kalameh500`}
+                    href={'/admin/residenceregistration'}>
+                    <li>ثبت اقامتگاه</li>
+                    {pathName === '/admin/residenceregistration' &&
+                        <svg className='absolute bottom-[-1.5rem]' xmlns="http://www.w3.org/2000/svg" width="54"
+                             height="29"
+                             viewBox="0 0 54 29" fill="none">
+                            <path
+                                d="M30.1707 27.2277C28.3273 28.7396 25.6727 28.7396 23.8293 27.2277L2.30335 9.57335C-1.32765 6.5954 0.778084 0.707279 5.47408 0.707279L48.5259 0.707279C53.2219 0.707279 55.3277 6.5954 51.6966 9.57335L30.1707 27.2277Z"
+                                fill="#F5F3F3"/>
+                        </svg>
+                    }
+                </Link>
+                <Link
                     className={`${pathName === '/admin/financialReport' ? 'text-orange font-kalameh700' : 'text-[#000000]'} flex flex-col items-center md:text-[24px] font-kalameh500`}
                     href={'/admin/financialReport'}>
                         <li>گزارش مالی</li>

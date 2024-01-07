@@ -5,10 +5,11 @@ import {useEffect, useState} from "react";
 
 type MapProps = {
     position: LatLngTuple,
-    popup: string
+    popup: string,
+    input ?: boolean
 }
 
-const Map: React.FC<MapProps> = ({position, popup}) => {
+const Map: React.FC<MapProps> = ({position, popup,input}) => {
     const [userLocation, setUserLocation] = useState<LatLngExpression>()
     const LocationFinderDummy = () => {
         const map = useMapEvents({
@@ -24,17 +25,19 @@ const Map: React.FC<MapProps> = ({position, popup}) => {
         iconSize: [38, 38]
     })
     return (
-        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={10}
+        <MapContainer className='h-[200px] lg:h-[400px] w-full rounded-[20px]' center={position} zoom={12}
                       zoomControl={false}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={position} icon={customIcon}>
-                <Popup>
-                    {popup}
-                </Popup>
-            </Marker>
-            {userLocation &&
+            {!input &&
+                <Marker position={position} icon={customIcon}>
+                    <Popup>
+                        {popup}
+                    </Popup>
+                </Marker>
+            }
+            {userLocation && input &&
                 <Marker position={userLocation} icon={customIcon}>
                     <Popup>
                        new
