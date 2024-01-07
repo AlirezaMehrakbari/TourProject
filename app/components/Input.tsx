@@ -10,11 +10,12 @@ type InputProps = {
     formatPrice? : boolean,
     required? : boolean,
     register : UseFormRegister<FieldValues>,
-    errors : FieldErrors
+    errors : FieldErrors,
+    defaultValue ?: string
 }
 
 const Input : React.FC<InputProps> = ({
-                                          id,label,type = 'text',disabled,formatPrice,required,register,errors
+                                          id,label,type = 'text',disabled,formatPrice,required,register,errors,defaultValue
                                       }) => {
     return (
         <div className="w-full relative">
@@ -24,11 +25,12 @@ const Input : React.FC<InputProps> = ({
                 {...register(id, { required })}
                 placeholder=" "
                 type={type}
+                defaultValue={defaultValue}
                 className={`
           peer
           w-full
           px-4
-          py-3 
+          py-4 
           bg-[#F0F0F0] 
           rounded-xl
           outline-none
@@ -42,7 +44,7 @@ const Input : React.FC<InputProps> = ({
             <label
                 className={`
           absolute 
-          text-md
+          text-[15px]
           duration-150 
           transform 
           -translate-y-3 

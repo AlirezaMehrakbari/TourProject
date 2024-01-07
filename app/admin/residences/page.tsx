@@ -11,7 +11,7 @@ const ResidencesPage = () => {
     const fetchUserPlaces = async (): Promise<Villa[]> => {
         const res = await tripTourApi.get('users/getUserPlaces', {
             headers: {
-                Authorization: `Bearer 164|aS3cb4A7TCPR6elLOXgI7g4daHq4foQCg07UB8gt00b95389`
+                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
             }
         })
         return res.data['user places']
@@ -19,7 +19,7 @@ const ResidencesPage = () => {
     const deleteVilla = async (id: number) => {
         const res = await tripTourApi.delete(`places/delete/${id}`, {
             headers: {
-                Authorization: `Bearer 164|aS3cb4A7TCPR6elLOXgI7g4daHq4foQCg07UB8gt00b95389`
+                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
             }
         })
         return res.data
@@ -119,7 +119,9 @@ const ResidencesPage = () => {
                                 </div>
                             </td>
                             <td>
-                                <div className='flex justify-center items-center cursor-pointer group'>
+                                <div
+                                    onClick={()=>router.push(`/villa/${villa.id}`)}
+                                    className='flex justify-center items-center cursor-pointer group'>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                                         fill="none">

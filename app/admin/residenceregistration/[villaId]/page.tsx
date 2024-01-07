@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
@@ -7,43 +7,129 @@ import Map from "@/app/components/Map";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import {useForm} from "react-hook-form";
+import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
+import Image from "next/image";
+import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
-const ResidenceEditPage = ({params : {villaId}} : any) => {
+type FacilityType = {
+    id: number,
+    type: string,
+    facility: string
+}
+const ResidenceEditPage = ({params: {villaId}}: any) => {
+    const router = useRouter()
+    const [uploadImages, setUploadImages] = useState([])
+    const [facilities, setFacilities] = useState<FacilityType[]>([])
+    const [selectedLocation, setSelectedLocation] = useState<number[]>()
+    const {register, handleSubmit, formState: {errors}} = useForm()
 
-    const {register,handleSubmit,formState : {errors}} = useForm()
-    const fetchVillaDetail = async (): Promise<VillaDetails> => {
-        const res = await tripTourApi.get(`places/show/${villaId}`,{
-            headers : {
-                Authorization : `Bearer 164|aS3cb4A7TCPR6elLOXgI7g4daHq4foQCg07UB8gt00b95389`
-            }
-        })
-        return res.data.place[0]
+    const handleSetLocation = (data: number[]) => {
+        setSelectedLocation(data)
     }
 
+    const handleAddVilla: SubmitHandler<FieldValues> = (data) => {
+        console.log(data)
+        console.log(facilities.map(item => item.id))
+        console.log(selectedLocation)
+        if (data.type === 'نوع اقامتگاه' || data.suitableFor === 'مناسب برای') {
+            toast.error('لطفا مقادیر نوع اقامتگاه و مناسب واجدین را انتخاب نمایید.')
+            return
+        }
+        tripTourApi.post(`places/completeStore/${villaId}`, {
+            address: {
+                state: data.state,
+                city: data.city,
+                region: data.region,
+                street: data.street,
+                alley: data.alley,
+                plaque: data.plaque,
+                lng: selectedLocation ? selectedLocation[0] : villaDetail?.address.lng,
+                lat: selectedLocation ? selectedLocation[1] : villaDetail?.address.lat
+            },
+            meter: data.meter,
+            suitableFor: data.suitableFor,
+            numberOfRooms: data.numberOfRooms,
+            capacity: data.capacity,
+            type: data.type,
+            layer: data.layer,
+            pricePerNight: data.pricePerNight,
+            pricePerAdditionalPerson: data.pricePerAdditionalPerson,
+            rules: data.rules,
+            facilities: facilities.map(item => item.id)
+        }, {
+            headers: {
+                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
+            }
+        }).then(res => {
+            toast.success('ویلا شما با موفقیت ثبت شد.')
+            setTimeout(() => {
+                router.push('/admin/residences')
+            }, 2000)
+        }).catch(error => {
+            toast.error('مشکلی رخ داده است.')
+        })
+    }
+    const fetchAllFacilities = async (): Promise<Facilities[]> => {
+        const res = await tripTourApi.get('facilities/all')
+        return res.data.data
+    }
+
+    const fetchVillaDetail = async (): Promise<VillaDetails> => {
+        const res = await tripTourApi.get(`places/show/${villaId}`)
+        return res.data.place[0]
+    }
     const {data, isLoading} = useQuery({
+        queryKey: ['facilities'],
+        queryFn: fetchAllFacilities
+    })
+
+    const {data: villaDetail} = useQuery({
         queryKey: ['villaDetail'],
         queryFn: fetchVillaDetail
     })
-    const {data : facilities} = useQuery({
-        queryKey : ['facilities'],
-        queryFn : async () : Promise<Facilities[]>=>{
-           const res = await tripTourApi.get('facilities/all')
-            return res.data.data
+    useEffect(() => {
+        let prevFacility = villaDetail?.facilities.map(item => item)
+        if (prevFacility) {
+            setFacilities(prevFacility)
         }
-    })
+    }, [villaDetail]);
+
+    const handleAddFacility = (facilityId: number, facilityType: string, facilityName: string) => {
+        let existingItem = facilities.find(item => item.id === facilityId)
+        if (!existingItem) {
+            setFacilities(prev => [...prev, {id: facilityId, facility: facilityName, type: facilityType}])
+        } else {
+            const newFacilitiesList = facilities.filter(item => item.id !== facilityId)
+            setFacilities(newFacilitiesList)
+        }
+    }
 
     if (isLoading) return <Loading/>
     if (!data) return <p>Something went wrong!</p>
-    if (!facilities) return <p>Something went wrong!</p>
+    if (!villaDetail) return null
     return (
-        <form className='w-[95%] lg:w-[80%] xl:w-[60%] mx-auto'>
-            <h1 className='pt-[10rem] text-[32px] font-kalameh500'>ویلا - {data.address.state} / {data.address.city}</h1>
+        <form className='w-[95%] lg:w-[80%] xl:w-[65%] mx-auto' onSubmit={handleSubmit(handleAddVilla)}>
+            <h1 className='pt-[10rem] text-[32px] font-kalameh500'>ویلا - گیلان / آستارا</h1>
             <div className='flex flex-col items-center justify-center pt-8'>
+                <div className='grid grid-cols-2 gap-4 justify-items-center pb-4'>
+                    {uploadImages && uploadImages.map(item => {
+                        return (
+                            <div
+                                className='first:col-span-2 relative first:w-[800px] w-[390px] h-[200px] rounded-[15px] shadow-md'>
+                                {//@ts-ignore
+                                    <Image src={item.address} alt={'test'}
+                                           className='object-cover object-center rounded-[15px]' fill={true}/>}
+                            </div>
+                        )
+                    })}
+                </div>
                 <label
                     className='flex flex-col w-[60%] bg-[#F0F0F0] rounded-2xl items-center cursor-pointer'>
                     <p className='font-kalameh400 text-[126px] text-white'>+</p>
-                    <input type='file' className='hidden'/>
+                    <input type='file' className='hidden'
+                        //@ts-ignore
+                           onChange={(e) => setUploadImages(prev => [...prev, {address: URL.createObjectURL(e.target.files[0])}])}/>
                 </label>
                 <p className='text-[18px]'>حتما باید <span className='font-kalameh500'>چهار تصویر</span> از اقامتگاه خود
                     بارگذاری کنید</p>
@@ -69,13 +155,14 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                             <div
                                 className='absolute top-3 right-[-2px] border-t-[12px] border-t-transparent border-r-[20px] border-r-[#FAFAFA] border-b-transparent border-b-[12px] rounded-tl-full'></div>
                         </div>
-                        {data.facilities.filter(item => {
+                        {facilities.filter(item => {
                             return item.type === 'رفاهی'
                         }).map(item => {
                             return (
                                 <div className='flex items-center gap-x-2 pt-8'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18"
-                                         fill="none">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18"
+                                        fill="none">
                                         <path d="M1 4.19922H2.6H15.4" stroke="black" strokeWidth="0.8"
                                               strokeLinecap="round" strokeLinejoin="round"/>
                                         <path
@@ -110,13 +197,14 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                                         <p className='text-[24px] font-kalameh500 pb-4'>امکانات رفاهی</p>
                                     </div>
                                     <div className='grid grid-cols-2 justify-items-start pt-4 gap-y-2'>
-                                        {facilities.filter(item => {
+                                        {data.filter(item => {
                                             return item.type === 'رفاهی'
                                         }).map(item => {
                                             return (
                                                 <div className='flex items-center gap-x-2'>
                                                     <span
-                                                        className={`inline-block w-[12px] h-[12px] border-[1px] ${data.facilities.find(facility=>facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#EFEFEF]'}`}></span>
+                                                        onClick={() => handleAddFacility(item.id, item.type, item.facility)}
+                                                        className={`cursor-pointer inline-block w-[12px] h-[12px] border-[1px] ${facilities.find(facility => facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#FFF]'}`}></span>
                                                     {item.facility}
                                                 </div>
                                             )
@@ -134,7 +222,7 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                             <div
                                 className='absolute top-3 right-[-2px] border-t-[12px] border-t-transparent border-r-[20px] border-r-[#FAFAFA] border-b-transparent border-b-[12px] rounded-tl-full'></div>
                         </div>
-                        {data.facilities.filter(item => {
+                        {facilities.filter(item => {
                             return item.type === 'بهداشتی'
                         }).map(item => {
                             return (
@@ -175,13 +263,14 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                                         <p className='text-[24px] font-kalameh500 pb-4'>امکانات بهداشتی</p>
                                     </div>
                                     <div className='grid grid-cols-2 justify-items-start pt-4 gap-y-2'>
-                                        {facilities.filter(item => {
+                                        {data.filter(item => {
                                             return item.type === 'بهداشتی'
                                         }).map(item => {
                                             return (
                                                 <div className='flex items-center gap-x-2'>
                                                     <span
-                                                        className={`inline-block w-[12px] h-[12px] border-[1px] ${data.facilities.find(facility=>facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#EFEFEF]'}`}></span>
+                                                        onClick={() => handleAddFacility(item.id, item.type, item.facility)}
+                                                        className={`cursor-pointer inline-block w-[12px] h-[12px] border-[1px] ${facilities.find(facility => facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#FFF]'}`}></span>
                                                     {item.facility}
                                                 </div>
                                             )
@@ -199,7 +288,7 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                             <div
                                 className='absolute top-3 right-[-2px] border-t-[12px] border-t-transparent border-r-[20px] border-r-[#FAFAFA] border-b-transparent border-b-[12px] rounded-tl-full'></div>
                         </div>
-                        {data.facilities.filter(item => {
+                        {facilities.filter(item => {
                             return item.type === 'آشپزی'
                         }).map(item => {
                             return (
@@ -240,13 +329,14 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                                         <p className='text-[24px] font-kalameh500 pb-4'>امکانات آشپزخانه</p>
                                     </div>
                                     <div className='grid grid-cols-2 justify-items-start pt-4 gap-y-2'>
-                                        {facilities.filter(item => {
+                                        {data.filter(item => {
                                             return item.type === 'آشپزی'
                                         }).map(item => {
                                             return (
                                                 <div className='flex items-center gap-x-2'>
                                                     <span
-                                                        className={`inline-block w-[12px] h-[12px] border-[1px] ${data.facilities.find(facility=>facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#EFEFEF]'}`}></span>
+                                                        onClick={() => handleAddFacility(item.id, item.type, item.facility)}
+                                                        className={`cursor-pointer inline-block w-[12px] h-[12px] border-[1px] ${facilities.find(facility => facility.id === item.id) ? 'bg-[#47BE3C]' : 'bg-[#FFF]'}`}></span>
                                                     {item.facility}
                                                 </div>
                                             )
@@ -264,44 +354,57 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
 
             <div className='w-full py-8 flex flex-col md:flex-row justify-between items-center gap-2'>
                 <div className='w-full sm:w-[60%]'>
-                    <Map position={[35.7185937, 51.4457186]} popup={'ss'} input/>
+                    <Map position={[+villaDetail.address.lng, +villaDetail.address.lat]} popup={'لوکیشن شما'} input
+                         selectedLocation={handleSetLocation}/>
                 </div>
                 <div className='lg:w-[35%] grid md:grid-cols-2 lg:grid-cols-1 max-md:grid-cols-2 gap-4'>
                     <Input
-                       id={'state'}
-                       label={'استان اقامتگاه'}
-                       register={register}
-                       errors={errors}
+                        id={'state'}
+                        label={'استان اقامتگاه'}
+                        register={register}
+                        errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address.state}
                     />
                     <Input
-                        id={'state'}
+                        id={'city'}
                         label={'شهر اقامتگاه'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address.city}
                     />
                     <Input
-                        id={'state'}
+                        id={'region'}
                         label={'محله/منطقه'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address?.region}
                     />
                     <Input
-                        id={'state'}
+                        id={'street'}
                         label={'خیابان'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address.street}
                     />
                     <Input
-                        id={'state'}
+                        id={'alley'}
                         label={'کوچه'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address.alley}
                     />
                     <Input
-                        id={'state'}
+                        id={'plaque'}
                         label={'پلاک'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.address?.plaque}
                     />
                 </div>
             </div>
@@ -312,76 +415,101 @@ const ResidenceEditPage = ({params : {villaId}} : any) => {
                 <div
                     className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                     <Input
-                        id={'state'}
+                        id={'meter'}
                         label={'متراژ'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        type={'number'}
+                        defaultValue={villaDetail.meter}
                     />
+                    <select
+                        className={`w-full px-4 py-2.5 rounded-xl text-[#A0A0A0] bg-[#F0F0F0] outline-none`}
+                        {...register('suitableFor', {required: true})}>
+                        <option disabled selected hidden>مناسب برای</option>
+                        <option>خانواده</option>
+                        <option>برای مجرد</option>
+                    </select>
+                    {errors.suitableFor && <p className='text-rose-500'>فیلد الزامیست</p>}
                     <Input
-                        id={'state'}
-                        label={'مناسب برای'}
-                        register={register}
-                        errors={errors}
-                    />
-                    <Input
-                        id={'state'}
+                        id={'numberOfRooms'}
                         label={'تعداد اتاق'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        type={'number'}
+                        defaultValue={villaDetail.numberOfRooms}
                     />
                 </div>
                 <div
                     className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                     <Input
-                        id={'state'}
+                        id={'capacity'}
                         label={'ظرفیت'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        type={'number'}
+                        defaultValue={villaDetail.capacity}
                     />
+                    <select
+                        {...register('type', {required: true})}
+                        className='w-full px-4 py-2.5 rounded-xl text-[#A0A0A0] bg-[#F0F0F0] outline-none'>
+                        <option disabled selected hidden>نوع اقامتگاه</option>
+                        <option>ویلا</option>
+                        <option>هتل</option>
+                        <option>ساحلی</option>
+                    </select>
+                    {errors.type && <p className='text-rose-500'>فیلد الزامیست</p>}
                     <Input
-                        id={'state'}
-                        label={'نوع اقامتگاه'}
-                        register={register}
-                        errors={errors}
-                    />
-                    <Input
-                        id={'state'}
+                        id={'layer'}
                         label={'طبقه'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        defaultValue={villaDetail.layer}
                     />
                 </div>
                 <div
                     className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                     <Input
-                        id={'state'}
+                        id={'pricePerNight'}
                         label={'قیمت برای هرنفر'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        type={'number'}
+                        defaultValue={villaDetail.pricePerNight}
                     />
                     <Input
-                        id={'state'}
+                        id={'pricePerAdditionalPerson'}
                         label={'افزایش قیمت به ازای هرنفر'}
                         register={register}
                         errors={errors}
+                        required={true}
+                        type={'number'}
+                        defaultValue={villaDetail.pricePerAdditionalPerson}
                     />
                 </div>
             </div>
 
 
             <div className='pt-20'>
-                <h2 className='text-[30px] font-kalameh400'> <span className='font-kalameh700'>قوانین اقامتـگاه</span> شما</h2>
+                <h2 className='text-[30px] font-kalameh400'><span
+                    className='font-kalameh700'>قوانین اقامتـگاه</span> شما</h2>
                 <div>
                     <p className='text-[22px] pt-4'>
                         در این قسمت میتوانید قوانین مربوط به اقامتگاه خود رابرای مهمانان ذکر کنید .
                     </p>
                     <textarea
+                        {...register('rules')}
+                        defaultValue={villaDetail.rules}
                         className='bg-[#EAEAEA] rounded-[14px] w-full outline-none mt-2 lg:h-[150px] p-4'
                     />
                 </div>
             </div>
 
-            <Button styles='mx-auto px-8 rounded-[10px] my-4'>
+            <Button type='submit' styles='mx-auto px-8 rounded-[10px] my-4'>
                 ثبت اطلاعات
             </Button>
 
