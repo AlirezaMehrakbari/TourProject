@@ -93,8 +93,9 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                             <div className='relative lg:w-[80%]'>
                                 <Image
                                     className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointe h-full'
-                                    src={Picture}
+                                    src={villaDetails.medias[0]}
                                     alt={'Villa Picture'}
+                                    fill={true}
                                 />
                                 <svg className='absolute left-[24px] top-[24px] group-hover:cursor-pointer'
                                      xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21"

@@ -20,14 +20,14 @@ const VillaList: React.FC<VillaListProps> = ({data}) => {
                     <VillaItem
                         key={item.id}
                         id={item.id}
-                        image={image}
-                        title={item.title}
-                        Satisfaction={Math.round(item.rating_comment.averageRating)}
-                        opinion={item.rating_comment.totalComments}
-                        province={item.address.state}
-                        city={item.address.city}
-                        price={item.pricePerNight}
-                        initialFavorite={item.is_favorite}
+                        image={item?.medias[0]}
+                        title={item?.title}
+                        Satisfaction={Math.round(item.rating_comment?.averageRating)}
+                        opinion={item.rating_comment?.totalComments}
+                        province={item.address?.state}
+                        city={item.address?.city}
+                        price={item?.pricePerNight}
+                        initialFavorite={item?.is_favorite}
                     />
                 )
             })}

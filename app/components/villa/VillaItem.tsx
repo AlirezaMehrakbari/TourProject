@@ -9,7 +9,7 @@ import formatCurrency from "@/app/utils/FormatCurrency";
 
 export type VillaItemProps = {
     id: number
-    image: StaticImageData,
+    image: string,
     title: string,
     Satisfaction: number,
     opinion: number,
@@ -41,7 +41,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
         }).then(res => {
             if (res.data.message === 'insert to favorites') {
                 toast.success('به لیست علاقه مندی افزوده شد.')
-            }else{
+            } else {
                 toast.warning('از لیست علاقه مندی حذف شد.')
             }
         }).catch(error => {
@@ -52,11 +52,14 @@ const VillaItem: React.FC<VillaItemProps> = ({
         <div className="flex flex-col hover:text-[#000] group">
             <div className='relative'>
                 <Link href={`/villa/${id}`}>
-                    <Image
-                        className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer h-[250px]'
-                        src={image}
-                        alt={title}
-                    />
+                    <div className='h-[250px]'>
+                        <Image
+                            className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer h-[250px] '
+                            src={image}
+                            alt={title}
+                            fill={true}
+                        />
+                    </div>
                 </Link>
 
                 {userSession.value.isLoggedIn ?
