@@ -233,7 +233,6 @@ export default async function Home() {
                     <div className='pb-20'>
                         <div className='flex justify-between pb-4'>
                             <h1 className='font-kalameh500 text-[12px] sm:text-[26px]'>محبوب ترین مقصد ها</h1>
-                            <p className='text-[#4E69CA] text-[12px] sm:text-[22px] '>مشاهده همه</p>
                         </div>
                         <AppSwiper data={swiperData}/>
                     </div>

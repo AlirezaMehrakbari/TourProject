@@ -173,7 +173,7 @@ const RegisterModal = () => {
                             {...register('phoneNumber', {required: true})}
                             disabled={isLoading}
                         />
-                        <p className='border-r-[1px] px-4 text-[18px]'>98</p>
+                        <p className='border-r-[1px] border-black px-4 text-[18px]'>98</p>
                     </div>
                     {errors.phoneNumber?.type === "required" && (
                         <p role="alert" className='text-[#f44336] w-full mt-2'>شماره تلفن خود را وارد کنید</p>

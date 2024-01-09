@@ -8,12 +8,18 @@ import VillaDetail from "@/app/components/villa/VillaDetail";
 import {tripTourApi} from "@/axios-instances";
 import {useQuery} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
+import {useAppSelector} from "@/app/redux/store";
 
 
 const VillaDetailPage = ({params: {villaId}}: any) => {
     const step = useStep()
+    const userSession = useAppSelector(state=>state.userSlice)
     const fetchVillaDetails = async (): Promise<VillaDetails> => {
-        const res = await tripTourApi.get(`places/show/${villaId}`)
+        const res = await tripTourApi.get(`places/show/${villaId}`,{
+            headers :{
+                Authorization :`Bearer ${userSession.value.token}`
+            }
+        })
         return res.data.place[0]
     }
 

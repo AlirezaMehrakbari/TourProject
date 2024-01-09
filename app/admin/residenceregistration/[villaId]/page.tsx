@@ -59,7 +59,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
             facilities: facilities.map(item => item.id)
         }, {
             headers: {
-                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
+                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
             }
         }).then(res => {
             toast.success('ویلا شما با موفقیت ثبت شد.')
@@ -354,7 +354,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
 
             <div className='w-full py-8 flex flex-col md:flex-row justify-between items-center gap-2'>
                 <div className='w-full sm:w-[60%]'>
-                    <Map position={[+villaDetail.address.lng, +villaDetail.address.lat]} popup={'لوکیشن شما'} input
+                    <Map position={villaDetail.address ? [+villaDetail.address?.lng, +villaDetail.address?.lat] : [35.6720367,51.40755,11]} popup={'لوکیشن شما'} input
                          selectedLocation={handleSetLocation}/>
                 </div>
                 <div className='lg:w-[35%] grid md:grid-cols-2 lg:grid-cols-1 max-md:grid-cols-2 gap-4'>
@@ -364,7 +364,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         register={register}
                         errors={errors}
                         required={true}
-                        defaultValue={villaDetail.address.state}
+                        defaultValue={villaDetail.address?.state}
                     />
                     <Input
                         id={'city'}
@@ -372,7 +372,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         register={register}
                         errors={errors}
                         required={true}
-                        defaultValue={villaDetail.address.city}
+                        defaultValue={villaDetail.address?.city}
                     />
                     <Input
                         id={'region'}
@@ -388,7 +388,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         register={register}
                         errors={errors}
                         required={true}
-                        defaultValue={villaDetail.address.street}
+                        defaultValue={villaDetail.address?.street}
                     />
                     <Input
                         id={'alley'}
@@ -396,7 +396,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         register={register}
                         errors={errors}
                         required={true}
-                        defaultValue={villaDetail.address.alley}
+                        defaultValue={villaDetail.address?.alley}
                     />
                     <Input
                         id={'plaque'}
@@ -438,7 +438,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         errors={errors}
                         required={true}
                         type={'number'}
-                        defaultValue={villaDetail.numberOfRooms}
+                        defaultValue={villaDetail?.numberOfRooms}
                     />
                 </div>
                 <div
@@ -450,7 +450,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         errors={errors}
                         required={true}
                         type={'number'}
-                        defaultValue={villaDetail.capacity}
+                        defaultValue={villaDetail?.capacity}
                     />
                     <select
                         {...register('type', {required: true})}
@@ -467,7 +467,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         register={register}
                         errors={errors}
                         required={true}
-                        defaultValue={villaDetail.layer}
+                        defaultValue={villaDetail?.layer}
                     />
                 </div>
                 <div
@@ -479,7 +479,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         errors={errors}
                         required={true}
                         type={'number'}
-                        defaultValue={villaDetail.pricePerNight}
+                        defaultValue={villaDetail?.pricePerNight}
                     />
                     <Input
                         id={'pricePerAdditionalPerson'}
@@ -488,7 +488,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                         errors={errors}
                         required={true}
                         type={'number'}
-                        defaultValue={villaDetail.pricePerAdditionalPerson}
+                        defaultValue={villaDetail?.pricePerAdditionalPerson}
                     />
                 </div>
             </div>
