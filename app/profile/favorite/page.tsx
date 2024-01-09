@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import {CiLocationOn} from "react-icons/ci";
-import testImage from '@/public/images/test.jpg'
+import testImage from '@/public/images/HomePic.png'
 import {TfiMoney} from "react-icons/tfi";
 import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";

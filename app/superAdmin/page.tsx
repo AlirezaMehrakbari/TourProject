@@ -11,16 +11,16 @@ import DatePicker, {Calendar} from "react-multi-date-picker";
 import useStep from "@/app/hooks/useStep";
 import DateObject from "react-date-object";
 import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+import '../components/superAdmin/calender.css'
 
 
 const SuperAdmin = () => {
     const [values, setotherValues] = useState([
-        new DateObject({ calendar: persian }).subtract(4, "days"),
-        new DateObject({ calendar: persian }).add(4, "days")
+        new DateObject({calendar: persian}).subtract(4, "days"),
+        new DateObject({calendar: persian}).add(4, "days")
     ])
 
     const [valuees, setValues] = useState([])
-
 
 
     const entryDate = new DateObject({
@@ -52,7 +52,7 @@ const SuperAdmin = () => {
                     d="M29.3108 28.3113H27.6188V24.3145C28.8845 23.9014 29.8037 22.7157 29.8037 21.3168V18.6523C29.8037 16.907 28.3782 15.4814 26.6329 15.4814C24.8876 15.4814 23.4621 16.907 23.4621 18.6523V21.3168C23.4621 22.7024 24.368 23.8748 25.6071 24.3011V28.3113H19.9848V20.3176C19.9848 19.9446 19.6917 19.6515 19.3187 19.6515H4.66364C4.2906 19.6515 3.9975 19.9446 3.9975 20.3176V28.3113H2.66522C2.11899 28.3113 1.66602 28.7643 1.66602 29.3105C1.66602 29.8567 2.11899 30.3097 2.66522 30.3097H26.553C26.5796 30.3097 26.5929 30.323 26.6196 30.323C26.6462 30.323 26.6596 30.3097 26.6862 30.3097H29.3108C29.857 30.3097 30.31 29.8567 30.31 29.3105C30.31 28.7643 29.857 28.3113 29.3108 28.3113ZM10.992 24.3145C10.992 23.7682 11.4449 23.3152 11.9912 23.3152C12.5374 23.3152 12.9904 23.7682 12.9904 24.3145V28.3113H10.992V24.3145Z"
                     fill="#FF7512"/>
             </svg>,
-            title: 'اقامتگاه'
+            title: 'اقامت گاه'
         },
         {
             id: 2,
@@ -136,12 +136,14 @@ const SuperAdmin = () => {
             </svg>,
             title: 'بازه سنی'
         }
-  ]
-    
+    ]
+
     return (
-        <div>
-            <SuperAdminNavbar/>
-            <div className='w-full flex-col'>
+        <div className='flex flex-col gap-y-14'>
+            <SuperAdminNavbar
+                titelea= 'تورهای خارجی ' titeleb='|' titelec='تهران-استانبول' titeled='' villaPath = '' apartmentsPath = ''saheliPath = '' hotelPath = ''
+            />
+            <div className='w-full flex-col gap-y-16'>
 
                 <div className='w-full flex flex-col mt-7'>
                     <div className='flex py-4 px-12 gap-x-3'>
@@ -162,120 +164,141 @@ const SuperAdmin = () => {
                     </div>
                 </div>
 
-                <div className='w-full flex flex-col mt-7'>
+                <div className='w-full flex flex-col mt-9 gap-y-20'>
                     <div className='flex py-4 px-12 gap-x-3'>
                         <div className='w-[5px] h-[47px] bg-[#E6AE07] rounded-l-full'></div>
                         <p className='font-kalameh500 text-[32px]'>جزئیات و تاریخ تور </p>
                     </div>
                     <div className=' w-full flex justify-evenly '>
-                        <div className='w-full flex flex-col gap-x-4 gap-y-7 justify-center'>
+                        <div className='w-full flex flex-col gap-x-4 gap-y-[170px] justify-start'>
                             <div className='flex flex-wrap justify-between px-12'>
                                 <p className='font-kalameh400 text-[24px]'>نوع تور :</p>
                                 <div className='flex justify-between gap-x-7'>
                                     <div className="flex items-center mb-4 gap-x-2">
                                         <label
-                                               className=" font-kalameh400 text-[24px] text-gray-900 dark:text-gray-300"> داخلی</label>
+                                            className=" font-kalameh400 text-[24px] text-gray-900 dark:text-gray-300"> داخلی</label>
                                         <input type="radio" name='test'
                                                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                     </div>
                                     <div className="flex items-center mb-4 gap-x-2">
                                         <label
-                                               className="font-kalameh400 text-[24px] text-gray-900 dark:text-gray-300"> خارجی</label>
+                                            className="font-kalameh400 text-[24px] text-gray-900 dark:text-gray-300"> خارجی</label>
                                         <input type="radio" name='test'
                                                className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className='flex flex-wrap justify-between px-12'>
-                                <p className='font-kalameh400 text-[24px]'>ایاب ذهاب :</p>
-                                <div className='flex justify-between gap-x-7 '>
-                                    <div className="flex items-center  gap-x-2">
-                                        <select  className='bg-[#E9E9E9] rounded-md w-[178px] p-1 ' name="selectedFruit">
-                                            <option value="apple">هواپیما</option>
-                                            <option value="banana">قطار</option>
-                                            <option value="orange">اتوبوس</option>
-                                        </select>
-                                    </div>
-                                    <div className="flex items-center gap-x-2  ">
-                                        <select className='bg-[#E9E9E9] rounded-md w-[178px] p-1' name="selectedFruit">
-                                            <option value="apple">هواپیما</option>
-                                            <option value="banana">قطار</option>
-                                            <option value="orange">اتوبوس</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='flex flex-wrap justify-between px-12'>
-                               <div className='flex rounded-full bg-[#E9E9E9]'>
-                                   <p className='bg-[#E6AE07] p-2 rounded-full'>شماره پرواز</p>
-                                   <input className='rounded-l-full bg-[#E9E9E9] px-2' placeholder='.........'/>
-                               </div>
-                                <div className='flex rounded-full bg-[#E9E9E9]'>
-                                    <p className='bg-[#E6AE07] p-2 rounded-full'>کلاس پرواز</p>
-                                    <select className='w-[170px] rounded-l-full bg-[#E9E9E9]' name="selectedFruit">
-                                        <option value="apple">هواپیما</option>
-                                        <option value="banana">قطار</option>
-                                        <option value="orange">اتوبوس</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className='flex flex-wrap justify-between px-12'>
-                                <p className='font-kalameh400 text-[24px]'>نام تور :</p>
-                                <div className='flex justify-between gap-x-7 '>
-                                    <div className="flex items-center mb-4 gap-x-2">
-                                        <input placeholder='-------' className='bg-[#E9E9E9] w-[427px] h-[41px] rounded-md px-1'/>
+                            <div className='flex flex-col gap-y-12'>
+                                <div className='flex flex-wrap justify-between px-12'>
+                                    <p className='font-kalameh400 text-[24px]'>ایاب ذهاب :</p>
+                                    <div className='flex justify-between gap-x-7 '>
+                                        <div className="flex items-center  gap-x-2">
+                                            <select className='bg-[#E9E9E9] rounded-md w-[150px] p-3 '
+                                                    name="selectedFruit">
+                                                <option value="apple">هواپیما</option>
+                                                <option value="banana">قطار</option>
+                                                <option value="orange">اتوبوس</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex items-center gap-x-2  ">
+                                            <select className='bg-[#E9E9E9] rounded-md w-[178px] p-3'
+                                                    name="selectedFruit">
+                                                <option value="apple">هواپیما</option>
+                                                <option value="banana">قطار</option>
+                                                <option value="orange">اتوبوس</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className='flex flex-wrap justify-between px-12'>
-                                <p className='font-kalameh400 text-[24px]'>مبدا :</p>
-                                <div className='flex justify-between gap-x-7 '>
-                                    <div className="flex items-center mb-4 gap-x-2">
-                                        <select className='bg-[#E9E9E9] w-[427px] h-[41px] rounded-md px-1' name="selectedFruit">
+                                <div className='flex flex-wrap justify-between px-12'>
+                                    <div className='flex rounded-full bg-[#E9E9E9]'>
+                                        <p className='bg-[#E6AE07] p-2 rounded-full text-white'>شماره پرواز</p>
+                                        <input className='rounded-l-full bg-[#E9E9E9] px-2' placeholder='.........'/>
+                                    </div>
+                                    <div className='flex rounded-full bg-[#E9E9E9]'>
+                                        <p className='bg-[#E6AE07] p-2 rounded-full text-white'>کلاس پرواز</p>
+                                        <select className='w-[170px] rounded-l-full bg-[#E9E9E9] ' name="selectedFruit">
                                             <option value="apple">هواپیما</option>
                                             <option value="banana">قطار</option>
                                             <option value="orange">اتوبوس</option>
                                         </select>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className='flex flex-wrap justify-between px-12'>
-                                <div className='flex justify-between gap-x-7 '>
-                                    <div className="flex items-center mb-4 gap-x-2">
-                                        <input className='bg-[#E9E9E9] w-[540px] h-[41px] rounded-md px-1' placeholder='ظرفیت خود را مشخص کنید' type="number"/>
+
+                                <div className='flex flex-wrap justify-between px-12'>
+                                    <p className='font-kalameh400 text-[24px]'>مبدا :</p>
+                                    <div className='flex justify-between gap-x-7 '>
+                                        <div className="flex items-center mb-4 gap-x-2">
+                                            <select className='bg-[#E9E9E9] w-[427px] py-3 rounded-md px-1'
+                                                    name="selectedFruit">
+                                                <option value="apple">هواپیما</option>
+                                                <option value="banana">قطار</option>
+                                                <option value="orange">اتوبوس</option>
+                                            </select>
+                                        </div>
                                     </div>
+                                </div>
+                                <div className='flex flex-wrap justify-between px-12'>
+                                    <p className='font-kalameh400 text-[24px]'>مقصد :</p>
+                                    <div className='flex justify-between gap-x-7 '>
+                                        <div className="flex items-center mb-4 gap-x-2">
+                                            <select className='bg-[#E9E9E9] w-[427px] rounded-md px-1 py-3'
+                                                    name="selectedFruit">
+                                                <option value="apple">هواپیما</option>
+                                                <option value="banana">قطار</option>
+                                                <option value="orange">اتوبوس</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='flex px-12 '>
+                                        <div className='flex w-full bg-[#E9E9E9] justify-between p-4  rounded-md'>
+                                            <div className='flex w-[60%] items-center'><p className='font-kalameh400 text-[16px] text-[#6B6B6B]'>ظرفیت تور خود را مشخص کنید</p></div>
+                                            <div className='flex w-[30%] justify-end items-center gap-x-6'>
+                                                <input type="number" placeholder='24' min='1' className='w-[20%] text-center bg-[#E9E9E9] p-2 border-r '/>
+                                                <p className='font-kalameh400 text-[16px] text-[#6B6B6B]'>تعداد</p>
+                                            </div>
+                                        </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <div className='w-full flex flex-col gap-x-4 gap-y-7 justify-center'>
-                            <div className='flex flex-col flex-wrap justify-between gap-y-2'>
-                               <input  placeholder='تاریخ برگذاری تور را مشخص کنید' className='bg-[#E9E9E9] w-[540px] h-[41px] rounded-md px-1'/>
-                               <div className='w-[80%] bg-[#F2F2F2]'>
-                                   <Calendar
-                                       //@ts-ignore
-                                       plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top'/>]}
-                                       dateSeparator=' تا '
-                                       minDate={new DateObject()}
-                                       value={values}
-                                       //@ts-ignore
-                                       onChange={setValues}
-                                       range
-                                       fixMainPosition={true}
-                                       calendar={persian}
-                                       locale={persian_fa}
-                                       style={{
-                                           width : '100%',
-                                           backgroundColor : '#F2F2F2'
-                                       }}
-                                   />
-                                   <Button styles={'w-[30%] rounded-md'}>افزودن تاریخ جدید + </Button>
-                               </div>
+                        <div className='w-full flex flex-col justify-center'>
+                            <div className='flex flex-col flex-wrap justify-between gap-y-9'>
+                                <div className='bg-[#E9E9E9] w-[90%] rounded-md p-3'><p
+                                    className='text-[#636363] font-kalameh400 text-[20px]'>تاریخ برگذاری تور را مشخص
+                                    کنید</p></div>
+                                <div className='w-[90%]  flex items-center flex-col rounded-lg  bg-[#F2F2F2]'>
+                                    <div>
+                                    <Calendar
+                                        //@ts-ignore
+                                        plugins={[<DatePickerPlugin entryDate={entryDate} exitDate={exitDate} position='top' />]}
+                                        dateSeparator=' تا '
+                                        minDate={new DateObject()}
+                                        value={values}
+                                        //@ts-ignore
+                                        onChange={setValues}
+                                        range
+                                        fixMainPosition={true}
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        className="ann"
+                                    />
+                                    </div>
+
+                                    <div className='w-[90%] flex justify-end p-4'>
+                                        <button className='w-[20%] rounded-md bg-[#533FA1] py-2 text-white '>ثبت تاریخ
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <button className='w-[30%] rounded-md bg-[#533FA1] py-2 text-white '>افزودن تاریخ جدید
+                                    +
+                                </button>
 
                             </div>
                         </div>
@@ -289,33 +312,25 @@ const SuperAdmin = () => {
                         <p className='font-kalameh500 text-[32px]'> برنامه ریزی تور </p>
                     </div>
                     <div className='w-[90%] mx-auto flex flex-col gap-x-4 gap-y-7 justify-center '>
-                        <p className='font-kalameh400 text-[20px]'>در این قسمت باید خلاصه ای از سفر خود را به
-                            کاربر
-                            توضیح دهید</p>
+                        <p className='font-kalameh400 text-[20px]'>در این قسمت باید خلاصه ای از سفر خود را به کاربر توضیح دهید</p>
                         <textarea
-                            className=' placeholder:mt-10 bg-[#F0F0F0] h-[165px] flex justify-start items-start rounded-lg px-3 pt-3 w-full'
-                            placeholder='بزرگسال برحسب نفر'
+                            className=' placeholder:mt-10 bg-[#F0F0F0]  flex justify-start items-start rounded-lg px-3 pt-3 py-10 w-full'
+                            placeholder='خلاصه ای از سفر خود را بنویسید...|'
                         />
                         <div className='flex justify-between'>
                             <textarea placeholder='بـرنامه روز اول سفر را به کاربر توضیح دهید'
-                                      className='w-[75%] h-[210px] bg-[#F0F0F0] flex justify-start items-start rounded-lg px-3 pt-3'/>
+                                      className='w-[75%]  bg-[#F0F0F0] flex justify-start items-start rounded-lg px-3 pt-3'/>
                             <label
                                 className='flex flex-col w-[20%] bg-[#CAC7C7] rounded-2xl items-center cursor-pointer'>
-                                <p className='font-kalameh400 text-[126px] text-white'>+</p>
-                                <p className='font-kalameh400 text-[27px] text-white mt-[-40px] '>بارگذاری تصویر</p>
+                               <div className='flex flex-col items-center justify-center py-4'>
+                                   <p className='font-kalameh400 text-[120px] text-white mt-[-30px]'>+</p>
+                                   <p className='font-kalameh400 text-[27px] text-white  mt-[-25px]'>بارگذاری تصویر</p>
+                               </div>
                                 <input type='file' className='hidden'/>
                             </label>
+
                         </div>
-                        <div className='flex justify-between'>
-                            <textarea placeholder='بـرنامه روز دوم سفر را به کاربر توضیح دهید'
-                                      className='w-[75%] h-[210px] bg-[#F0F0F0] flex justify-start items-start rounded-lg px-3 pt-3'/>
-                            <label
-                                className='flex flex-col w-[20%] bg-[#CAC7C7] rounded-2xl items-center cursor-pointer'>
-                                <p className='font-kalameh400 text-[126px] text-white'>+</p>
-                                <p className='font-kalameh400 text-[27px] text-white mt-[-40px] '>بارگذاری تصویر</p>
-                                <input type='file' className='hidden'/>
-                            </label>
-                        </div>
+                        <button className='w-[20%] rounded-md bg-[#533FA1] py-2 text-white '>افزودن روز جدید</button>
                     </div>
                 </div>
 

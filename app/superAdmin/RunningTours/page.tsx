@@ -5,6 +5,7 @@ import {usePathname} from "next/navigation";
 import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
 import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 import Button from "@/app/components/Button";
+import ButtonTour from "@/app/components/superAdmin/ButtonTour";
 
 const ResidencePanel = () => {
 
@@ -187,7 +188,7 @@ const ResidencePanel = () => {
 
     ];
     return (
-        <div>
+        <div className='flex flex-col gap-y-24'>
             <SuperAdminNavbar
 titelea= 'داخلی' titeleb='خارجی' titelec='' titeled=''  villaPath = '/superadmin/runningtours'
             apartmentsPath = '/superadmin/runningtours/foreign'
@@ -196,9 +197,8 @@ titelea= 'داخلی' titeleb='خارجی' titelec='' titeled=''  villaPath = '/
                 <SuperAdminSidebar/>
                 <div className='w-full flex flex-col items-center gap-y-2 '>
                     <div className='w-[90%] flex lg:justify-end justify-center mx-auto gap-x-1 '>
-                        <Button outline styles={'w-[10%] rounded-md bg-[#533FA1] text-[#242A50] border-[#000000] '}>فیلتر </Button>
-                        <Button outline styles={'w-[20%] rounded-md bg-[#533FA1] text-[#242A50] border-[#000000] '}>تورهای برگزارشده</Button>
-                        <Button  styles={'w-[30%] rounded-md bg-[#242A50] text-[#fff]  '}>افزودن تورهای جدید + </Button>
+                        <ButtonTour outline styles='w-[20%] rounded-md bg-[#533FA1] text-[#242A50] border-[#000000]'>تورهای برگزارشده</ButtonTour>
+                        <ButtonTour  styles='w-[30%] rounded-md bg-[#242A50] text-[#fff]'>افزودن تورهای جدید + </ButtonTour>
                     </div>
                     <table className='w-[90%] mx-auto text-center'>
                         <thead>
