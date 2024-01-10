@@ -12,6 +12,9 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 const nextConfig = {
     output: 'standalone',
+    images: {
+        domains: ['triptour.v1r.ir'],
+    },
 }
 
 module.exports = withPWA(nextConfig)

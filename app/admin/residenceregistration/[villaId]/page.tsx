@@ -29,9 +29,11 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
     }
 
     const handleAddVilla: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
-        console.log(facilities.map(item => item.id))
-        console.log(selectedLocation)
+        const fd = new FormData()
+        // console.log(URL.revokeObjectURL(uploadImages))
+        // fd.append('image',uploadImages)
+
+
         if (data.type === 'نوع اقامتگاه' || data.suitableFor === 'مناسب برای') {
             toast.error('لطفا مقادیر نوع اقامتگاه و مناسب واجدین را انتخاب نمایید.')
             return
@@ -354,8 +356,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
 
             <div className='w-full py-8 flex flex-col md:flex-row justify-between items-center gap-2'>
                 <div className='w-full sm:w-[60%]'>
-                    <Map position={villaDetail.address ? [+villaDetail.address?.lng, +villaDetail.address?.lat] : [35.6720367,51.40755,11]} popup={'لوکیشن شما'} input
-                         selectedLocation={handleSetLocation}/>
+                    <Map position={villaDetail.address ? [+villaDetail.address?.lng, +villaDetail.address?.lat] : [35.6720367,51.40755,11]} popup={'لوکیشن شما'} input selectedLocation={handleSetLocation}/>
                 </div>
                 <div className='lg:w-[35%] grid md:grid-cols-2 lg:grid-cols-1 max-md:grid-cols-2 gap-4'>
                     <Input

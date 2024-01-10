@@ -5,15 +5,19 @@ import {useEffect, useState} from "react";
 
 type MapProps = {
     position: LatLngTuple,
-    popup: string
+    popup: string,
+    selectedLocation : (data:number[])=>void,
+    input : boolean
 }
 
-const Map: React.FC<MapProps> = ({position, popup}) => {
+const Map: React.FC<MapProps> = ({position, popup,selectedLocation,input}) => {
     const [userLocation, setUserLocation] = useState<LatLngExpression>()
     const LocationFinderDummy = () => {
         const map = useMapEvents({
             click(e) {
                 setUserLocation([e.latlng.lat, e.latlng.lng]);
+                selectedLocation([e.latlng.lat,e.latlng.lng])
+
             },
         });
         return null;
@@ -29,15 +33,17 @@ const Map: React.FC<MapProps> = ({position, popup}) => {
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={position} icon={customIcon}>
-                <Popup>
-                    {popup}
-                </Popup>
-            </Marker>
+            {!input &&
+                <Marker position={position} icon={customIcon}>
+                    <Popup>
+                        {popup}
+                    </Popup>
+                </Marker>
+            }
             {userLocation &&
                 <Marker position={userLocation} icon={customIcon}>
                     <Popup>
-                       new
+                       ویلا انتخابی شما
                     </Popup>
                 </Marker>
             }
