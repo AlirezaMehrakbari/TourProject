@@ -122,5 +122,6 @@ type VillaDetails = {
     }
     facilities: Facilities[],
     comments: Comments[],
-    user: User
+    user: User,
+    is_favorite : boolean
 }

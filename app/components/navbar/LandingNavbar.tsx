@@ -26,7 +26,7 @@ const LandingNavbar = () => {
                 className='absolute top-[15px] sm:top-[40px] flex justify-between items-center w-full px-4 sm:px-[40px]'>
                 <Logo width='w-[160px]' height='h-[90px]'/>
                 <div className='flex gap-4 items-center '>
-                    <p className='text-[#FFF] font-kalameh700 max-sm:text-[12px]' onClick={()=>console.log(userSession.value)}>021-77805</p>
+                    <p className='text-[#FFF] font-kalameh700 max-sm:text-[12px]'>021-77805</p>
                     <div className='flex items-center'>
                             {userSession.value.isLoggedIn ? (
                                 <SelectDropDown

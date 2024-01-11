@@ -14,17 +14,18 @@ const ResidenceRegistrationPage = () => {
     const handleAddVilla = (e:any) => {
         e.preventDefault()
 
-        tripTourApi.post('places/store', {
-            title
-        },{
-            headers : {
-                Authorization : `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
-            }
-        }).then(res=>{
-            router.push(`/admin/residenceregistration/${res.data.data.id}`)
-        }).catch(error=>{
-            toast.error('مشکلی رخ داده است')
-        })
+        // tripTourApi.post('places/store', {
+        //     title
+        // },{
+        //     headers : {
+        //         Authorization : `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
+        //     }
+        // }).then(res=>{
+        //     router.push(`/admin/residenceregistration/${res.data.data.id}`)
+        // }).catch(error=>{
+        //     toast.error('مشکلی رخ داده است')
+        // })
+        router.push('/admin/residenceregistration/5')
     }
     return (
         <div

@@ -15,7 +15,7 @@ const CommentsPage = () => {
     const fetchVillaComments = async (): Promise<VillaDetails[]> => {
         const res = await tripTourApi.get('users/getUserPlaces', {
             headers: {
-                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
+                Authorization: `Bearer 179|xi4LQFq1DY2IZhEesy6qSg2rGMAId2kKdmNnPzve3e8e8e67`
             }
         })
         return res.data['user places']
@@ -38,12 +38,16 @@ const CommentsPage = () => {
                                 labelStyles={'text-[10px] sm:text-[13px]'}
                 >
                     <ul className='flex flex-col gap-y-1'>
-                        {data.map((item,index) => {
+                        {data.length > 1 ? data.map((item,index) => {
                             return (
                                 <li className='hover:text-[#FFE712]'
-                                    onClick={() => handleSwitchVilla(item.address.state,item.address.city,)}>{item.address.state} - {item.address.city}</li>
+                                    onClick={() => handleSwitchVilla(item.address.state,item.address.city,)}>
+                                    {item.address.state} - {item.address.city}
+                                </li>
                             )
-                        })}
+                        }) : (
+                            <li>ویلایی یافت نشد!</li>
+                        )}
                     </ul>
                 </SelectDropDown>
             </div>

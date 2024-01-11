@@ -21,9 +21,11 @@ import {tripTourApi} from "@/axios-instances";
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 import {useAppSelector} from "@/app/redux/store";
 import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 
 const VillaHomePage = () => {
+    const router = useRouter()
     const queryClient = useQueryClient()
     const userSession = useAppSelector(state => state.userSlice)
     const [destination, setDestination] = useState('مقصد')
@@ -235,8 +237,11 @@ const VillaHomePage = () => {
                 {/*قسمت اجاره ویلا*/}
                 <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر
                     کشــور</h1>
-                {isRefetching ? <span className="text-orange mx-auto flex justify-center items-center loading loading-dots loading-lg"></span>
-                    : <VillaList data={villaData.data}/>}
+                {villaData.data.length < 1 ?
+                    <p className='flex justify-center items-center text-red-500'> ویلایی یافت نشد.</p> : isRefetching ? <span
+                            className="text-orange mx-auto flex justify-center items-center loading loading-dots loading-lg"></span>
+                        : <VillaList data={villaData.data}/>
+                }
             </section>
             <Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'
                         count={villaData.meta.last_page}/>

@@ -11,7 +11,7 @@ const ResidencesPage = () => {
     const fetchUserPlaces = async (): Promise<Villa[]> => {
         const res = await tripTourApi.get('users/getUserPlaces', {
             headers: {
-                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
+                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
             }
         })
         return res.data['user places']
@@ -19,7 +19,7 @@ const ResidencesPage = () => {
     const deleteVilla = async (id: number) => {
         const res = await tripTourApi.delete(`places/delete/${id}`, {
             headers: {
-                Authorization: `Bearer 167|9I8FqDwFDx1ndZAykM6tYlIBB3S6XtS8B0l89iff07ce1798`
+                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
             }
         })
         return res.data

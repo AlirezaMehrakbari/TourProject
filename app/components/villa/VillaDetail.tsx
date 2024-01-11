@@ -21,9 +21,11 @@ import {toast, ToastContainer} from "react-toastify";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {setVillaReserve} from "@/app/redux/slices/villaReserve-slice";
 import {tripTourApi} from "@/axios-instances";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const step = useStep()
+    const registerModal = useRegisterModal()
     const dispatch = useAppDispatch()
     const userSession = useAppSelector(state => state.userSlice)
     const [firstMonth, setFirstMonth] = useState([
@@ -36,7 +38,8 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const [entryDate, setEntryDate] = useState('')
     const [exitDate, setExitDate] = useState('')
     const [passengers, setPassengers] = useState<number>(0)
-    const [comment,setComment] = useState('')
+    const [comment, setComment] = useState('')
+    const [isFavorite, setIsFavorite] = useState(villaDetails.is_favorite)
 
     const pictures = [
         {id: 1, src: Picture1},
@@ -44,18 +47,34 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
         {id: 3, src: Picture3},
 
     ]
+    const handleFavorite = () => {
+        setIsFavorite(prev => !prev)
+        tripTourApi.post(`users/manageFavoritePlaces/${villaDetails.id}`, {}, {
+            headers: {
+                Authorization: `Bearer ${userSession.value.token}`
+            }
+        }).then(res => {
+            if (res.data.message === 'insert to favorites') {
+                toast.success('به لیست علاقه مندی افزوده شد.')
+            } else {
+                toast.warning('از لیست علاقه مندی حذف شد.')
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     const handleAddComment = (e: any) => {
         e.preventDefault()
-        tripTourApi.post(`comments/comment/${villaDetails.id}`,{
+        tripTourApi.post(`comments/comment/${villaDetails.id}`, {
             comment
-        },{
-          headers : {
-              Authorization : `Bearer ${userSession.value.token}`
-          }
-        }).then(res=>{
+        }, {
+            headers: {
+                Authorization: `Bearer ${userSession.value.token}`
+            }
+        }).then(res => {
             toast.success('دیدگاه شما ثبت شد.')
-        }).catch(error=>{
+        }).catch(error => {
             toast.error('مشکلی رخ داده!')
         })
         setComment('')
@@ -91,23 +110,49 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                         <div
                             className='flex flex-col lg:flex-row justify-between gap-x-[30px] gap-y-8 w-full lg:w-[70%]'>
                             <div className='relative lg:w-[80%]'>
-                                <Image
-                                    className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointe h-full'
-                                    src={villaDetails.medias[0]}
-                                    alt={'Villa Picture'}
-                                    fill={true}
-                                />
-                                <svg className='absolute left-[24px] top-[24px] group-hover:cursor-pointer'
-                                     xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21"
-                                     fill="none">
-                                    <path
-                                        d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
-                                        fill="black" fillOpacity="0.3" stroke="white" strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"/>
-                                </svg>
+                                <div className='h-[300px] md:h-[400px]'>
+                                    <Image
+                                        className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg h-full'
+                                        src={villaDetails.medias[0]}
+                                        alt={'Villa Picture'}
+                                        fill={true}
+                                    />
+                                </div>
+                                {userSession.value.isLoggedIn ?
+                                    isFavorite ?
+                                        (
+                                            <svg className='absolute left-[15px] top-[18px] cursor-pointer'
+                                                 onClick={handleFavorite}
+                                                 xmlns="http://www.w3.org/2000/svg" width="20" height="21"
+                                                 viewBox="0 0 23 21"
+                                                 fill="none">
+                                                <path
+                                                    d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
+                                                    fill="#EC0606" stroke="#EC0606" strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                            </svg>
+                                        )
+                                        :
+                                        (
+                                            <svg className='absolute left-[15px] top-[18px] cursor-pointer'
+                                                 onClick={handleFavorite}
+                                                 xmlns="http://www.w3.org/2000/svg" width="20" height="21"
+                                                 viewBox="0 0 23 21" fill="none">
+                                                <path
+                                                    d="M20.2913 2.61183C19.7805 2.10083 19.1741 1.69547 18.5066 1.41891C17.8392 1.14235 17.1238 1 16.4013 1C15.6788 1 14.9634 1.14235 14.2959 1.41891C13.6285 1.69547 13.022 2.10083 12.5113 2.61183L11.4513 3.67183L10.3913 2.61183C9.3596 1.58013 7.96032 1.00053 6.50129 1.00053C5.04226 1.00053 3.64298 1.58013 2.61129 2.61183C1.5796 3.64352 1 5.04279 1 6.50183C1 7.96086 1.5796 9.36013 2.61129 10.3918L3.67129 11.4518L11.4513 19.2318L19.2313 11.4518L20.2913 10.3918C20.8023 9.88107 21.2076 9.27464 21.4842 8.60718C21.7608 7.93972 21.9031 7.22431 21.9031 6.50183C21.9031 5.77934 21.7608 5.06393 21.4842 4.39647C21.2076 3.72901 20.8023 3.12258 20.2913 2.61183Z"
+                                                    fill="black" fillOpacity="0.3" stroke="white" strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"/>
+                                            </svg>
+                                        )
+                                    :
+                                    null
+
+                                }
+
                             </div>
-                            <div className='lg:w-[25%] flex flex-row lg:flex-col justify-between'>
+                            <div className='lg:w-[25%] flex flex-row lg:flex-col justify-between gap-y-3'>
                                 {pictures.map(picture => {
                                     return (
                                         <>
@@ -316,7 +361,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                         placeholder='نـظرخــود را ثـبت کنیـد ... '
                                         disabled={!userSession.value.isLoggedIn}
                                         value={comment}
-                                        onChange={(e)=>setComment(e.target.value)}
+                                        onChange={(e) => setComment(e.target.value)}
                                     />
                                 <button type='submit' disabled={!userSession.value.isLoggedIn}>
                                     <svg className='' xmlns="http://www.w3.org/2000/svg" width="40" height="38"
@@ -331,7 +376,8 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 </button>
                             </form>
                             {!userSession.value.isLoggedIn &&
-                                <p className='text-[15px] font-kalameh500 py-2 pr-2'>برای ثبت نظرات خود باید حساب کاربری
+                                <p className='text-[15px] font-kalameh500 py-2 pr-2 cursor-pointer'
+                                   onClick={registerModal.onOpen}>برای ثبت نظرات خود باید حساب کاربری
                                     داشته باشید .</p>
                             }
                         </div>
@@ -438,11 +484,11 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                         <span>تعداد نفرات</span>
                                     </div>
                                     <div className='flex items-center gap-x-2'>
-                                        <button className='border-2 px-2 rounded-md'
+                                        <button className='border-2 border-black px-2 rounded-md'
                                                 onClick={() => setPassengers(prev => prev + 1)} type='button'>+
                                         </button>
                                         <span>{passengers}</span>
-                                        <button className='border-2 px-2 rounded-md'
+                                        <button className='border-2 border-black px-2 rounded-md'
                                                 onClick={() => setPassengers(prev => {
                                                     return prev === 0 ? 0 : prev - 1
                                                 })} type='button'>-
@@ -557,13 +603,14 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                     <span>تعداد نفرات</span>
                                 </div>
                                 <div className='flex items-center gap-x-2 w-[100px] justify-between'>
-                                    <button className='border-2 px-2 rounded-lg'
+                                    <button className='border-2 border-black px-2 rounded-lg'
                                             onClick={() => setPassengers(prev => prev + 1)} type='button'>+
                                     </button>
                                     <span>{passengers}</span>
-                                    <button className='border-2 px-2 rounded-lg' onClick={() => setPassengers(prev => {
-                                        return prev === 0 ? 0 : prev - 1
-                                    })} type='button'>-
+                                    <button className='border-2 border-black px-2 rounded-lg'
+                                            onClick={() => setPassengers(prev => {
+                                                return prev === 0 ? 0 : prev - 1
+                                            })} type='button'>-
                                     </button>
                                 </div>
                             </div>
