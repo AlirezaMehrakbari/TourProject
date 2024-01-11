@@ -11,7 +11,7 @@ import Axios from 'axios'
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {logIn} from "@/app/redux/slices/user-slice";
 import {router} from "next/client";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 
 
 type Inputs = {
@@ -26,10 +26,8 @@ type Inputs = {
 }
 const RegisterModal = () => {
     const BASE_URL = 'https://triptour.v1r.ir/api'
+    const pathName = usePathname()
     const [input, setInput] = useState()
-    const inputRef = useRef(null)
-    const inputRefTwo = useRef(null)
-    const inputRefThree = useRef(null)
     const dispatch = useAppDispatch()
     const registerModal = useRegisterModal()
     const {register, handleSubmit, reset, formState: {errors}, setFocus} = useForm<Inputs>()
@@ -73,7 +71,7 @@ const RegisterModal = () => {
             setPhoneNumber(data.phoneNumber)
         }).catch(error => {
             if (error.message === 'Network Error') {
-            toast.error('لطفا اتصال اینترنت خود را بررسی کنید.')
+                toast.error('لطفا اتصال اینترنت خود را بررسی کنید.')
                 return
             }
             toast.error('شماره تلفن همراه خود را بصورت صحیح وارد کنید.')
@@ -131,7 +129,7 @@ const RegisterModal = () => {
             firstName: data.firstName,
             lastName: data.lastName,
             phoneNumber: `0${phoneNumber}`,
-            role: 'user'
+            role: pathName === '/admin' ? 'advertiser' : 'user'
         }).then(res => {
             toast.success('ثبت نام شما با موفقیت انجام شد.')
             dispatch(logIn(
