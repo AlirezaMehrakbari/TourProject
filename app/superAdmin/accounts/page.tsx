@@ -1,13 +1,15 @@
 'use client'
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
 import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 import Inputs from "@/app/components/superAdmin/inputs";
+import axios from "axios";
 
 const Accounts = () => {
     const pathName = usePathname()
+
     const financialReport = [
         {
             id: 1,
@@ -171,8 +173,8 @@ const Accounts = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
 
+            </div>
         </div>
     )
 }

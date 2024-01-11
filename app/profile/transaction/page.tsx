@@ -4,9 +4,31 @@ import PaymentDetails from '@/app/components/profile/PaymentDetails'
 import Sidebar from '@/app/components/profile/Sidebar'
 import React from 'react'
 import ProfileNavbar from "@/app/components/profile/ProfileNavbar";
+import {tripTourApi} from "@/axios-instances";
+import {useAppSelector} from "@/app/redux/store";
+import {useQuery} from "@tanstack/react-query";
+import Loading from "@/app/components/Loading";
 
 const Transaction = () => {
-    const data = [1, 2, 3]
+    // const data = [1, 2, 3]
+
+    const userSession = useAppSelector(state => state.userSlice)
+    const fetchTransaction = async (): Promise<Villa[]> => {
+        const res = await tripTourApi.get('/users/getUserTransaction', {
+            headers: {
+                Authorization: `Bearer ${userSession.value.token}`
+            }
+        })
+        return res.data['user transactions']
+    }
+
+    const {data, isLoading} = useQuery({
+        queryKey: ['transaction'],
+        queryFn: () => fetchTransaction()
+    })
+    if (isLoading) return <Loading/>
+    if (!data) return <p>Not found!!</p>
+
     return (
         <div className='w-[90%] md:w-[65%] sm:w-[70%] mx-auto flex flex-col'>
             <div className="w-full  flex flex-col justify-between pb-10 pt-7 md:flex-row">
