@@ -25,7 +25,7 @@ const ResidenceRegistrationPage = () => {
         // }).catch(error=>{
         //     toast.error('مشکلی رخ داده است')
         // })
-        router.push('/admin/residenceregistration/5')
+        router.push('/admin/residenceregistration/1')
     }
     return (
         <div

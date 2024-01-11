@@ -2,7 +2,7 @@ import React from 'react'
 import TourItem, {TourItemProps} from "@/app/components/tour/TourItem";
 
 type TourListProps = {
-    data: TourItemProps[]
+    data: Tour[]
 }
 const TourList: React.FC<TourListProps> = ({data}) => {
     return (
@@ -10,11 +10,15 @@ const TourList: React.FC<TourListProps> = ({data}) => {
             {data.map(item => {
                 return (
                     <TourItem
-                        id = {item.id}
+                        id={item.id}
                         key={item.id}
                         origin={item.origin}
                         destination={item.destination}
-                        price={item.price}
+                        price={item.price.adult}
+                        startDateTour={item.date[0].start}
+                        endDateTour={item.date[0].end}
+                        vehicle = {item.vehicle}
+                        tourManager = {item.tourManager}
                     />
                 )
             })}
