@@ -6,75 +6,35 @@ import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
 import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 import Button from "@/app/components/Button";
 import Inputs from "@/app/components/superAdmin/inputs";
-
+import {tripTourApi} from "@/axios-instances";
+import {useQuery} from "@tanstack/react-query";
+import Loading from "@/app/components/Loading";
+import {useAppSelector} from "@/app/redux/store";
 const ResidencePanel = () => {
     const pathName = usePathname()
-    const financialReport = [
-        {
-            id: 1,
-            owner: 'عباس بوعذار',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 2,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 3,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 4,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 5,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        }, {
-            id: 6,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 7,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
-        {
-            id: 8,
-            owner: 'حمید اسماعیلی',
-            state: 'مازندران',
-            city: 'ساری',
-            meter: '127 متر',
-            score: '5,7',
-        },
+    const userSession = useAppSelector(state=>state.userSlice)
+    //@ts-ignore
+    const fetchCoastalSuper = async (): Promise<{}> => {
+        const res = await tripTourApi.get('/places/all', {
+            headers: {
+                Authorization: `Bearer ${userSession.value.token}`
+            }
 
-    ];
+        })
+        return res.data.data
+
+    }
+
+    const {data, isLoading} = useQuery({
+        queryKey: ['CoastalSuper'],
+        queryFn: () => fetchCoastalSuper()
+    })
+    if (isLoading) return <Loading/>
+    if (!data) return <p>Not found!!</p>
+
+
+
+
     return (
         <div className='flex flex-col gap-y-24'>
             <SuperAdminNavbar/>
@@ -117,12 +77,13 @@ const ResidencePanel = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {financialReport.map(report => {
+                        {/*@ts-ignore*/}
+                        {data.map(report => {
                             return (
                                 <tr className='even:bg-[#F0F0F0] odd:bg-[#E9E4E4]'>
                                     <td className='py-4'>{report.owner}</td>
-                                    <td>{report.state}</td>
-                                    <td>{report.city}</td>
+                                    <td>{report.address.state}</td>
+                                    <td>{report.address.city}</td>
                                     <td>{report.meter}</td>
                                     <td>
                                         <div className='flex flex-row justify-center items-center gap-x-1'>

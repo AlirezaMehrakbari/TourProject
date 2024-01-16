@@ -11,7 +11,7 @@ type UserAuthState = {
     isLoggedIn :boolean,
     fullName : string,
     birthDate : string,
-    nationalCode : string
+        nationalCode : string
 }
 type InitialState = {
  value : UserAuthState
