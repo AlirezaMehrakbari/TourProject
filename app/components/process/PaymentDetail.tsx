@@ -10,6 +10,7 @@ import {tripTourApi} from "@/axios-instances";
 import DateObject from "react-date-object";
 import {useRouter} from "next/navigation";
 import {toast} from 'react-toastify'
+import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 
 type PaymentDetailProps = {
     isVilla?: boolean,

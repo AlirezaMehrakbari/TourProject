@@ -16,6 +16,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import {getAllDatesInRange} from "react-multi-date-picker";
 import formatCurrency from "@/app/utils/FormatCurrency";
+import {toast} from "react-toastify";
 
 
 const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
@@ -59,6 +60,11 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
     const durationTour = getAllDatesInRange([new DateObject(tourDetail.date[0].start), new DateObject(tourDetail.date[0].end)])
 
     const handleStep = () => {
+        if (travelDate === 'تاریخ سفر را مشخص کنید' || passengers.child2 === 0 || passengers.childFrom2to12 === 0 || passengers.adult1 === 0 || passengers.adult2 === 0) {
+            toast.error('لطفا تعداد مسافران و تاریخ تور را انتخاب نمایید.')
+            return
+        }
+
         step1.nextStep()
         console.log(step1.step)
     }
@@ -228,11 +234,12 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                         </div>
 
                         <div>
-                            <h1 className='text-[24px] lg:text-[32px] font-kalameh700 pt-[120px]'>خلاصـه ای از سفر</h1>
+                            <h1 className='pb-[180px] text-[24px] lg:text-[32px] font-kalameh700 pt-[120px]'>خلاصـه ای
+                                از سفر</h1>
                             <p className='text-[18px] font-kalameh400 pt-[20px] text-justify'>
                                 {tourDetail.summery}
                             </p>
-                            <p className='text-[19px] text-[#3672B7] text-left pb-[180px]'>مشـاهده بیشتر</p>
+                            {/*<p className='text-[19px] text-[#3672B7] text-left '>مشـاهده بیشتر</p>*/}
                             <div className='flex flex-col gap-y-20'>
                                 {planForDay.map(item => {
                                     return (
@@ -447,12 +454,9 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                         <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-6'> انتخـاب تاریـخ
                             تـور</h1>
                         <div className='flex items-center gap-x-[8px]'>
-                            {tourDates.map(item => {
-                                return (
-                                    <button
-                                        className='focus:text-black focus:border-black text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] rounded-[10px]'>{item.startDate.month.name}</button>
-                                )
-                            })}
+                            <button
+                                className='text-black border-black text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px]  rounded-[10px]'>{tourDates[0].startDate.month.name}</button>
+
                         </div>
                         <SelectDropDown
                             arrowBlack

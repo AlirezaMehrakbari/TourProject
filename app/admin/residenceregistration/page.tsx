@@ -5,12 +5,15 @@ import Button from "@/app/components/Button";
 import {useRouter} from "next/navigation";
 import {tripTourApi} from "@/axios-instances";
 import {toast} from "react-toastify";
+import Loading from "@/app/components/Loading";
+import {useAppSelector} from "@/app/redux/store";
 
 const ResidenceRegistrationPage = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [title, setTitle] = useState('')
-
+    const userSession = useAppSelector(state=>state.userSlice)
+    let content;
     const handleAddVilla = (e:any) => {
         e.preventDefault()
 
@@ -25,10 +28,10 @@ const ResidenceRegistrationPage = () => {
         // }).catch(error=>{
         //     toast.error('مشکلی رخ داده است')
         // })
-        router.push('/admin/residenceregistration/1')
+        router.push('/admin/residenceregistration/2')
     }
-    return (
-        <div
+    if(userSession.value.isLoggedIn && userSession.value.role === 'advertiser'){
+        content = (   <div
             className={`translate duration-300 fixed bg-neutral-800/70 inset-0 z-50 overflow-y-hidden flex justify-center items-center`}>
             <div
                 className="animate-openModal relative inset-x-0 mx-auto w-[95%] md:w-[80%] bg-[#FFF] rounded-[5px] lg:w-[40%]">
@@ -61,8 +64,12 @@ const ResidenceRegistrationPage = () => {
                     </Button>
                 </form>
             </div>
-        </div>
-    )
+        </div>)
+    }else {
+        content = <Loading/>
+        router.push('/')
+    }
+    return content
 }
 
 export default ResidenceRegistrationPage

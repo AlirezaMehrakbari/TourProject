@@ -177,5 +177,6 @@ type Tour = {
     flightNumber: string,
     status: string,
     created_at: string,
+    medias: string[]
 
 }

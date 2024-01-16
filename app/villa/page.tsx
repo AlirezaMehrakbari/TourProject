@@ -18,7 +18,6 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import {Pagination} from "@mui/material";
 import {tripTourApi} from "@/axios-instances";
-import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 import {useAppSelector} from "@/app/redux/store";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";

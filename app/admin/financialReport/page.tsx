@@ -4,8 +4,10 @@ import DropDown from "@/app/components/navbar/DropDown";
 import LineChart from "@/app/components/chart/LineChart";
 import PolarChart from "@/app/components/chart/PolarChart";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
+import {useAppSelector} from "@/app/redux/store";
 
 const FinancialReportPage = () => {
+    const userSession = useAppSelector(state=>state.userSlice)
     const financialReport = [
         {
             id: 1,
@@ -125,8 +127,9 @@ const FinancialReportPage = () => {
             },
         ],
     });
-    return (
-        <div className='w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto pt-[10rem]'>
+    let content ;
+    if(userSession.value.isLoggedIn && userSession.value.role === 'advertiser'){
+        content = (<div className='w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto pt-[10rem]'>
             <div className='flex items-center justify-between'>
                 <p className='text-[20px] sm:text-[30px] font-kalameh400'><span className='font-kalameh700'>گزارش مــالی</span> شما</p>
                 <SelectDropDown label={'گزارش مالی براساس'}
@@ -134,12 +137,12 @@ const FinancialReportPage = () => {
                                 dropDownStyles={'bg-[#465297] absolute w-full bottom-[-5.9rem] rounded-bl-[8px] rounded-br-[8px] py-2 px-4 text-[12px]'}
                                 labelStyles={'text-[10px] sm:text-[13px]'}
                 >
-                        <ul className='flex flex-col gap-y-1'>
-                            <li className='hover:text-[#FFE712]'>ماه جــاری</li>
-                            <li className='hover:text-[#FFE712]'>دو ماه اخـیر</li>
-                            <li className='hover:text-[#FFE712]'>شـش ماه اخـیر</li>
-                            <li className='hover:text-[#FFE712]'>یک سال اخـیر</li>
-                        </ul>
+                    <ul className='flex flex-col gap-y-1'>
+                        <li className='hover:text-[#FFE712]'>ماه جــاری</li>
+                        <li className='hover:text-[#FFE712]'>دو ماه اخـیر</li>
+                        <li className='hover:text-[#FFE712]'>شـش ماه اخـیر</li>
+                        <li className='hover:text-[#FFE712]'>یک سال اخـیر</li>
+                    </ul>
                 </SelectDropDown>
             </div>
 
@@ -342,8 +345,10 @@ const FinancialReportPage = () => {
                         اجاره ماه اخیر خود را مشاهده کنید</p>
                 </div>
             </div>
-        </div>
-    )
+        </div>)
+    }
+
+        return content
 }
 
 export default FinancialReportPage

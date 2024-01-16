@@ -14,7 +14,7 @@ const TourList: React.FC<TourListProps> = ({data}) => {
                         key={item.id}
                         origin={item.origin}
                         destination={item.destination}
-                        price={item.price.adult}
+                        price={item.price?.adult}
                         startDateTour={item.date[0].start}
                         endDateTour={item.date[0].end}
                         vehicle = {item.vehicle}
