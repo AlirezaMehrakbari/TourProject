@@ -125,3 +125,19 @@ type VillaDetails = {
     user: User,
     is_favorite : boolean
 }
+
+type transactionMap = {
+    id: number,
+    user_id: string,
+    reservationable_type: string,
+    reservationable_id: string,
+    reservation_id: string,
+    gateway_result: {
+    transaction_id: string,
+        reference_id: string
+},
+    price: string,
+    status: string,
+    created_at: string,
+    updated_at: string
+}
