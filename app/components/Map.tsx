@@ -6,8 +6,8 @@ import {useEffect, useState} from "react";
 type MapProps = {
     position: LatLngTuple,
     popup: string,
-    selectedLocation : (data:number[])=>void,
-    input : boolean
+    selectedLocation? : (data:number[])=>void,
+    input? : boolean
 }
 
 const Map: React.FC<MapProps> = ({position, popup,selectedLocation,input}) => {
@@ -16,7 +16,8 @@ const Map: React.FC<MapProps> = ({position, popup,selectedLocation,input}) => {
         const map = useMapEvents({
             click(e) {
                 setUserLocation([e.latlng.lat, e.latlng.lng]);
-                selectedLocation([e.latlng.lat,e.latlng.lng])
+                selectedLocation && selectedLocation([e.latlng.lat,e.latlng.lng])
+
 
             },
         });

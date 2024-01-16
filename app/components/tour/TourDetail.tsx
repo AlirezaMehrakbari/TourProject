@@ -11,10 +11,16 @@ import {Metadata} from "next";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import {useState} from "react";
 import Stepper from "@/app/components/Stepper";
+import DateObject from "react-date-object";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import {getAllDatesInRange} from "react-multi-date-picker";
+import formatCurrency from "@/app/utils/FormatCurrency";
 
 
-const TourDetail = () => {
-    const [travelDate, setTravelDate] = useState<string>('تاریخ سفر را مشخص کنید')
+const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
+    const step1 = useStep()
+    const [travelDate, setTravelDate] = useState<any>('تاریخ سفر را مشخص کنید')
     const [passengers, setPassengers] = useState({
         adult2: 0,
         adult1: 0,
@@ -43,8 +49,14 @@ const TourDetail = () => {
             img: TourDetail1
         }
     ]
-
-    const step1 = useStep()
+    const tourDates: any[] = []
+    tourDetail.date.map(item => {
+        tourDates.push({
+            startDate: new DateObject({date: (item.start)}).convert(persian, persian_fa),
+            endDate: new DateObject({date: (item.end)}).convert(persian, persian_fa)
+        })
+    })
+    const durationTour = getAllDatesInRange([new DateObject(tourDetail.date[0].start), new DateObject(tourDetail.date[0].end)])
 
     const handleStep = () => {
         step1.nextStep()
@@ -80,18 +92,19 @@ const TourDetail = () => {
                     </div>
                 </div>
 
-                <h1 className='text-[30px] font-kalameh500 py-16 pr-1'>{'تور تهران - استانبول'}</h1>
+                <h1 className='text-[30px] font-kalameh500 py-16 pr-1'>{tourDetail.title}</h1>
 
                 <div className='flex justify-between'>
                     <div className='md:w-[65%] w-full'>
-                        <h4 className='font-kalameh400'>{'تور 3 روزه - هـتل - هواپیما'}</h4>
+                        <h4 className='font-kalameh400'> تور {durationTour.length} روزه - هتل
+                            - {tourDetail.vehicle.come}</h4>
                         <p className='font-kalameh400'>مدیریت تور :
                             <span className='font-kalameh700 pr-2 text-[#2486B0]'>رضا صالحی</span>
                         </p>
 
                         <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-6 pt-6'>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none">
                                     <path
@@ -103,12 +116,11 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>اقامتگاه</p>
                                 <p className='w-full font-kalameh500'>
-                                    2 شب هتل استابول<br/>
-                                    1 شب هتل آنتالیا
+                                    {tourDetail.details.place}
                                 </p>
                             </div>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none">
                                     <path
@@ -126,11 +138,11 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>ایاب و ذهاب</p>
                                 <p className='w-full font-kalameh500'>
-                                    سرویس بین شهری
+                                    {tourDetail.details.transportation}
                                 </p>
                             </div>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none">
                                     <path
@@ -139,12 +151,11 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>بیمه مسافران</p>
                                 <p className='w-full font-kalameh500'>
-                                    بیمه 10 هزارلیری<br/>
-                                    با پوشش حوادث
+                                    {tourDetail.details.insurance}
                                 </p>
                             </div>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="24" viewBox="0 0 23 24"
                                      fill="none">
                                     <path d="M0.718994 22.8555H21.7784" stroke="#FF7512" strokeWidth="1.4375"
@@ -169,12 +180,11 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>وعده های غذایی</p>
                                 <p className='w-full font-kalameh500'>
-                                    3 وعده <br/>
-                                    صبحانه ، ناهار ، شام
+                                    {tourDetail.details.meal}
                                 </p>
                             </div>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none">
                                     <path
@@ -183,11 +193,11 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>مدت زمان سفر</p>
                                 <p className='w-full font-kalameh500'>
-                                    3 شب و 4 روز
+                                    {tourDetail.details.travelTime}
                                 </p>
                             </div>
                             <div
-                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-md min-w-[215px] h-[144px] hover:shadow-xl'>
+                                className='bg-gradient-to-b from-[#F1F1F1] to-white to-80% flex flex-col items-start py-2 px-4 rounded-xl min-w-[215px] h-[144px] hover:shadow-xl'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" viewBox="0 0 22 19"
                                      fill="none">
                                     <path
@@ -212,8 +222,7 @@ const TourDetail = () => {
                                 </svg>
                                 <p className='text-[#A7A8A9] font-kalameh400 pb-2'>بازه سنـی</p>
                                 <p className='w-full font-kalameh500'>
-                                    مناسب برای <br/>
-                                    همه رده های سـنی
+                                    {tourDetail.details.ageRange}
                                 </p>
                             </div>
                         </div>
@@ -221,10 +230,7 @@ const TourDetail = () => {
                         <div>
                             <h1 className='text-[24px] lg:text-[32px] font-kalameh700 pt-[120px]'>خلاصـه ای از سفر</h1>
                             <p className='text-[18px] font-kalameh400 pt-[20px] text-justify'>
-                                لـورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان
-                                گرافیک اســـت، چاپگرها و متون بلکه روزنامه و مجله در ستون وسطر سطرآنچنان که لازم است،و
-                                برای شرایط فعلی تکنولوژی لـورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و
-                                با استفاده از طراحان گرافیک اســـت، چاپگرها و متون بلکه روزنامه .
+                                {tourDetail.summery}
                             </p>
                             <p className='text-[19px] text-[#3672B7] text-left pb-[180px]'>مشـاهده بیشتر</p>
                             <div className='flex flex-col gap-y-20'>
@@ -441,10 +447,12 @@ const TourDetail = () => {
                         <h1 className='text-[24px] lg:text-[30.8px] font-kalameh500 text-center pb-6'> انتخـاب تاریـخ
                             تـور</h1>
                         <div className='flex items-center gap-x-[8px]'>
-                            <button
-                                className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آبان'}</button>
-                            <button
-                                className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آذر'}</button>
+                            {tourDates.map(item => {
+                                return (
+                                    <button
+                                        className='focus:text-black focus:border-black text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] rounded-[10px]'>{item.startDate.month.name}</button>
+                                )
+                            })}
                         </div>
                         <SelectDropDown
                             arrowBlack
@@ -469,8 +477,13 @@ const TourDetail = () => {
                         >
                             <div
                                 className='text-[18px] text-[#616161] divide-y-[1px] flex flex-col gap-y-2 py-2 divide-[#D0D0D0]'>
-                                <div onClick={() => setTravelDate('17 آبـان - 20 آبـان')}>17 آبـان - 20 آبـان</div>
-                                <div onClick={() => setTravelDate('22 آبـان - 25 آبـان')}>22 آبـان - 25 آبـان</div>
+                                {tourDates.map((item, index) => {
+                                    return (
+                                        <div
+                                            onClick={() => setTravelDate(`${item.startDate.day} ${item.startDate.month.name} - ${item.endDate.day} ${item.endDate.month.name}`)}>{item.startDate.day} {item.startDate.month.name} - {item.endDate.day} {item.endDate.month.name}
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </SelectDropDown>
                         <SelectDropDown
@@ -596,8 +609,12 @@ const TourDetail = () => {
                             </div>
                         </SelectDropDown>
                         <div className='flex items-center justify-between'>
-                            <p className='text-[17.5px] font-kalameh400'>مجموع قیمت :</p>
-                            <p className='text-[22.8px] font-kalameh500'> 5.000.000 تومـان</p>
+                            <p className='text-[17.5px] font-kalameh400'>قیمت برای بزرگسال :</p>
+                            <p className='text-[22.8px] font-kalameh500'> {formatCurrency(tourDetail.price.adult)} تومـان</p>
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[17.5px] font-kalameh400'>قیمت برای کودکان :</p>
+                            <p className='text-[22.8px] font-kalameh500'> {formatCurrency(tourDetail.price.child)} تومـان</p>
                         </div>
                         <Button styles='text-[24px] font-kalameh400 rounded-[5px] h-[56px]' onClick={handleStep}>
                             تایید و ادامـه

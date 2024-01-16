@@ -22,47 +22,12 @@ import moment from "jalali-moment";
 //@ts-ignore
 import opacity from "react-element-popper/animations/opacity"
 import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
+import {useQuery} from "@tanstack/react-query";
+import {tripTourApi} from "@/axios-instances";
+import Loading from "@/app/components/Loading";
 
 
 const TourHomePage = () => {
-    const tourData = [
-        {
-            id: 1,
-            origin: 'تهران',
-            destination: 'استانبول',
-            price: '800.000'
-        },
-        {
-            id: 2,
-            origin: 'مشهد',
-            destination: 'عراق',
-            price: '800.000'
-        },
-        {
-            id: 3,
-            origin: 'قم',
-            destination: 'تایلند',
-            price: '800.000'
-        },
-        {
-            id: 4,
-            origin: 'تهران',
-            destination: 'دبی',
-            price: '800.000'
-        },
-        {
-            id: 5,
-            origin: 'اصفهان',
-            destination: 'ابوظبی',
-            price: '800.000'
-        },
-        {
-            id: 6,
-            origin: 'شیراز',
-            destination: 'شانگ های',
-            price: '800.000'
-        },
-    ]
     const jazebeTouristi = [
         {
             id: 1,
@@ -148,6 +113,15 @@ const TourHomePage = () => {
     const [filterValue , setFilterValue] = useState('فیلتر')
 
 
+    const fetchAllTour = async () : Promise<Tour[]>=>{
+        const res = await tripTourApi.get('tours/all')
+        return res.data.data
+    }
+
+    const {data,isLoading} = useQuery({
+        queryKey : ['allTour'],
+        queryFn : fetchAllTour
+    })
 
     const entryDate = new DateObject({
         //@ts-ignore
@@ -178,6 +152,9 @@ const TourHomePage = () => {
         }
         setPassengers(prev => prev - 1)
     }
+
+    if(isLoading) return <Loading/>
+    if(!data) return <p className='flex justify-center items-center font-kalameh500'>مشکلی رخ داده. لطفا اینترنت بررسی کن :)</p>
 
     return (
         <div className='flex flex-col'>
@@ -356,7 +333,7 @@ const TourHomePage = () => {
                     </SelectDropDown>
                 </div>
                 {/*قسمت فیلتر برای موبایل*/}
-                <TourList data={tourData}/>
+                <TourList data={data}/>
                 <div className='flex flex-col justify-center items-center pt-4'>
                     <p className='text-[22.4px] font-kalameh500 text-cblue pb-2'>مشاهده تورهای بیشتر</p>
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">

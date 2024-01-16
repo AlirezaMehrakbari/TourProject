@@ -29,10 +29,10 @@ type Villa = {
         averageRating: number,
         totalComments: number
     }
-    is_favorite : boolean
+    is_favorite: boolean
 }
 type PaginateVilla = {
-    data : Villa[],
+    data: Villa[],
     links: {
         first: string,
         last: string,
@@ -71,7 +71,7 @@ type Comments = {
     parent_id: string,
     created_at: string,
     updated_at: string,
-    user : User
+    user: User
 }
 type User = {
     id: number,
@@ -123,7 +123,61 @@ type VillaDetails = {
     facilities: Facilities[],
     comments: Comments[],
     user: User,
-    is_favorite : boolean
+    is_favorite: boolean
+}
+
+//Tour
+
+type Tour = {
+    id: number,
+    user_id: string,
+    title: string,
+    tourManager: string,
+    type: string,
+    details: {
+        place: string,
+        transportation: string,
+        insurance: string,
+        meal: string,
+        travelTime: string,
+        ageRange: string
+    },
+    price: {
+        adult: number,
+        child: number
+    },
+    origin: string,
+    destination: string,
+    date: [
+        {
+            start: string,
+            end: string,
+            capacity: number
+        },
+        {
+            start: string,
+            end: string,
+            capacity: number
+        }
+    ],
+    summery: string,
+    plan: [
+        {
+            day: string
+        },
+        {
+            day: string
+        }
+    ],
+    vehicle: {
+        come: string,
+        comeBack: string
+    },
+    flightClass: string,
+    flightNumber: string,
+    status: string,
+    created_at: string,
+
 }
 
 type transactionMap = {

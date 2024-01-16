@@ -8,7 +8,6 @@ import {useAppSelector} from "@/app/redux/store";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {tripTourApi} from "@/axios-instances";
 import DateObject from "react-date-object";
-import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 import {useRouter} from "next/navigation";
 import {toast} from 'react-toastify'
 

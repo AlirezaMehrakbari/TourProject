@@ -4,7 +4,6 @@ import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
 import Map from "@/app/components/Map";
-import formatCurrency from "@/app/utils/FormatCurrency";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";

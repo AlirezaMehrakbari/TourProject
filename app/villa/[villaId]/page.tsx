@@ -14,7 +14,7 @@ import {useAppSelector} from "@/app/redux/store";
 const VillaDetailPage = ({params: {villaId}}: any) => {
     const step = useStep()
     const userSession = useAppSelector(state=>state.userSlice)
-    const fetchVillaDetails = async (): Promise<VillaDetails> => {
+    const fetchVillaDetail = async (): Promise<VillaDetails> => {
         const res = await tripTourApi.get(`places/show/${villaId}`,{
             headers :{
                 Authorization :`Bearer ${userSession.value.token}`
@@ -24,14 +24,14 @@ const VillaDetailPage = ({params: {villaId}}: any) => {
     }
 
     const {data, isLoading, isError} = useQuery({
-        queryKey: ['villaDetails'],
-        queryFn: () => fetchVillaDetails(),
+        queryKey: ['villaDetail'],
+        queryFn: () => fetchVillaDetail(),
     })
     useEffect(() => {
         step.resetStep()
     }, [])
     if (isLoading) return <Loading/>
-    if (isError) return <p>Something Went Wrong!!!x</p>
+    if (isError) return <p>مشکلی رخ داده لطفا دوباره سعی کن :)</p>
     if (!data) return <p>Not Found!!</p>
     const getSectionComponent = () => {
         window.scrollTo(0, 0)

@@ -6,19 +6,33 @@ import Passengers from "@/app/components/process/Passengers";
 import ConfirmInformation from "@/app/components/process/ConfirmInformation";
 import PaymentDetail from "@/app/components/process/PaymentDetail";
 import Receipt from "@/app/components/process/Receipt";
-const TourDetailPage = () => {
-    // const step = useAppSelector(state=>state.stepSlice.step)
-    // const dispatch = useAppDispatch()
+import {useQuery} from "@tanstack/react-query";
+import {tripTourApi} from "@/axios-instances";
+import Loading from "@/app/components/Loading";
+const TourDetailPage = ({params : {tourId}} : any) => {
     const step = useStep()
+
+    const tourDetail = async ()=>{
+        const res = await tripTourApi.get(`tours/show/${tourId}`)
+        return res.data.data
+    }
+
+    const {data,isLoading,isError} = useQuery({
+        queryKey : ['tourDetail'],
+        queryFn : tourDetail
+
+    })
     useEffect(() => {
-        // dispatch(resetStep())
         step.resetStep()
     }, [])
+    if (isLoading) return <Loading/>
+    if (isError) return <p>مشکلی رخ داده لطفا دوباره سعی کن :)</p>
+    if (!data) return <p>Not Found!!</p>
     const getSectionComponent = () => {
         window.scrollTo(0, 0)
         switch (step.step) {
             case 0 :
-                return <TourDetail/>
+                return <TourDetail tourDetail = {data}/>
             case 1 :
                 return <Passengers/>
             case 2 :
