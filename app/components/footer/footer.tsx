@@ -46,7 +46,7 @@ const footer = () => {
                             <h3 className='text-[17px] font-kalameh700 pb-4'>همراه تریپ تور</h3>
                             <ul className='list-disc'>
                                 <li><Link href={'/'} className='text-[15px] font-kalameh500'>درباره ما</Link></li>
-                                <li><Link href={'/'} className='text-[15px] font-kalameh500'>تماس با ما</Link></li>
+                                <li><Link href={'/admin'} className='text-[15px] font-kalameh500'>تماس با ما</Link></li>
                                 <li><Link href={'/'} className='text-[15px] font-kalameh500'>شرایط ثبت اقامتگاه</Link>
                                 </li>
                             </ul>

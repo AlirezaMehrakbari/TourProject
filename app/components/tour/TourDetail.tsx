@@ -9,7 +9,7 @@ import Button from "@/app/components/Button";
 import useStep from "@/app/hooks/useStep";
 import {Metadata} from "next";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Stepper from "@/app/components/Stepper";
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
@@ -17,11 +17,18 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import {getAllDatesInRange} from "react-multi-date-picker";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {toast} from "react-toastify";
+import {useAppDispatch, useAppSelector} from "@/app/redux/store";
+import {setTourReserve} from "@/app/redux/slices/tourReserve-slice";
 
 
-const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
+const TourDetail = ({tourDetail}: {
+    tourDetail: Tour
+}) => {
+    const dispatch = useAppDispatch()
+    const tourReserveDetail = useAppSelector(state=>state.tourReserve)
     const step1 = useStep()
     const [travelDate, setTravelDate] = useState<any>('تاریخ سفر را مشخص کنید')
+    const [selectedTravelDate , setSelectedTravelDate] = useState()
     const [passengers, setPassengers] = useState({
         adult2: 0,
         adult1: 0,
@@ -60,13 +67,24 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
     const durationTour = getAllDatesInRange([new DateObject(tourDetail.date[0].start), new DateObject(tourDetail.date[0].end)])
 
     const handleStep = () => {
-        if (travelDate === 'تاریخ سفر را مشخص کنید' || passengers.child2 === 0 || passengers.childFrom2to12 === 0 || passengers.adult1 === 0 || passengers.adult2 === 0) {
-            toast.error('لطفا تعداد مسافران و تاریخ تور را انتخاب نمایید.')
+        if (travelDate === 'تاریخ سفر را مشخص کنید') {
+            toast.error('لطفا تاریخ سفر خود را مشخص کنید')
+            return
+        }else if(passengers.adult1 === 0 && passengers.adult2 === 0){
+            toast.error('لطفا تعداد مسافران بزرگسال خود را انتخاب کنید')
             return
         }
-
+        dispatch(setTourReserve({
+           passengersCount : {
+               adult1 : passengers.adult1,
+               adult2 : passengers.adult2,
+               child2 : passengers.child2,
+               childFrom2to12 : passengers.childFrom2to12
+           } ,
+           entryDate : travelDate.startDate,
+           exitDate : travelDate.endDate,
+        }))
         step1.nextStep()
-        console.log(step1.step)
     }
 
     return (
@@ -74,27 +92,31 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
             <Stepper/>
             <div className='w-[95%] xl:w-[80%] mx-auto md:pt-[10rem]'>
                 <div className='flex item-center justify-between w-full py-8 h-full'>
-                    <Image
-                        className='w-[70%] object-cover rounded-[12px]'
-                        src={TourDetail0}
-                        alt={'Tour Detail Picture'}
-                    />
+                    <div className='relative w-[70%] h-[460px]'>
+                        <Image
+                            className='object-cover rounded-[12px] absolute'
+                            src={tourDetail.medias[0]}
+                            alt={'Tour Detail Picture'}
+                            fill={true}
+                        />
+                    </div>
                     <div className='flex gap-y-3 flex-col w-[25%] justify-between'>
-                        <Image
-                            className='rounded-[12px]'
-                            src={TourDetail1}
-                            alt={'Tour Detail Picture'}
-                        />
-                        <Image
-                            className='rounded-[12px]'
-                            src={TourDetail2}
-                            alt={'Tour Detail Picture'}
-                        />
-                        <Image
-                            className='rounded-[12px]'
-                            src={TourDetail3}
-                            alt={'Tour Detail Picture'}
-                        />
+                        <div className='relative w-[40%] h-[200px]'>
+                            {tourDetail.medias.filter((item, index) => {
+                                return index > 0
+                            }).map(item => {
+                                return (
+                                    <div className='absolute'>
+                                        <Image
+                                            className='rounded-[12px]'
+                                            src={item}
+                                            alt={'Tour Detail Picture'}
+                                            fill={true}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
 
@@ -271,37 +293,37 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                                     <button
                                         className='text-[22.8px] font-kalameh400 border-[0.2px] px-[32px] py-[4px] text-[#848282] active:text-[#000] rounded-[10px]'>{'آذر'}</button>
                                 </div>
-                                <SelectDropDown
-                                    arrowBlack
-                                    label={travelDate}
-                                    styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
-                                    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                               viewBox="0 0 24 24"
-                                               fill="none">
-                                        <path
-                                            d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"
-                                            stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
-                                            strokeLinejoin="round"/>
-                                        <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"
-                                              strokeLinejoin="round"/>
-                                        <path
-                                            d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"
-                                            fill="#FF7512"/>
-                                        <path
-                                            d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"
-                                            fill="#FF7512"/>
-                                    </svg>}
-                                    dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'
-                                    labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'
-                                >
-                                    <div
-                                        className='text-[18px] text-[#616161] divide-y-[1px] flex flex-col gap-y-2 py-2 divide-[#D0D0D0]'>
-                                        <div onClick={() => setTravelDate('17 آبـان - 20 آبـان')}>17 آبـان - 20 آبـان
-                                        </div>
-                                        <div onClick={() => setTravelDate('22 آبـان - 25 آبـان')}>22 آبـان - 25 آبـان
-                                        </div>
-                                    </div>
-                                </SelectDropDown>
+                                {/*<SelectDropDown*/}
+                                {/*    arrowBlack*/}
+                                {/*    label={travelDate}*/}
+                                {/*    styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'*/}
+                                {/*    icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
+                                {/*               viewBox="0 0 24 24"*/}
+                                {/*               fill="none">*/}
+                                {/*        <path*/}
+                                {/*            d="M21 6.30469H3C1.89543 6.30469 1 7.22499 1 8.36024V20.6936C1 21.8288 1.89543 22.7491 3 22.7491H21C22.1046 22.7491 23 21.8288 23 20.6936V8.36024C23 7.22499 22.1046 6.30469 21 6.30469Z"*/}
+                                {/*            stroke="#FF7512" strokeWidth="2" strokeLinecap="round"*/}
+                                {/*            strokeLinejoin="round"/>*/}
+                                {/*        <path d="M1 12.4727H23" stroke="#FF7512" strokeWidth="2" strokeLinecap="round"*/}
+                                {/*              strokeLinejoin="round"/>*/}
+                                {/*        <path*/}
+                                {/*            d="M8.5 2C8.5 1.17157 7.82843 0.5 7 0.5C6.17157 0.5 5.5 1.17157 5.5 2L8.5 2ZM5.5 2L5.5 8L8.5 8L8.5 2L5.5 2Z"*/}
+                                {/*            fill="#FF7512"/>*/}
+                                {/*        <path*/}
+                                {/*            d="M18.5 2C18.5 1.17157 17.8284 0.5 17 0.5C16.1716 0.5 15.5 1.17157 15.5 2L18.5 2ZM15.5 2L15.5 8L18.5 8L18.5 2L15.5 2Z"*/}
+                                {/*            fill="#FF7512"/>*/}
+                                {/*    </svg>}*/}
+                                {/*    dropDownStyles='bg-[#FEFEFE] top-[3.5rem] w-full inset-x-0 mx-auto border-t-[1px] border-[#7B7B7B] pt-2'*/}
+                                {/*    labelStyles='flex items-center gap-x-4 text-[18px] text-[#9F9F9F] py-2'*/}
+                                {/*>*/}
+                                {/*    <div*/}
+                                {/*        className='text-[18px] text-[#616161] divide-y-[1px] flex flex-col gap-y-2 py-2 divide-[#D0D0D0]'>*/}
+                                {/*        <div onClick={() => setTravelDate('17 آبـان - 20 آبـان')}>17 آبـان - 20 آبـان*/}
+                                {/*        </div>*/}
+                                {/*        <div onClick={() => setTravelDate('22 آبـان - 25 آبـان')}>22 آبـان - 25 آبـان*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*</SelectDropDown>*/}
                                 <SelectDropDown
                                     isCounter
                                     arrowBlack
@@ -460,7 +482,7 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                         </div>
                         <SelectDropDown
                             arrowBlack
-                            label={travelDate}
+                            label={travelDate.startDate ? `${travelDate.startDate?.day} ${travelDate.startDate?.month.name} - ${travelDate.endDate?.day} ${travelDate.endDate?.month.name}` : 'تاریخ سفر را مشخص کنید'}
                             styles='flex flex-col  items-baseline justify-between bg-white w-[98%] px-4 py-2 rounded-[10px] cursor-pointer'
                             icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                        fill="none">
@@ -484,7 +506,7 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                                 {tourDates.map((item, index) => {
                                     return (
                                         <div
-                                            onClick={() => setTravelDate(`${item.startDate.day} ${item.startDate.month.name} - ${item.endDate.day} ${item.endDate.month.name}`)}>{item.startDate.day} {item.startDate.month.name} - {item.endDate.day} {item.endDate.month.name}
+                                            onClick={() =>setTravelDate(item)}>{item.startDate.day} {item.startDate.month.name} - {item.endDate.day} {item.endDate.month.name}
                                         </div>
                                     )
                                 })}
@@ -613,11 +635,11 @@ const TourDetail = ({tourDetail}: { tourDetail: Tour }) => {
                             </div>
                         </SelectDropDown>
                         <div className='flex items-center justify-between'>
-                            <p className='text-[17.5px] font-kalameh400'>قیمت برای بزرگسال :</p>
+                            <p className='xl:text-[17.5px] font-kalameh400'>قیمت برای بزرگسال :</p>
                             <p className='text-[22.8px] font-kalameh500'> {formatCurrency(tourDetail.price.adult)} تومـان</p>
                         </div>
                         <div className='flex items-center justify-between'>
-                            <p className='text-[17.5px] font-kalameh400'>قیمت برای کودکان :</p>
+                            <p className='xl:text-[17.5px] font-kalameh400'>قیمت برای کودکان :</p>
                             <p className='text-[22.8px] font-kalameh500'> {formatCurrency(tourDetail.price.child)} تومـان</p>
                         </div>
                         <Button styles='text-[24px] font-kalameh400 rounded-[5px] h-[56px]' onClick={handleStep}>

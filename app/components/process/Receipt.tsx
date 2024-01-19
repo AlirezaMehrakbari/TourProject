@@ -8,11 +8,14 @@ import {getAllDatesInRange} from "react-multi-date-picker";
 
 type ReceiptProps = {
     isVilla?: boolean,
-    villaDetails?: VillaDetails
+    villaDetails?: VillaDetails,
+    tourDetail?: Tour
 }
-const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
-    const userSession = useAppSelector(state=>state.userSlice)
-    const villaReserveDetail = useAppSelector(state=>state.villaReserve)
+const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) => {
+    const userSession = useAppSelector(state => state.userSlice)
+    const villaReserveDetail = useAppSelector(state => state.villaReserve)
+    const tourReserveDetail = useAppSelector(state => state.tourReserve)
+    if (!tourDetail) return null
     return (
         <div className='bg-[#F5F5F5] min-h-screen flex flex-col items-center'>
             <Stepper isVilla={isVilla}/>
@@ -68,23 +71,34 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
                                 <p>{isVilla && villaDetails ? formatCurrency(+(villaReserveDetail.duration) * +(villaDetails?.pricePerNight)) : ''}</p>
+                                <p>{!isVilla && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}</p>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ رفت : </p>
-                                    {//@ts-ignore
-                                        <p>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} ماه</p>}
+                                    {isVilla ? (
+                                        //@ts-ignore
+                                        <p>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} ماه</p>
+                                    ) : (
+                                        //@ts-ignore
+                                        <p>{tourDetailReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month.name} ماه</p>
+                                    )}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ برگشت : </p>
-                                    {//@ts-ignore
-                                    <p>{villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name} ماه</p>}
+                                    {isVilla ? (
+                                        //@ts-ignore
+                                        <p>{villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name} ماه</p>
+                                    ) : (
+                                        //@ts-ignore
+                                        <p>{tourDetailReserveDetail.exitDate.day} {tourReserveDetail.exitDate.month.name} ماه</p>
+                                    )}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تعداد مسافران : </p>
-                                    <p>{villaReserveDetail.passengers} نفر</p>
+                                    {isVilla ?  <p>{villaReserveDetail.passengers} نفر</p> :  <p>{tourReserveDetail.passengers.length} نفر</p>}
                                 </div>
                             </div>
                         </div>

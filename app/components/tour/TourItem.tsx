@@ -14,7 +14,7 @@ export type TourItemProps = {
     startDateTour: string,
     endDateTour: string,
     vehicle: {
-        come: string,
+        com: string,
         comeBack: string
     }
     tourManager: string
@@ -46,7 +46,7 @@ const TourItem: React.FC<TourItemProps> = ({
                             <p>{startDate.day} {startDate.month.name} - {endDate.day} {endDate.month.name}</p>
                         </div>
                         <div>
-                            <p>رفت : {vehicle.come} - برگشت : {vehicle.comeBack}</p>
+                            <p>رفت : {vehicle.com} - برگشت : {vehicle.comeBack}</p>
                             <p>تور مسافرتی {tourManager}</p>
                         </div>
                     </div>

@@ -22,9 +22,9 @@ import moment from "jalali-moment";
 //@ts-ignore
 import opacity from "react-element-popper/animations/opacity"
 import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
-import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
+import {useInfiniteQuery} from "@tanstack/react-query";
 
 
 const TourHomePage = () => {
@@ -110,19 +110,33 @@ const TourHomePage = () => {
     const [destination, setDestination] = useState('مقصد')
     const [passengers, setPassengers] = useState(0)
     const [values, setValues] = useState([])
-    const [filterValue , setFilterValue] = useState('فیلتر')
+    const [filterValue, setFilterValue] = useState('فیلتر')
+    const [activeButton, setActiveButton] = useState('cheapest')
 
+    const handleFilter = (e: any, text?: string) => {
+        setActiveButton(e.target.name)
+        text && setFilterValue(text)
 
-    const fetchAllTour = async () : Promise<Tour[]>=>{
-        const res = await tripTourApi.get('tours/all')
-        return res.data.data
     }
 
-    const {data,isLoading} = useQuery({
-        queryKey : ['allTour'],
-        queryFn : fetchAllTour
-    })
+    const fetchAllTour = async ({pageParam = 1}): Promise<Tours> => {
+        const res = await tripTourApi.get(`tours/all?paginate=4&page=${pageParam}&filter=${activeButton}`)
+        return res.data
+    }
 
+    const {data, isLoading, isFetching,isRefetching, hasNextPage, fetchNextPage} = useInfiniteQuery({
+        queryKey: ['allTour', activeButton],
+        //@ts-ignore
+        queryFn: fetchAllTour,
+        getNextPageParam: (lastPage, page) => {
+            if (lastPage.meta.current_page < lastPage.meta.last_page) {
+                return lastPage.meta.current_page + 1
+            } else {
+                return undefined
+            }
+        },
+        initialPageParam: undefined
+    })
     const entryDate = new DateObject({
         //@ts-ignore
         year: values[0]?.year,
@@ -153,8 +167,9 @@ const TourHomePage = () => {
         setPassengers(prev => prev - 1)
     }
 
-    if(isLoading) return <Loading/>
-    if(!data) return <p className='flex justify-center items-center font-kalameh500'>مشکلی رخ داده. لطفا اینترنت بررسی کن :)</p>
+    if (isLoading) return <Loading/>
+    if (!data) return <p className='flex justify-center items-center font-kalameh500'>مشکلی رخ داده. لطفا اینترنت بررسی
+        کن :)</p>
 
     return (
         <div className='flex flex-col'>
@@ -275,18 +290,26 @@ const TourHomePage = () => {
             <section className='w-[70%] mx-auto'>
                 {/*قسمت فیلتر تورها*/}
                 <div className='flex justify-between pt-20 '>
-                    <h4 className='sm:text-[20.6px] font-kalameh700 flex justify-center items-center'>دسـته بندی بر اسـاس</h4>
+                    <h4 className='sm:text-[20.6px] font-kalameh700 flex justify-center items-center'>دسـته بندی بر
+                        اسـاس</h4>
                     {/*768 به بالا*/}
                     <div className='hidden lg:flex items-center justify-between lg:gap-x-2 xl:w-[70%]'>
                         <button
-                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>پیـشــنهاد
+                            name={'suggested'}
+                            onClick={(e) => handleFilter(e)}
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'suggested' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>
+                            پیـشــنهاد
                             مــا
                         </button>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
                             <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
                                   strokeLinecap="round"/>
                         </svg>
-                        <button className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>به
+                        <button
+                            name={'latest'}
+                            onClick={(e) => handleFilter(e)}
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'latest' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}
+                        >به
                             روزترین
                         </button>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
@@ -294,14 +317,18 @@ const TourHomePage = () => {
                                   strokeLinecap="round"/>
                         </svg>
                         <button
-                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>ارزانترین
+                            name={'cheapest'}
+                            onClick={(e) => handleFilter(e)}
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'cheapest' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>ارزانترین
                         </button>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
                             <path d="M0.5 1L0.499995 114" stroke="#000" strokeOpacity="0.67" strokeWidth="0.8"
                                   strokeLinecap="round"/>
                         </svg>
                         <button
-                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>گران
+                            name={'expensive'}
+                            onClick={(e) => handleFilter(e)}
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'expensive' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>گران
                             ترین
                         </button>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1" height='40' viewBox="0 0 1 115" fill="none">
@@ -309,11 +336,14 @@ const TourHomePage = () => {
                                   strokeLinecap="round"/>
                         </svg>
                         <button
-                            className='bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full'>نزدیک
+                            name={'nearest'}
+                            onClick={(e) => handleFilter(e)}
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'nearest' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>نزدیک
                             ترین
                             تاریـخ
                         </button>
                     </div>
+                    {/*قسمت فیلتر برای موبایل*/}
                     <SelectDropDown
                         label={filterValue}
                         styles={'flex lg:hidden relative bg-orange text-white px-4 py-2 rounded-[8px] flex flex-col items-center cursor-pointer w-[40%] sm:w-[20%]'}
@@ -323,29 +353,40 @@ const TourHomePage = () => {
                         <div
                             className='absolute bg-orange text-white top-[22px] py-4 px-2 w-full rounded-br-[7.6px] rounded-bl-[7.6px] font-kalameh500'>
                             <ul className='flex flex-col gap-y-2 justify-center items-center'>
-                             <li>پیـشــنهاد مــا</li>
-                             <li>به روز تریــن</li>
-                             <li>ارزانترین</li>
-                             <li>گران ترین</li>
-                             <li>نزدیک ترین تاریخ</li>
+                                <button className='hover:text-yellow-200' name={'suggested'} onClick={(e) => handleFilter(e, 'پیشنهاد ما')}>پیـشــنهاد
+                                    مــا
+                                </button>
+                                <button className='hover:text-yellow-200' name={'latest'} onClick={(e) => handleFilter(e, 'به روزترین')}>به روز تریــن
+                                </button>
+                                <button className='hover:text-yellow-200' name={'cheapest'} onClick={(e) => handleFilter(e, 'ارزانترین')}>ارزانترین
+                                </button>
+                                <button className='hover:text-yellow-200' name={'expensive'} onClick={(e) => handleFilter(e, 'گرانترین')}>گران ترین
+                                </button>
+                                <button className='hover:text-yellow-200' name={'nearest'} onClick={(e) => handleFilter(e, 'نزدیک ترین تاریخ')}>نزدیک ترین
+                                    تاریخ
+                                </button>
                             </ul>
                         </div>
                     </SelectDropDown>
                 </div>
-                {/*قسمت فیلتر برای موبایل*/}
-                <TourList data={data}/>
-                <div className='flex flex-col justify-center items-center pt-4'>
-                    <p className='text-[22.4px] font-kalameh500 text-cblue pb-2'>مشاهده تورهای بیشتر</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
-                        <path d="M6.5 8.625L13 14.375L19.5 8.625" stroke="#3672B7" strokeWidth="1.92262"
-                              strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <svg className='mt-[-15px]' xmlns="http://www.w3.org/2000/svg" width="26" height="23"
-                         viewBox="0 0 26 23" fill="none">
-                        <path d="M6.5 8.625L13 14.375L19.5 8.625" stroke="#3672B7" strokeWidth="1.92262"
-                              strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </div>
+                {isRefetching ? <span className="loading loading-dots loading-md bg-orange mx-auto flex justify-center items-center mt-8"></span>  : <TourList data={data}/>}
+                {hasNextPage && !isFetching &&
+                    <div onClick={() => fetchNextPage()}
+                         className='flex flex-col justify-center items-center pt-4 cursor-pointer'>
+                        <p className='text-[22.4px] font-kalameh500 text-cblue pb-2'>مشاهده تورهای بیشتر</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+                            <path d="M6.5 8.625L13 14.375L19.5 8.625" stroke="#3672B7" strokeWidth="1.92262"
+                                  strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <svg className='mt-[-15px]' xmlns="http://www.w3.org/2000/svg" width="26" height="23"
+                             viewBox="0 0 26 23" fill="none">
+                            <path d="M6.5 8.625L13 14.375L19.5 8.625" stroke="#3672B7" strokeWidth="1.92262"
+                                  strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </div>
+                }
+                {isFetching && !isRefetching  &&
+                    <span className="loading loading-dots loading-md bg-orange mx-auto flex justify-center items-center mt-8"></span>}
                 <div className='hidden md:block relative w-full'>
                     <Image
                         className='mx-auto rounded-[20px] my-4 h-[464px] object-cover'

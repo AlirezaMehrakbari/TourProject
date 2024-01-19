@@ -11,14 +11,18 @@ import DateObject from "react-date-object";
 import {useRouter} from "next/navigation";
 import {toast} from 'react-toastify'
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
+import {getAllDatesInRange} from "react-multi-date-picker";
+import passengers from "@/app/components/process/Passengers";
 
 type PaymentDetailProps = {
     isVilla?: boolean,
-    villaDetails?: VillaDetails
+    villaDetails?: VillaDetails,
+    tourDetail?: Tour
 }
-const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) => {
+const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tourDetail}) => {
     const step = useStep()
     const villaReserveDetail = useAppSelector(state => state.villaReserve)
+    const tourReserveDetail = useAppSelector(state => state.tourReserve)
     const userSession = useAppSelector(state => state.userSlice)
     const router = useRouter()
 
@@ -44,30 +48,58 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
         }).format())
     const handlePayment = (e: any) => {
         e.preventDefault()
-        tripTourApi.post('reservations/reservationPlace', {
-            place_id: villaDetails?.id,
-            checkIn,
-            checkOut,
-            number: villaReserveDetail.passengers
-        }, {
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        }).then(res => {
-            step.nextStep()
-            toast.success('رزور شما با موفقیت انجام شد.')
-            // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
-            //     headers: {
-            //         Authorization: `Bearer ${userSession.value.token}`
-            //     }
-            // }).then(res => {
-            //     router.push(`${res.data.paymentUrl}`)
-            // })
-        }).catch(error => {
-            console.log(error)
-        })
+        if (isVilla) {
+            tripTourApi.post('reservations/reservationPlace', {
+                place_id: villaDetails?.id,
+                checkIn,
+                checkOut,
+                number: villaReserveDetail.passengers
+            }, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    Authorization: `Bearer ${userSession.value.token}`
+                }
+            }).then(res => {
+                step.nextStep()
+                toast.success('رزور شما با موفقیت انجام شد.')
+                // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
+                //     headers: {
+                //         Authorization: `Bearer ${userSession.value.token}`
+                //     }
+                // }).then(res => {
+                //     router.push(`${res.data.paymentUrl}`)
+                // })
+            }).catch(error => {
+                console.log(error)
+            })
+        }else{
+            tripTourApi.post('reservations/reservationPlace', {
+                place_id: villaDetails?.id,
+                checkIn,
+                checkOut,
+                number: villaReserveDetail.passengers
+            }, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    Authorization: `Bearer ${userSession.value.token}`
+                }
+            }).then(res => {
+                step.nextStep()
+                toast.success('رزور شما با موفقیت انجام شد.')
+                // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
+                //     headers: {
+                //         Authorization: `Bearer ${userSession.value.token}`
+                //     }
+                // }).then(res => {
+                //     router.push(`${res.data.paymentUrl}`)
+                // })
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+
     }
+    if (!tourDetail) return null
     return (
         <div>
             <Stepper isVilla={isVilla}/>
@@ -93,8 +125,13 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تـاریـخ سفـر</p>
-                            {//@ts-ignore
-                                <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name}</p>}
+                            {
+                                isVilla ?
+                                    //@ts-ignore
+                                    <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month?.name}</p> :
+                                    //@ts-ignore
+                                    <p className='font-kalameh500'> {tourReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month?.name}</p>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -115,7 +152,10 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تعـداد مسافران</p>
-                            <p className='font-kalameh500'>{villaReserveDetail.passengers} نفــر</p>
+                            {
+                                isVilla ? <p className='font-kalameh500'>{villaReserveDetail.passengers} نفــر</p>
+                                    : <p className='font-kalameh500'>{tourReserveDetail.passengers.length} نفــر</p>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -151,7 +191,16 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             <p className='text-[11.2px] text-[#777]'>
                                 {isVilla ? 'هزینه اقامت هرشب' : 'هزینه پرداختی'}
                             </p>
-                            <p className='font-kalameh500'>{villaDetails && formatCurrency(+villaDetails.pricePerNight)} تومـان</p>
+                            {isVilla ? (
+                                <p className='font-kalameh500'>{villaDetails && formatCurrency(+villaDetails.pricePerNight)} تومـان</p>
+                            ) : (
+                                <p className='font-kalameh500 flex items-center'>
+                                <span className='pl-[5px]'>
+                                    {formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}
+                                </span>
+                                    تومـان
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -194,7 +243,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             ) : (
                                 <>
                                     <p className='text-[11.2px] text-[#777]'>حمل و نقـل</p>
-                                    <p className='font-kalameh500'>هواپــیــما</p>
+                                    <p className='font-kalameh500'>{tourDetail?.vehicle.com}</p>
                                 </>
                             )}
                         </div>
@@ -215,8 +264,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                                 </>
                             ) : (
                                 <>
-                                    <p className='text-[14.3px] font-kalameh400'>تـور زمینی تهران - استانبول</p>
-                                    <p className='text-[11px] text-[#777676]'>هـتل پنج ســتاره استانبول</p>
+                                    <p className='text-[14.3px] font-kalameh400'>{tourDetail?.title}</p>
+                                    <p className='text-[11px] text-[#777676]'>{tourDetail?.details.place}</p>
                                 </>
                             )}
                         </div>
@@ -236,18 +285,14 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             </>
                         ) : (
                             <>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 1 : امیـر محمدی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 2 : علیرضا دارابی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 3 : ارسلان دارابی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
+                                {tourReserveDetail.passengers.map((item, index) => {
+                                    return (
+                                        <div className='text-[10.6px] text-[#808080] flex justify-between'>
+                                            <p>مسافر {(+item.birthDate.slice(0, 4)) < 2002 && 'کودک'} {index + 1} : {item.latinFirstName}{item.latinLastName}</p>
+                                            <p>{(+item.birthDate.slice(0, 4)) < 2002 ? `${formatCurrency(tourDetail.price.child)}` : formatCurrency(tourDetail.price.adult)} تومــان</p>
+                                        </div>
+                                    )
+                                })}
                             </>
                         )}
                     </div>

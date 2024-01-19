@@ -11,8 +11,6 @@ type VillaListProps = {
 }
 
 const VillaList: React.FC<VillaListProps> = ({data}) => {
-    const userSession = useAppSelector(state => state.userSlice)
-
     return (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10">
             {data.map(item => {
