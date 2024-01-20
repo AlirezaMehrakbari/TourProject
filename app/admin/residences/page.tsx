@@ -11,7 +11,7 @@ const ResidencesPage = () => {
     const router = useRouter()
     const userSession = useAppSelector(state=>state.userSlice)
     const fetchUserPlaces = async (): Promise<Villa[]> => {
-        const res = await tripTourApi.get('users/getUserPlaces', {
+        const res = await tripTourApi.get('places/advertiserPlaces', {
             headers: {
                 Authorization: `Bearer ${userSession.value.token}`
             }

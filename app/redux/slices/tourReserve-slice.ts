@@ -65,7 +65,8 @@ export const TourReserveSlice = createSlice({
                     birthDate: selectedPassenger.birthDate,
                     expirationDatePassport: selectedPassenger.expirationDatePassport,
                     nationality: selectedPassenger.nationality
-                })} else {
+                })
+            } else {
                 existingPassenger.latinFirstName = selectedPassenger.latinFirstName
                 existingPassenger.latinLastName = selectedPassenger.latinLastName
                 existingPassenger.gender = selectedPassenger.gender

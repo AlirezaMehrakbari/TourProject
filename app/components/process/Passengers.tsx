@@ -15,25 +15,19 @@ import {tripTourApi} from "@/axios-instances";
 
 const Passengers = ({tourDetail}: { tourDetail: Tour }) => {
     const step = useStep()
-    const passengers = useAppSelector(state=>state.tourReserve.passengers)
     const tourReserveDetail = useAppSelector(state => state.tourReserve)
-    const count = tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12 + tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2
-    let passengersCount = Array.from({length: count}, (value, index) => index);
+    const adultCount = tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2
+    const childCount = tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12
+    const allCount = adultCount + childCount
+    let adultPassengerCount = Array.from({length: adultCount}, (value, index) => index);
+    let childPassengerCount = Array.from({length: childCount}, (value, index) => index);
 
-    const handleStep = (e:any)=>{
+    const handleStep = (e: any) => {
         e.preventDefault()
-        console.log(passengers.length)
-        if(count !== passengers.length){
+        if (allCount !== tourReserveDetail.passengers.length) {
             toast.warn('لطفا اطلاعات مسافران را کامل کنید.')
             return
         }
-        tripTourApi.post('passengers/store',{
-            passenger : passengers
-        }).then(res=>{
-            console.log(res)
-        }).catch(error=>{
-            console.log(error)
-        })
         step.nextStep()
     }
 
@@ -41,11 +35,18 @@ const Passengers = ({tourDetail}: { tourDetail: Tour }) => {
         <div>
             <Stepper/>
             <form className='pt-[10rem]'>
-                {passengersCount.map((passenger, index) => {
+                {adultPassengerCount.map((passenger, index) => {
                     return (
-                       <PassengerForm tourDetail={tourDetail} index={index}/>
+                        <PassengerForm tourDetail={tourDetail} index={index}/>
                     )
                 })}
+                {childPassengerCount &&
+                    childPassengerCount.map((passenger, index) => {
+                        return (
+                            <PassengerForm tourDetail={tourDetail} index={index} childPassenger/>
+                        )
+                    })
+                }
                 <Button
                     onClick={handleStep}
                     styles='text-[24px] font-kalameh500 mx-auto h-[61px] mt-10 rounded-[16px] px-4'

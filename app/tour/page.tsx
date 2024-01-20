@@ -175,10 +175,10 @@ const TourHomePage = () => {
         <div className='flex flex-col'>
             <Navbar/>
             <Image
-                className='rounded-xl mt-[12rem] max-h-[564px] xl:max-w-[1164px] lg:max-w-[900px] md:max-w-[700px] mx-auto object-cover'
+                className='rounded-xl mt-[10rem] max-h-[564px] xl:max-w-[1164px] lg:max-w-[900px] md:max-w-[700px] mx-auto object-cover'
                 src={TourHomePicture}
                 alt='Tour Picture'/>
-            <div className='mx-auto mt-[-30px]'>
+            <div className='mx-auto mt-[-60px]'>
                 <Layout>
                     <form className='xl:w-[1020px] grid xl:grid-cols-5 md:grid-cols-2 gap-8'>
                         <div className='flex flex-col gap-y-4'>

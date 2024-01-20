@@ -8,18 +8,34 @@ import DateObject from "react-date-object";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import {setPassengers} from "@/app/redux/slices/tourReserve-slice";
+import {toast} from "react-toastify";
 
-const PassengerForm = ({tourDetail, index}: { tourDetail: Tour, index: number }) => {
+const PassengerForm = ({tourDetail, index, childPassenger}: {
+    tourDetail: Tour,
+    index: number,
+    childPassenger?: boolean
+}) => {
     const dispatch = useAppDispatch()
-    const passengers = useAppSelector(state=>state.tourReserve.passengers)
-    const [birthDate, setBirthDate] = useState()
-    const [expirationDatePassport, setExpirationDatePassport] = useState()
+    const passengers = useAppSelector(state => state.tourReserve.passengers)
+    const [childBirthDate, setChildBirthDate] = useState(new DateObject().subtract(12, 'years'))
+    const [adultBirthDate, setAdultBirthDate] = useState(new DateObject().subtract(18,'years'))
+    const [expirationDatePassport, setExpirationDatePassport] = useState(new DateObject().add(1,'month'))
     const [isEdit, setIsEdit] = useState<boolean>(false)
-    const [isNationalCodeDisabled,setIsNationalCodeDisabled]= useState(false)
+    const [isNationalCodeDisabled, setIsNationalCodeDisabled] = useState(false)
     const tourReserveDetail = useAppSelector(state => state.tourReserve)
-    const {handleSubmit, register,formState:{errors}} = useForm()
+    const {handleSubmit, register, formState: {errors}} = useForm()
     const handleAddPassenger: SubmitHandler<FieldValues> = (data) => {
-        let birthDate_convert = new DateObject({date: birthDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
+        if(passengers.some(item=>item.nationalCode === data.nationalCode)){
+            toast.error('کد ملی تکراری است!')
+            return
+        }
+        let birthDate_convert;
+        if(childPassenger){
+        birthDate_convert = new DateObject({date: childBirthDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
+        }else{
+            birthDate_convert = new DateObject({date: adultBirthDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
+        }
+
         let expirationDatePassport_convert = new DateObject({date: expirationDatePassport}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
         const newData = {
             ...data,
@@ -29,6 +45,7 @@ const PassengerForm = ({tourDetail, index}: { tourDetail: Tour, index: number })
         }
         setIsEdit(true)
         dispatch(setPassengers(newData))
+        console.log(passengers)
         setIsNationalCodeDisabled(true)
     }
     return (
@@ -56,7 +73,8 @@ const PassengerForm = ({tourDetail, index}: { tourDetail: Tour, index: number })
                             strokeLinejoin="round"/>
                     </svg>
                     <div>
-                        <h4 className='text-[19.7px] font-kalameh500'>مشخـصات مسافر {index + 1}</h4>
+                        <h4 className='text-[19.7px] font-kalameh500'>مشخـصات
+                            مسافر {index + 1} {childPassenger && 'کودک'}</h4>
                         <p className='text-[17px] text-[#616060]'> {tourDetail.title}</p>
                     </div>
                 </div>
@@ -142,17 +160,35 @@ const PassengerForm = ({tourDetail, index}: { tourDetail: Tour, index: number })
                 <div
                     className="bg-gradient-to-t from-[#000] to-[#F7F7F6] to-90% p-[1px] rounded-md relative mt-[45px]">
                     <div className='w-full'>
-                        <DatePicker
-                            inputClass='bg-[#F7F7F6] p-2 outline-0 w-full rounded-md'
-                            value={birthDate}
-                            disabled={isEdit}
-                            //@ts-ignore
-                            onChange={setBirthDate}
-                            fixMainPosition={true}
-                            calendar={persian}
-                            locale={persian_fa}
-                            calendarPosition="bottom"
-                        />
+                        {!childPassenger &&
+                            <DatePicker
+                                inputClass='bg-[#F7F7F6] p-2 outline-0 w-full rounded-md'
+                                value={adultBirthDate}
+                                maxDate={new DateObject().subtract(18, 'years')}
+                                disabled={isEdit}
+                                //@ts-ignore
+                                onChange={setAdultBirthDate}
+                                fixMainPosition={true}
+                                calendar={persian}
+                                locale={persian_fa}
+                                calendarPosition="bottom"
+                            />
+
+                        }
+                        {childPassenger &&
+                            <DatePicker
+                                inputClass='bg-[#F7F7F6] p-2 outline-0 w-full rounded-md'
+                                value={childBirthDate}
+                                minDate={new DateObject().subtract(12, 'years')}
+                                disabled={isEdit}
+                                //@ts-ignore
+                                onChange={setChildBirthDate}
+                                fixMainPosition={true}
+                                calendar={persian}
+                                locale={persian_fa}
+                                calendarPosition="bottom"
+                            />
+                        }
                     </div>
                     <p className={`absolute top-[-12px] text-[#8C8C8C] text-[17px] right-[8px] ${errors.latinFirstName?.type === 'required' && 'text-red-500'}`}>تاریخ
                         تولد</p>
@@ -171,17 +207,18 @@ const PassengerForm = ({tourDetail, index}: { tourDetail: Tour, index: number })
                 </div>
                 <div
                     className="bg-gradient-to-t from-[#000] to-[#F7F7F6] to-90% p-[1px]  rounded-md relative mt-10">
-                    <DatePicker
-                        inputClass='bg-[#F7F7F6] p-2 outline-0 w-full rounded-md'
-                        value={expirationDatePassport}
-                        disabled={isEdit}
-                        //@ts-ignore
-                        onChange={setExpirationDatePassport}
-                        fixMainPosition={true}
-                        calendar={persian}
-                        locale={persian_fa}
-                        calendarPosition="bottom"
-                    />
+                        <DatePicker
+                            inputClass='bg-[#F7F7F6] p-2 outline-0 w-full rounded-md'
+                            value={expirationDatePassport}
+                            minDate={new DateObject().add(1,'month')}
+                            disabled={isEdit}
+                            //@ts-ignore
+                            onChange={setExpirationDatePassport}
+                            fixMainPosition={true}
+                            calendar={persian}
+                            locale={persian_fa}
+                            calendarPosition="bottom"
+                        />
                     <p className={`absolute top-[-12px] text-[#8C8C8C] text-[17px] right-[8px] ${errors.latinFirstName?.type === 'required' && 'text-red-500'}`}>تاریخ
                         انقضاء
                         پاسپورت</p>

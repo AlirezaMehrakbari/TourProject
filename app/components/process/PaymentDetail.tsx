@@ -3,7 +3,7 @@ import PaymentDetailPicture from '@/public/images/PaymentDetailPicture.png'
 import Footer from "@/app/components/footer/footer";
 import useStep from "@/app/hooks/useStep";
 import Stepper from "@/app/components/Stepper";
-import React from "react";
+import React, {useState} from "react";
 import {useAppSelector} from "@/app/redux/store";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {tripTourApi} from "@/axios-instances";
@@ -13,6 +13,8 @@ import {toast} from 'react-toastify'
 import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 import {getAllDatesInRange} from "react-multi-date-picker";
 import passengers from "@/app/components/process/Passengers";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 
 type PaymentDetailProps = {
     isVilla?: boolean,
@@ -21,11 +23,11 @@ type PaymentDetailProps = {
 }
 const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tourDetail}) => {
     const step = useStep()
+    const [isLoading,setIsLoading] = useState(false)
     const villaReserveDetail = useAppSelector(state => state.villaReserve)
     const tourReserveDetail = useAppSelector(state => state.tourReserve)
     const userSession = useAppSelector(state => state.userSlice)
-    const router = useRouter()
-
+    const newDate = new DateObject()
     let checkIn = formatDateToShamsi(new DateObject(
         {
             //@ts-ignore
@@ -48,6 +50,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
         }).format())
     const handlePayment = (e: any) => {
         e.preventDefault()
+        console.log(tourReserveDetail.entryDate)
         if (isVilla) {
             tripTourApi.post('reservations/reservationPlace', {
                 place_id: villaDetails?.id,
@@ -72,30 +75,37 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
             }).catch(error => {
                 console.log(error)
             })
-        }else{
-            tripTourApi.post('reservations/reservationPlace', {
-                place_id: villaDetails?.id,
-                checkIn,
-                checkOut,
-                number: villaReserveDetail.passengers
-            }, {
-                headers: {
-                    "Content-Type": 'application/json',
-                    Authorization: `Bearer ${userSession.value.token}`
-                }
+        } else {
+            setIsLoading(true)
+            tripTourApi.post('passengers/store', {
+                passenger: tourReserveDetail.passengers
             }).then(res => {
-                step.nextStep()
-                toast.success('رزور شما با موفقیت انجام شد.')
-                // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
-                //     headers: {
-                //         Authorization: `Bearer ${userSession.value.token}`
-                //     }
-                // }).then(res => {
-                //     router.push(`${res.data.paymentUrl}`)
-                // })
+                tripTourApi.post(`reservations/reservationTour/${tourDetail?.id}`, {
+                    date: {
+                        start: new DateObject({date: tourReserveDetail.entryDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD'),
+                        end:  new DateObject({date: tourReserveDetail.exitDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
+                    },
+                    number: {
+                        adult: tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2,
+                        child: tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12
+                    }
+                }, {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        Authorization: `Bearer ${userSession.value.token}`
+                    }
+                }).then(res => {
+                    toast.success('رزرو تور شما با موفقیت انجام شد.')
+                    step.nextStep()
+                }).catch(error => {
+                    toast.error('مشکلی رخ داده.')
+                })
             }).catch(error => {
-                console.log(error)
+                toast.error('مشکلی رخ داده.')
+            }).finally(()=>{
+                setIsLoading(false)
             })
+
         }
 
     }
@@ -128,7 +138,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                             {
                                 isVilla ?
                                     //@ts-ignore
-                                    <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month?.name}</p> :
+                                    <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month?.name}</p>
+                                    :
                                     //@ts-ignore
                                     <p className='font-kalameh500'> {tourReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month?.name}</p>
                             }
@@ -288,8 +299,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                                 {tourReserveDetail.passengers.map((item, index) => {
                                     return (
                                         <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                            <p>مسافر {(+item.birthDate.slice(0, 4)) < 2002 && 'کودک'} {index + 1} : {item.latinFirstName}{item.latinLastName}</p>
-                                            <p>{(+item.birthDate.slice(0, 4)) < 2002 ? `${formatCurrency(tourDetail.price.child)}` : formatCurrency(tourDetail.price.adult)} تومــان</p>
+                                            <p>مسافر {(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) && 'کودک'} {index + 1} : {item.latinFirstName}{item.latinLastName}</p>
+                                            <p>{(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) ? `${formatCurrency(tourDetail.price.child)}` : formatCurrency(tourDetail.price.adult)} تومــان</p>
                                         </div>
                                     )
                                 })}
@@ -300,7 +311,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                         className='bg-[#15C431] mt-8 w-full lg:w-[80%] rounded-[15px] text-[31px] font-kalameh500 py-2 text-white'
                         onClick={handlePayment}
                     >
-                        پــــرداخــــت
+                        {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>پرداخت</span>}
                     </button>
                 </div>
             </form>

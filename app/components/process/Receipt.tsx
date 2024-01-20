@@ -71,7 +71,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
                                 <p>{isVilla && villaDetails ? formatCurrency(+(villaReserveDetail.duration) * +(villaDetails?.pricePerNight)) : ''}</p>
-                                <p>{!isVilla && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}</p>
+                                <p>{!isVilla && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))} تومان </p>
                             </div>
                         </div>
                         <div>
@@ -83,7 +83,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
                                         <p>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} ماه</p>
                                     ) : (
                                         //@ts-ignore
-                                        <p>{tourDetailReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month.name} ماه</p>
+                                        <p>{tourReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month.name} ماه</p>
                                     )}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
@@ -93,7 +93,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
                                         <p>{villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name} ماه</p>
                                     ) : (
                                         //@ts-ignore
-                                        <p>{tourDetailReserveDetail.exitDate.day} {tourReserveDetail.exitDate.month.name} ماه</p>
+                                        <p>{tourReserveDetail.exitDate.day} {tourReserveDetail.exitDate.month.name} ماه</p>
                                     )}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>

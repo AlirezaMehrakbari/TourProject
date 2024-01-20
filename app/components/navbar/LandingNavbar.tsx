@@ -20,11 +20,11 @@ const LandingNavbar = () => {
             <Image
                 src={MainPic}
                 alt='Tour Picture'
-                className='w-full max-h-[793px] bg-contain'
+                className='w-full max-h-[793px] bg-contain rounded-br-[50px] rounded-bl-[50px]'
             />
             <div
-                className='absolute top-[15px] sm:top-[40px] flex justify-between items-center w-full px-4 sm:px-[40px]'>
-                <Logo width='w-[160px]' height='h-[90px]'/>
+                className='absolute top-[5px] sm:top-[40px] flex justify-between items-center w-full px-4 sm:px-[40px]'>
+                <Logo width='w-[80px] sm:w-[160px]' height='h-[50px] sm:h-[90px]'/>
                 <div className='flex gap-4 items-center '>
                     <p className='text-[#FFF] font-kalameh700 max-sm:text-[12px]'>021-77805</p>
                     <div className='flex items-center'>

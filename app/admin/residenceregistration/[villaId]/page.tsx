@@ -166,6 +166,32 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                     <p className='text-[24px] font-kalameh700'>بارگذاری ویدئو اقامتگاه</p>
                     <p className='text-[12px]'>(این قسمت اختیــاری میباشد)</p>
                 </div>
+                <label
+                    className='flex flex-col w-[60%] bg-[#F0F0F0] rounded-2xl items-center cursor-pointer'>
+                    <p className='font-kalameh400 text-[126px] text-white'>+</p>
+                    <input type='file' className='hidden'
+                           onChange={(e) => {
+                               //@ts-ignore
+                               setUploadImages(prev => [...prev, {address: URL.createObjectURL(e.target.files[0])}])
+
+
+                               tripTourApi.post(`places/store/media/${villaId}`,{
+                                   mediaName : villaDetail.title,
+                                   //@ts-ignore
+                                   media : e.target.files[0]
+                               },{
+                                   headers : {
+                                       Authorization : `Bearer ${userSession.value.token}`,
+                                       "Content-Type" : 'multipart/form-data'
+                                   }
+                               }).then(res=>{
+                                   console.log(res.data)
+                               }).catch(error=>{
+                                   console.log(error)
+                               },)
+                           }
+                           }/>
+                </label>
             </div>
 
             <div className="flex-grow border-t border-dashed border-[#5F5F5F99] mt-[3rem] pt-20"></div>

@@ -67,11 +67,15 @@ const TourDetail = ({tourDetail}: {
     const durationTour = getAllDatesInRange([new DateObject(tourDetail.date[0].start), new DateObject(tourDetail.date[0].end)])
 
     const handleStep = () => {
+
         if (travelDate === 'تاریخ سفر را مشخص کنید') {
             toast.error('لطفا تاریخ سفر خود را مشخص کنید')
             return
         }else if(passengers.adult1 === 0 && passengers.adult2 === 0){
             toast.error('لطفا تعداد مسافران بزرگسال خود را انتخاب کنید')
+            return
+        }else if (passengers.adult1 > 0 && passengers.adult2 > 0){
+            toast.error('شما میتوانید فقط یک اتاق بزرگسال انتخاب کنید.(یک تخته یا دوتخته)')
             return
         }
         dispatch(setTourReserve({
@@ -125,7 +129,7 @@ const TourDetail = ({tourDetail}: {
                 <div className='flex justify-between'>
                     <div className='md:w-[65%] w-full'>
                         <h4 className='font-kalameh400'> تور {durationTour.length} روزه - هتل
-                            - {tourDetail.vehicle.come}</h4>
+                            - {tourDetail.vehicle.com}</h4>
                         <p className='font-kalameh400'>مدیریت تور :
                             <span className='font-kalameh700 pr-2 text-[#2486B0]'>رضا صالحی</span>
                         </p>
