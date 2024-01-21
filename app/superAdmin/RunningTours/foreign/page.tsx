@@ -12,6 +12,7 @@ import Loading from "@/app/components/Loading";
 import {useAppSelector} from "@/app/redux/store";
 
 const ResidencePanel = () => {
+    
     const pathName = usePathname()
     const userSession = useAppSelector(state=>state.userSlice)
 

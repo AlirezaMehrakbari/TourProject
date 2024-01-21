@@ -15,6 +15,14 @@ const nextConfig = {
     images: {
         domains: ['triptour.v1r.ir'],
     },
+    webpack5: true,
+    webpack: config => {
+        config.resolve.fallback = {
+            fs: false,
+        };
+
+        return config;
+    },
 }
 
 module.exports = withPWA(nextConfig)

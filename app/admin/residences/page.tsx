@@ -16,7 +16,7 @@ const ResidencesPage = () => {
                 Authorization: `Bearer ${userSession.value.token}`
             }
         })
-        return res.data['user places']
+        return res.data['advertiser places']
     }
     const deleteVilla = async (id: number) => {
         const res = await tripTourApi.delete(`places/delete/${id}`, {
@@ -38,11 +38,14 @@ const ResidencesPage = () => {
         onSettled: () => toast.success('ویلا مورد نظر حذف شد.'),
         onError: () => toast.error('مشکلی رخ داده لطفا دوباره سعی کنید.')
     })
-    let content;
+    if(!userSession.value.isLoggedIn || userSession.value.role !== 'advertiser') {
+        router.push('/')
+        return
+    }
     if (isLoading) return <Loading/>
-    if (!data) return null
-    if(userSession.value.isLoggedIn && userSession.value.role === 'advertiser'){
-       content = (<div className='w-[70%] mx-auto flex flex-col justify-center items-center pt-[10rem]'>
+    if (!data) return <p className='w-full flex justify-center items-center pt-10 mx-auto font-kalameh500'>مشکلی رخ داده لطفا دوباره سعی کن :)</p>
+    return (
+     <div className='w-[70%] mx-auto flex flex-col justify-center items-center pt-[10rem]'>
             <div className='w-full flex justify-between items-center'>
                 <div className='w-[40%] relative flex items-center'>
                     <input
@@ -54,7 +57,7 @@ const ResidencesPage = () => {
                         className='absolute left-0 text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>فیلتر
                     </button>
                 </div>
-                <button className='text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>
+                <button onClick={()=>router.push('/admin/residenceregistration')} className='text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>
                     افزودن اقامتگاه
                 </button>
             </div>
@@ -160,12 +163,9 @@ const ResidencesPage = () => {
                 })}
                 </tbody>
             </table>
-        </div>)
-    }else {
-        content = <Loading/>
-        router.push('/')
-    }
-    return content
+        </div>
+    )
+
 }
 
 export default ResidencesPage

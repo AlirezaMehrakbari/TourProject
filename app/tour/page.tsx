@@ -25,6 +25,8 @@ import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
 import {useInfiniteQuery} from "@tanstack/react-query";
+import {usePDF} from "@react-pdf/renderer";
+import PDF from "@/app/components/PDF";
 
 
 const TourHomePage = () => {

@@ -24,6 +24,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
     const router = useRouter()
     const userSession = useAppSelector(state=>state.userSlice)
     const [uploadImages, setUploadImages] = useState<UploadImages[]>([])
+    const [uploadVideo,setUploadVideo] = useState()
     const [facilities, setFacilities] = useState<FacilityType[]>([])
     const [selectedLocation, setSelectedLocation] = useState<number[]>()
     const {register, handleSubmit, formState: {errors}} = useForm()
@@ -33,11 +34,6 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
     }
 
     const handleAddVilla: SubmitHandler<FieldValues> = (data) => {
-        const fd = new FormData()
-        // console.log(URL.revokeObjectURL(uploadImages))
-        // fd.append('image',uploadImages)
-
-
         if (data.type === 'نوع اقامتگاه' || data.suitableFor === 'مناسب برای') {
             toast.error('لطفا مقادیر نوع اقامتگاه و مناسب واجدین را انتخاب نمایید.')
             return
@@ -129,6 +125,16 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                             </div>
                         )
                     })}
+                    {villaDetail.medias && villaDetail.medias.map(item => {
+                        return (
+                            <div
+                                className='first:col-span-2 relative first:w-[800px] w-[390px] h-[200px] rounded-[15px] shadow-md'>
+                                {//@ts-ignore
+                                    <Image src={item} alt={'test'}
+                                           className='object-cover object-center rounded-[15px]' fill={true}/>}
+                            </div>
+                        )
+                    })}
                 </div>
                 <label
                     className='flex flex-col w-[60%] bg-[#F0F0F0] rounded-2xl items-center cursor-pointer'>
@@ -172,11 +178,11 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                     <input type='file' className='hidden'
                            onChange={(e) => {
                                //@ts-ignore
-                               setUploadImages(prev => [...prev, {address: URL.createObjectURL(e.target.files[0])}])
+                               setUploadVideo(e.target.files[0])
 
 
                                tripTourApi.post(`places/store/media/${villaId}`,{
-                                   mediaName : villaDetail.title,
+                                   mediaName : 'ویدیو اقامتگاه',
                                    //@ts-ignore
                                    media : e.target.files[0]
                                },{
@@ -192,6 +198,11 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                            }
                            }/>
                 </label>
+                <video width="400" controls>
+                    <source src={uploadVideo} type="video/mp4"/>
+
+                         Your browser does not support HTML video.
+                </video>
             </div>
 
             <div className="flex-grow border-t border-dashed border-[#5F5F5F99] mt-[3rem] pt-20"></div>

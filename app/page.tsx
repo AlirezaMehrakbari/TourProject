@@ -23,8 +23,7 @@ import Footer from "@/app/components/footer/footer";
 import Link from "next/link";
 import React from "react";
 import LandingNavbar from "@/app/components/navbar/LandingNavbar";
-import {tripTourApi} from "@/axios-instances";
-import {useQuery} from "@tanstack/react-query";
+
 
 export default async function Home() {
     const category = [
