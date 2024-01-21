@@ -34,11 +34,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
     const [isFavorite, setIsFavorite] = useState(initialFavorite)
     const handleFavorite = () => {
         setIsFavorite(prev => !prev)
-        tripTourApi.post(`users/manageFavoritePlaces/${id}`, {}, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        }).then(res => {
+        tripTourApi.post(`users/manageFavoritePlaces/${id}`).then(res => {
             if (res.data.message === 'insert to favorites') {
                 toast.success('به لیست علاقه مندی افزوده شد.')
             } else {

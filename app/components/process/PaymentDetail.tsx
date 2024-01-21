@@ -60,7 +60,6 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
             }, {
                 headers: {
                     "Content-Type": 'application/json',
-                    Authorization: `Bearer ${userSession.value.token}`
                 }
             }).then(res => {
                 step.nextStep()
@@ -92,7 +91,6 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                 }, {
                     headers: {
                         "Content-Type": 'application/json',
-                        Authorization: `Bearer ${userSession.value.token}`
                     }
                 }).then(res => {
                     toast.success('رزرو تور شما با موفقیت انجام شد.')

@@ -25,10 +25,6 @@ const ProfilePage = () => {
         tripTourApi.post('/users/completeProfile' , {
             firstName : userSession.value.firstName ,
             lastName : userSession.value.lastName,
-        }, {
-            headers : {
-                Authorization : `Bearer ${userSession.value.token}`
-            }
         })
     }
 

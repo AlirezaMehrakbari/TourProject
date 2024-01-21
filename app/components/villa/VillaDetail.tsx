@@ -49,11 +49,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     ]
     const handleFavorite = () => {
         setIsFavorite(prev => !prev)
-        tripTourApi.post(`users/manageFavoritePlaces/${villaDetails.id}`, {}, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        }).then(res => {
+        tripTourApi.post(`users/manageFavoritePlaces/${villaDetails.id}`).then(res => {
             if (res.data.message === 'insert to favorites') {
                 toast.success('به لیست علاقه مندی افزوده شد.')
             } else {
@@ -68,10 +64,6 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
         e.preventDefault()
         tripTourApi.post(`comments/comment/${villaDetails.id}`, {
             comment
-        }, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
         }).then(res => {
             toast.success('دیدگاه شما ثبت شد.')
         }).catch(error => {

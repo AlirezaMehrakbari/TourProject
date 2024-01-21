@@ -12,18 +12,13 @@ import Loading from "@/app/components/Loading";
 import {useAppSelector} from "@/app/redux/store";
 
 const ResidencePanel = () => {
-    
+
     const pathName = usePathname()
     const userSession = useAppSelector(state=>state.userSlice)
 
     //@ts-ignore
     const fetchTourForeignSuper = async (): Promise<Tour[]> => {
-        const res = await tripTourApi.get('/tours/all', {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-
-        })
+        const res = await tripTourApi.get('/tours/all')
         return res.data.data
 
     }

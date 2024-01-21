@@ -19,20 +19,12 @@ const CommentsPage = () => {
 
     }
     const fetchUserPlaces = async (): Promise<Villa[]> => {
-        const res = await tripTourApi.get('places/advertiserPlaces', {
-            headers: {
-                Authorization: `Bearer  ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get('places/advertiserPlaces')
         return res.data['user places']
     }
     const fetchVillaComments = async (placeId: number): Promise<Comments[]> => {
 
-        const res = await tripTourApi.get(`comments/getPlaceComments/${placeId}`, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get(`comments/getPlaceComments/${placeId}`)
         return res.data.comments
     }
     const {data, isLoading} = useQuery({

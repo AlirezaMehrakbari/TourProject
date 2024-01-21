@@ -15,11 +15,7 @@ const VillaDetailPage = ({params: {villaId}}: any) => {
     const step = useStep()
     const userSession = useAppSelector(state=>state.userSlice)
     const fetchVillaDetail = async (): Promise<VillaDetails> => {
-        const res = await tripTourApi.get(`places/show/${villaId}`,{
-            headers :{
-                Authorization :`Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get(`places/show/${villaId}`)
         return res.data.place[0]
     }
 

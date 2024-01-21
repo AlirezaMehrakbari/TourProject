@@ -14,11 +14,7 @@ const prevReserve = () => {
      const userSession = useAppSelector(state => state.userSlice)
     // console.log(userSession)
     const fetchMyPreviousTour = async (): Promise<{}> => {
-        const res = await tripTourApi.get(`users/reservations/places`, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get(`users/reservations/places`)
         console.log(res)
         return res.data["user reservations"]
     }
