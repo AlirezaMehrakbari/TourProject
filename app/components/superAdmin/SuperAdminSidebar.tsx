@@ -11,7 +11,7 @@ const SuperAdminSidebar =
         return (
             <div className='w-[25%] flex flex-col items-start  gap-y-10    '>
                 <Link
-                    className={`${pathName === ('/superadmin') && 'text-white bg-orange w-[230px] rounded-l-full py-3 '}`}
+                    className={`${(pathName === ('/superadmin') || pathName.startsWith('/superadmin/residencepanel'))  && 'text-white bg-orange w-[230px] rounded-l-full py-3 '}`}
                     href={'/superadmin'}>
                     <div className='flex text-center '>
                         <p className='font-kalameh500 py-3 px-6 text-[25px]'>پنل های اقامتگاه</p>
