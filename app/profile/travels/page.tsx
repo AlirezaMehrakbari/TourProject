@@ -12,12 +12,7 @@ const Travels = () => {
     const userSession = useAppSelector(state => state.userSlice)
 
     const fetchMyTour = async (): Promise<{}> => {
-        const res = await tripTourApi.get(`users/reservations/places`, {
-            headers: {
-                Authorization: `${userSession.value.token}`
-            }
-        })
-        // console.log(res)
+        const res = await tripTourApi.get(`users/reservations/places`)
         return res.data["user reservations"]
     }
     const {data: myTourData, isLoading, isError} = useQuery({

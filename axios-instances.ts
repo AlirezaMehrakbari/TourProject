@@ -13,3 +13,10 @@ tripTourApi.interceptors.response.use((res) => {
         return Promise.reject(error)
     }
 )
+tripTourApi.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        config.headers.Authorization =  token ? `Bearer ${token}` : '';
+        return config;
+    }
+)

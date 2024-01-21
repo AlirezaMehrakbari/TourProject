@@ -18,10 +18,6 @@ const ResidenceRegistrationPage = () => {
         e.preventDefault()
         tripTourApi.post('places/store', {
             title
-        },{
-            headers : {
-                Authorization : `Bearer ${userSession.value.token}`
-            }
         }).then(res=>{
             router.push(`/admin/residenceregistration/${res.data.data.id}`)
         }).catch(error=>{

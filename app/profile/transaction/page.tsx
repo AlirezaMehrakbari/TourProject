@@ -14,12 +14,7 @@ const Transaction = () => {
 
     const userSession = useAppSelector(state => state.userSlice)
     const fetchTransaction = async (): Promise<transactionMap[]> => {
-        const res = await tripTourApi.get('/users/transactions', {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-
-        })
+        const res = await tripTourApi.get('/users/transactions')
         return res.data['user transactions']
 
     }

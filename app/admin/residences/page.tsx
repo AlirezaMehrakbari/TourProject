@@ -11,19 +11,11 @@ const ResidencesPage = () => {
     const router = useRouter()
     const userSession = useAppSelector(state=>state.userSlice)
     const fetchUserPlaces = async (): Promise<Villa[]> => {
-        const res = await tripTourApi.get('places/advertiserPlaces', {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get('places/advertiserPlaces')
         return res.data['advertiser places']
     }
     const deleteVilla = async (id: number) => {
-        const res = await tripTourApi.delete(`places/delete/${id}`, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.delete(`places/delete/${id}`)
         return res.data
     }
 

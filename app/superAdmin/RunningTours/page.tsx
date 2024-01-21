@@ -15,12 +15,7 @@ const ResidencePanel = () => {
      const userSession = useAppSelector(state=>state.userSlice)
     //@ts-ignore
     const fetchTourSuper = async (): Promise<Tour[]> => {
-        const res = await tripTourApi.get('/tours/all', {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-
-        })
+        const res = await tripTourApi.get('/tours/all')
         return res.data.data
 
     }

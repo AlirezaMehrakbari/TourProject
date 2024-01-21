@@ -11,11 +11,7 @@ import {useAppSelector} from "@/app/redux/store";
 const Favorite = () => {
     const userSession = useAppSelector(state => state.userSlice)
     const fetchFavoritePlace = async (): Promise<Villa[]> => {
-        const res = await tripTourApi.get('users/getFavoritePlaces', {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get('users/getFavoritePlaces')
         return res.data['user favorites']
     }
 

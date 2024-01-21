@@ -96,11 +96,7 @@ const VillaHomePage = () => {
         setCurrentPage(value)
     }
     const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
-        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12&state=${destination !== 'مقصد' ? destination : ''}`, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        })
+        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12&state=${destination !== 'مقصد' ? destination : ''}`)
         return res.data
     }
     const {data: villaData, isLoading, isError, refetch, isRefetching} = useQuery({

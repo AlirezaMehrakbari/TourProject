@@ -41,7 +41,6 @@ const AdminPage = () => {
          userInformation
      },{
          headers : {
-             Authorization : `Bearer ${userSession.value.token}`,
              "Content-Type" : 'multipart/form-data'
          }
      }).then(res=>{

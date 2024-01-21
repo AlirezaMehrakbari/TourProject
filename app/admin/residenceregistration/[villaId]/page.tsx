@@ -59,10 +59,6 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
             pricePerAdditionalPerson: data.pricePerAdditionalPerson,
             rules: data.rules,
             facilities: facilities.map(item => item.id)
-        }, {
-            headers: {
-                Authorization: `Bearer ${userSession.value.token}`
-            }
         }).then(res => {
             toast.success('ویلا شما با موفقیت ثبت شد.')
             setTimeout(() => {
@@ -152,7 +148,6 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                                    media : e.target.files[0]
                                },{
                                    headers : {
-                                       Authorization : `Bearer ${userSession.value.token}`,
                                        "Content-Type" : 'multipart/form-data'
                                    }
                                }).then(res=>{
@@ -187,7 +182,6 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                                    media : e.target.files[0]
                                },{
                                    headers : {
-                                       Authorization : `Bearer ${userSession.value.token}`,
                                        "Content-Type" : 'multipart/form-data'
                                    }
                                }).then(res=>{
