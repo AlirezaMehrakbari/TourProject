@@ -10,15 +10,21 @@ import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import Image from "next/image";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
+import {useAppSelector} from "@/app/redux/store";
 
 type FacilityType = {
     id: number,
     type: string,
     facility: string
 }
+type UploadImages = {
+    address : string
+}
 const ResidenceEditPage = ({params: {villaId}}: any) => {
     const router = useRouter()
-    const [uploadImages, setUploadImages] = useState([])
+    const userSession = useAppSelector(state=>state.userSlice)
+    const [uploadImages, setUploadImages] = useState<UploadImages[]>([])
+    const [uploadVideo,setUploadVideo] = useState()
     const [facilities, setFacilities] = useState<FacilityType[]>([])
     const [selectedLocation, setSelectedLocation] = useState<number[]>()
     const {register, handleSubmit, formState: {errors}} = useForm()
@@ -28,11 +34,6 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
     }
 
     const handleAddVilla: SubmitHandler<FieldValues> = (data) => {
-        const fd = new FormData()
-        // console.log(URL.revokeObjectURL(uploadImages))
-        // fd.append('image',uploadImages)
-
-
         if (data.type === 'نوع اقامتگاه' || data.suitableFor === 'مناسب برای') {
             toast.error('لطفا مقادیر نوع اقامتگاه و مناسب واجدین را انتخاب نمایید.')
             return
@@ -60,7 +61,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
             facilities: facilities.map(item => item.id)
         }, {
             headers: {
-                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
+                Authorization: `Bearer ${userSession.value.token}`
             }
         }).then(res => {
             toast.success('ویلا شما با موفقیت ثبت شد.')
@@ -124,13 +125,43 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                             </div>
                         )
                     })}
+                    {villaDetail.medias && villaDetail.medias.map(item => {
+                        return (
+                            <div
+                                className='first:col-span-2 relative first:w-[800px] w-[390px] h-[200px] rounded-[15px] shadow-md'>
+                                {//@ts-ignore
+                                    <Image src={item} alt={'test'}
+                                           className='object-cover object-center rounded-[15px]' fill={true}/>}
+                            </div>
+                        )
+                    })}
                 </div>
                 <label
                     className='flex flex-col w-[60%] bg-[#F0F0F0] rounded-2xl items-center cursor-pointer'>
                     <p className='font-kalameh400 text-[126px] text-white'>+</p>
                     <input type='file' className='hidden'
-                        //@ts-ignore
-                           onChange={(e) => setUploadImages(prev => [...prev, {address: URL.createObjectURL(e.target.files[0])}])}/>
+                           onChange={(e) => {
+                               //@ts-ignore
+                               setUploadImages(prev => [...prev, {address: URL.createObjectURL(e.target.files[0])}])
+                               //@ts-ignore
+                               console.log(e.target.files[0])
+
+                               tripTourApi.post(`places/store/media/${villaId}`,{
+                                   mediaName : villaDetail.title,
+                                   //@ts-ignore
+                                   media : e.target.files[0]
+                               },{
+                                   headers : {
+                                       Authorization : `Bearer ${userSession.value.token}`,
+                                       "Content-Type" : 'multipart/form-data'
+                                   }
+                               }).then(res=>{
+                                   console.log(res.data)
+                               }).catch(error=>{
+                                   console.log(error)
+                               },)
+                           }
+                           }/>
                 </label>
                 <p className='text-[18px]'>حتما باید <span className='font-kalameh500'>چهار تصویر</span> از اقامتگاه خود
                     بارگذاری کنید</p>
@@ -141,6 +172,37 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                     <p className='text-[24px] font-kalameh700'>بارگذاری ویدئو اقامتگاه</p>
                     <p className='text-[12px]'>(این قسمت اختیــاری میباشد)</p>
                 </div>
+                <label
+                    className='flex flex-col w-[60%] bg-[#F0F0F0] rounded-2xl items-center cursor-pointer'>
+                    <p className='font-kalameh400 text-[126px] text-white'>+</p>
+                    <input type='file' className='hidden'
+                           onChange={(e) => {
+                               //@ts-ignore
+                               setUploadVideo(e.target.files[0])
+
+
+                               tripTourApi.post(`places/store/media/${villaId}`,{
+                                   mediaName : 'ویدیو اقامتگاه',
+                                   //@ts-ignore
+                                   media : e.target.files[0]
+                               },{
+                                   headers : {
+                                       Authorization : `Bearer ${userSession.value.token}`,
+                                       "Content-Type" : 'multipart/form-data'
+                                   }
+                               }).then(res=>{
+                                   console.log(res.data)
+                               }).catch(error=>{
+                                   console.log(error)
+                               },)
+                           }
+                           }/>
+                </label>
+                <video width="400" controls>
+                    <source src={uploadVideo} type="video/mp4"/>
+
+                         Your browser does not support HTML video.
+                </video>
             </div>
 
             <div className="flex-grow border-t border-dashed border-[#5F5F5F99] mt-[3rem] pt-20"></div>

@@ -23,8 +23,7 @@ import Footer from "@/app/components/footer/footer";
 import Link from "next/link";
 import React from "react";
 import LandingNavbar from "@/app/components/navbar/LandingNavbar";
-import {tripTourApi} from "@/axios-instances";
-import {useQuery} from "@tanstack/react-query";
+
 
 export default async function Home() {
     const category = [
@@ -147,7 +146,7 @@ export default async function Home() {
             <div>
                 <LandingNavbar/>
                 <div
-                    className='mt-[-40px] z-10  absolute inset-x-0 sm:w-[500px] md:w-[750px] lg:w-[936px] max-h-[126px] mx-auto'>
+                    className='mt-[-50px] md:mt-[-70px] z-10  absolute inset-x-0 sm:w-[500px] md:w-[750px] lg:w-[936px] max-h-[126px] mx-auto'>
                     <Layout>
                         {category.map(item => {
                             return (

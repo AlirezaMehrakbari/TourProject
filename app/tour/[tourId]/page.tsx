@@ -9,17 +9,18 @@ import Receipt from "@/app/components/process/Receipt";
 import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
-const TourDetailPage = ({params : {tourId}} : any) => {
+
+const TourDetailPage = ({params: {tourId}}: any) => {
     const step = useStep()
 
-    const tourDetail = async ()=>{
+    const tourDetail = async () => {
         const res = await tripTourApi.get(`tours/show/${tourId}`)
         return res.data.data
     }
 
-    const {data,isLoading,isError} = useQuery({
-        queryKey : ['tourDetail'],
-        queryFn : tourDetail
+    const {data, isLoading, isError} = useQuery({
+        queryKey: ['tourDetail'],
+        queryFn: tourDetail
 
     })
     useEffect(() => {
@@ -32,15 +33,15 @@ const TourDetailPage = ({params : {tourId}} : any) => {
         window.scrollTo(0, 0)
         switch (step.step) {
             case 0 :
-                return <TourDetail tourDetail = {data}/>
+                return <TourDetail tourDetail={data}/>
             case 1 :
-                return <Passengers/>
+                return <Passengers tourDetail={data}/>
             case 2 :
-                return <ConfirmInformation/>
+                return <ConfirmInformation tourDetail={data}/>
             case 3 :
-                return <PaymentDetail/>
+                return <PaymentDetail tourDetail={data}/>
             case 4 :
-                return <Receipt/>
+                return <Receipt tourDetail={data}/>
         }
     }
 

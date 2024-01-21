@@ -8,16 +8,17 @@ type UserAuthState = {
     lastName: string,
     phoneNumber: string,
     role: string,
-    isLoggedIn :boolean,
-    fullName : string,
-    birthDate : string,
-        nationalCode : string
+    isLoggedIn: boolean,
+    fullName: string,
+    birthDate: string,
+    nationalCode: string,
+    city : string
 }
 type InitialState = {
- value : UserAuthState
+    value: UserAuthState
 }
 const initialState: InitialState = {
-    value :{
+    value: {
         id: null,
         token: '',
         firstName: '',
@@ -25,9 +26,10 @@ const initialState: InitialState = {
         phoneNumber: '',
         role: '',
         isLoggedIn: false,
-        fullName : '',
-        birthDate : '',
-        nationalCode : ''
+        fullName: '',
+        birthDate: '',
+        nationalCode: '',
+        city: ''
     }
 
 }
@@ -38,8 +40,9 @@ type Action = {
     lastName: string,
     phoneNumber: string,
     role: string,
-    birthDate? : string,
-    nationalCode? : string
+    birthDate?: string,
+    nationalCode?: string,
+    city: string
 }
 
 export const userSlice = createSlice({
@@ -53,9 +56,10 @@ export const userSlice = createSlice({
             state.value.token = action.payload.token
             state.value.phoneNumber = action.payload.phoneNumber
             state.value.role = action.payload.role
-            if(action.payload.nationalCode && action.payload.birthDate){
-            state.value.nationalCode = action.payload.nationalCode
-            state.value.birthDate = action.payload.birthDate
+            state.value.city = action.payload.city
+            if (action.payload.nationalCode && action.payload.birthDate) {
+                state.value.nationalCode = action.payload.nationalCode
+                state.value.birthDate = action.payload.birthDate
             }
             state.value.isLoggedIn = !!state.value.token
             state.value.fullName = state.value.firstName + ' ' + state.value.lastName

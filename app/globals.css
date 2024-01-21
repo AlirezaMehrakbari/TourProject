@@ -97,5 +97,8 @@ body,
 .leaflet-top, .leaflet-bottom {
     z-index: 0 !important
 }
+.rmdp-container  {
+    width: 100%;
+}
 
 

@@ -5,21 +5,23 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
+import {useAppSelector} from "@/app/redux/store";
 
 const ResidencesPage = () => {
     const router = useRouter()
+    const userSession = useAppSelector(state=>state.userSlice)
     const fetchUserPlaces = async (): Promise<Villa[]> => {
-        const res = await tripTourApi.get('users/getUserPlaces', {
+        const res = await tripTourApi.get('places/advertiserPlaces', {
             headers: {
-                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
+                Authorization: `Bearer ${userSession.value.token}`
             }
         })
-        return res.data['user places']
+        return res.data['advertiser places']
     }
     const deleteVilla = async (id: number) => {
         const res = await tripTourApi.delete(`places/delete/${id}`, {
             headers: {
-                Authorization: `Bearer 174|CjRnDOEe9mf2N9xzOOT17zC9IAxw3rTil882RTEO88f67a18`
+                Authorization: `Bearer ${userSession.value.token}`
             }
         })
         return res.data
@@ -36,10 +38,14 @@ const ResidencesPage = () => {
         onSettled: () => toast.success('ویلا مورد نظر حذف شد.'),
         onError: () => toast.error('مشکلی رخ داده لطفا دوباره سعی کنید.')
     })
+    if(!userSession.value.isLoggedIn || userSession.value.role !== 'advertiser') {
+        router.push('/')
+        return
+    }
     if (isLoading) return <Loading/>
-    if (!data) return null
+    if (!data) return <p className='w-full flex justify-center items-center pt-10 mx-auto font-kalameh500'>مشکلی رخ داده لطفا دوباره سعی کن :)</p>
     return (
-        <div className='w-[70%] mx-auto flex flex-col justify-center items-center pt-[10rem]'>
+     <div className='w-[70%] mx-auto flex flex-col justify-center items-center pt-[10rem]'>
             <div className='w-full flex justify-between items-center'>
                 <div className='w-[40%] relative flex items-center'>
                     <input
@@ -51,7 +57,7 @@ const ResidencesPage = () => {
                         className='absolute left-0 text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>فیلتر
                     </button>
                 </div>
-                <button className='text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>
+                <button onClick={()=>router.push('/admin/residenceregistration')} className='text-[20px] font-kalameh500 bg-[#242A50] text-[#FFF] py-[10px] px-8 rounded-lg'>
                     افزودن اقامتگاه
                 </button>
             </div>
@@ -159,6 +165,7 @@ const ResidencesPage = () => {
             </table>
         </div>
     )
+
 }
 
 export default ResidencesPage

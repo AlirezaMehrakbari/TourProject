@@ -14,7 +14,7 @@ import {useAppSelector} from "@/app/redux/store";
 const ResidencePanel = () => {
      const userSession = useAppSelector(state=>state.userSlice)
     //@ts-ignore
-    const fetchTourSuper = async (): Promise<{}> => {
+    const fetchTourSuper = async (): Promise<Tour[]> => {
         const res = await tripTourApi.get('/tours/all', {
             headers: {
                 Authorization: `Bearer ${userSession.value.token}`
@@ -106,7 +106,6 @@ titelea= 'داخلی' titeleb='خارجی' titelec='' titeled=''  villaPath = '/
                                     <td>{report.details.transportation}</td>
                                     <td>
                                         <div className='flex flex-row justify-center items-center gap-x-1'>
-                                            {report.score}
                                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
                                                  viewBox="0 0 17 17" fill="none">
                                                 <path

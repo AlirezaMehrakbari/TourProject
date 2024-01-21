@@ -170,13 +170,33 @@ type Tour = {
         }
     ],
     vehicle: {
-        come: string,
+        com: string,
         comeBack: string
     },
     flightClass: string,
     flightNumber: string,
     status: string,
     created_at: string,
+    medias: string[],
+}
+
+type Tours ={
+    data : Tour[]
+    links: {
+        first: string,
+        last: string,
+        prev: string,
+        next: string
+    },
+    meta: {
+        current_page: number,
+        from: number,
+        last_page: number,
+        path: string,
+        per_page: number,
+        to: number,
+        total: number
+    }
 
 }
 

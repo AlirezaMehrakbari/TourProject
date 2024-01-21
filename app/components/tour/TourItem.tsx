@@ -14,7 +14,7 @@ export type TourItemProps = {
     startDateTour: string,
     endDateTour: string,
     vehicle: {
-        come: string,
+        com: string,
         comeBack: string
     }
     tourManager: string
@@ -36,7 +36,7 @@ const TourItem: React.FC<TourItemProps> = ({
         <Link href={`/tour/${id}`}>
             <div
                 className='w-full flex flex-col lg:flex-row justify-between bg-[#fafafa] rounded-lg mx-auto px-8 py-4 hover:shadow-xl cursor-pointer transition'>
-                <div className='pb-4'>
+                <div className='pb-4 w-[400px]'>
                     <h1 className='font-kalameh500 text-[20.6px] text-[#000] pb-2'>تور
                         {origin} - {destination}
                     </h1>
@@ -46,13 +46,13 @@ const TourItem: React.FC<TourItemProps> = ({
                             <p>{startDate.day} {startDate.month.name} - {endDate.day} {endDate.month.name}</p>
                         </div>
                         <div>
-                            <p>رفت : {vehicle.come} - برگشت : {vehicle.comeBack}</p>
+                            <p>رفت : {vehicle.com} - برگشت : {vehicle.comeBack}</p>
                             <p>تور مسافرتی {tourManager}</p>
                         </div>
                     </div>
                 </div>
 
-                <span className='border-[1px]  border-cblue'></span>
+                <span className='border-[1px]  border-cblue '></span>
 
                 <div className='grid justify-items-center text-center pt-4'>
                     <div className='text-cblue text-[20.2px] font-kalameh700 w-full'>

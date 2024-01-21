@@ -3,24 +3,31 @@ import PaymentDetailPicture from '@/public/images/PaymentDetailPicture.png'
 import Footer from "@/app/components/footer/footer";
 import useStep from "@/app/hooks/useStep";
 import Stepper from "@/app/components/Stepper";
-import React from "react";
+import React, {useState} from "react";
 import {useAppSelector} from "@/app/redux/store";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {tripTourApi} from "@/axios-instances";
 import DateObject from "react-date-object";
 import {useRouter} from "next/navigation";
 import {toast} from 'react-toastify'
+import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
+import {getAllDatesInRange} from "react-multi-date-picker";
+import passengers from "@/app/components/process/Passengers";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 
 type PaymentDetailProps = {
     isVilla?: boolean,
-    villaDetails?: VillaDetails
+    villaDetails?: VillaDetails,
+    tourDetail?: Tour
 }
-const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) => {
+const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tourDetail}) => {
     const step = useStep()
+    const [isLoading,setIsLoading] = useState(false)
     const villaReserveDetail = useAppSelector(state => state.villaReserve)
+    const tourReserveDetail = useAppSelector(state => state.tourReserve)
     const userSession = useAppSelector(state => state.userSlice)
-    const router = useRouter()
-
+    const newDate = new DateObject()
     let checkIn = formatDateToShamsi(new DateObject(
         {
             //@ts-ignore
@@ -43,30 +50,66 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
         }).format())
     const handlePayment = (e: any) => {
         e.preventDefault()
-        tripTourApi.post('reservations/reservationPlace', {
-            place_id: villaDetails?.id,
-            checkIn,
-            checkOut,
-            number: villaReserveDetail.passengers
-        }, {
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        }).then(res => {
-            step.nextStep()
-            toast.success('رزور شما با موفقیت انجام شد.')
-            // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
-            //     headers: {
-            //         Authorization: `Bearer ${userSession.value.token}`
-            //     }
-            // }).then(res => {
-            //     router.push(`${res.data.paymentUrl}`)
-            // })
-        }).catch(error => {
-            console.log(error)
-        })
+        console.log(tourReserveDetail.entryDate)
+        if (isVilla) {
+            tripTourApi.post('reservations/reservationPlace', {
+                place_id: villaDetails?.id,
+                checkIn,
+                checkOut,
+                number: villaReserveDetail.passengers
+            }, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    Authorization: `Bearer ${userSession.value.token}`
+                }
+            }).then(res => {
+                step.nextStep()
+                toast.success('رزور شما با موفقیت انجام شد.')
+                // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
+                //     headers: {
+                //         Authorization: `Bearer ${userSession.value.token}`
+                //     }
+                // }).then(res => {
+                //     router.push(`${res.data.paymentUrl}`)
+                // })
+            }).catch(error => {
+                console.log(error)
+            })
+        } else {
+            setIsLoading(true)
+            tripTourApi.post('passengers/store', {
+                passenger: tourReserveDetail.passengers
+            }).then(res => {
+                tripTourApi.post(`reservations/reservationTour/${tourDetail?.id}`, {
+                    date: {
+                        start: new DateObject({date: tourReserveDetail.entryDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD'),
+                        end:  new DateObject({date: tourReserveDetail.exitDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
+                    },
+                    number: {
+                        adult: tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2,
+                        child: tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12
+                    }
+                }, {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        Authorization: `Bearer ${userSession.value.token}`
+                    }
+                }).then(res => {
+                    toast.success('رزرو تور شما با موفقیت انجام شد.')
+                    step.nextStep()
+                }).catch(error => {
+                    toast.error('مشکلی رخ داده.')
+                })
+            }).catch(error => {
+                toast.error('مشکلی رخ داده.')
+            }).finally(()=>{
+                setIsLoading(false)
+            })
+
+        }
+
     }
+    if (!tourDetail) return null
     return (
         <div>
             <Stepper isVilla={isVilla}/>
@@ -92,8 +135,14 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تـاریـخ سفـر</p>
-                            {//@ts-ignore
-                                <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name}</p>}
+                            {
+                                isVilla ?
+                                    //@ts-ignore
+                                    <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month?.name}</p>
+                                    :
+                                    //@ts-ignore
+                                    <p className='font-kalameh500'> {tourReserveDetail.entryDate.day} {tourReserveDetail.entryDate.month?.name}</p>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -114,7 +163,10 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تعـداد مسافران</p>
-                            <p className='font-kalameh500'>{villaReserveDetail.passengers} نفــر</p>
+                            {
+                                isVilla ? <p className='font-kalameh500'>{villaReserveDetail.passengers} نفــر</p>
+                                    : <p className='font-kalameh500'>{tourReserveDetail.passengers.length} نفــر</p>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -150,7 +202,16 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             <p className='text-[11.2px] text-[#777]'>
                                 {isVilla ? 'هزینه اقامت هرشب' : 'هزینه پرداختی'}
                             </p>
-                            <p className='font-kalameh500'>{villaDetails && formatCurrency(+villaDetails.pricePerNight)} تومـان</p>
+                            {isVilla ? (
+                                <p className='font-kalameh500'>{villaDetails && formatCurrency(+villaDetails.pricePerNight)} تومـان</p>
+                            ) : (
+                                <p className='font-kalameh500 flex items-center'>
+                                <span className='pl-[5px]'>
+                                    {formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}
+                                </span>
+                                    تومـان
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -193,7 +254,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             ) : (
                                 <>
                                     <p className='text-[11.2px] text-[#777]'>حمل و نقـل</p>
-                                    <p className='font-kalameh500'>هواپــیــما</p>
+                                    <p className='font-kalameh500'>{tourDetail?.vehicle.com}</p>
                                 </>
                             )}
                         </div>
@@ -214,8 +275,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                                 </>
                             ) : (
                                 <>
-                                    <p className='text-[14.3px] font-kalameh400'>تـور زمینی تهران - استانبول</p>
-                                    <p className='text-[11px] text-[#777676]'>هـتل پنج ســتاره استانبول</p>
+                                    <p className='text-[14.3px] font-kalameh400'>{tourDetail?.title}</p>
+                                    <p className='text-[11px] text-[#777676]'>{tourDetail?.details.place}</p>
                                 </>
                             )}
                         </div>
@@ -235,18 +296,14 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                             </>
                         ) : (
                             <>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 1 : امیـر محمدی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 2 : علیرضا دارابی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
-                                <div className='text-[10.6px] text-[#808080] flex justify-between'>
-                                    <p>مسافر 3 : ارسلان دارابی</p>
-                                    <p>800.000 تومــان</p>
-                                </div>
+                                {tourReserveDetail.passengers.map((item, index) => {
+                                    return (
+                                        <div className='text-[10.6px] text-[#808080] flex justify-between'>
+                                            <p>مسافر {(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) && 'کودک'} {index + 1} : {item.latinFirstName}{item.latinLastName}</p>
+                                            <p>{(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) ? `${formatCurrency(tourDetail.price.child)}` : formatCurrency(tourDetail.price.adult)} تومــان</p>
+                                        </div>
+                                    )
+                                })}
                             </>
                         )}
                     </div>
@@ -254,7 +311,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         className='bg-[#15C431] mt-8 w-full lg:w-[80%] rounded-[15px] text-[31px] font-kalameh500 py-2 text-white'
                         onClick={handlePayment}
                     >
-                        پــــرداخــــت
+                        {isLoading ? <span className="loading loading-ring loading-md"></span> : <span>پرداخت</span>}
                     </button>
                 </div>
             </form>
