@@ -6,6 +6,7 @@ import SuperAdminNavbar from "@/app/components/superAdmin/SuperAdminNavbar";
 import SuperAdminSidebar from "@/app/components/superAdmin/SuperAdminSidebar";
 import Inputs from "@/app/components/superAdmin/inputs";
 import axios from "axios";
+import AccountInput from "@/app/components/superAdmin/AccountInput";
 
 const Accounts = () => {
     const pathName = usePathname()
@@ -58,10 +59,8 @@ const Accounts = () => {
                 <SuperAdminSidebar/>
                 <div className='w-full flex flex-col items-center gap-y-2 '>
                     <div className='w-[90%] flex justify-between  '>
-                        <Inputs
-                            className3='hidden' className2='hidden' placeholder1='نام کاربر را وارد کنید'
-                        />
-                        <button className='w-[10%] rounded-md bg-[#533FA1] py-2 text-white '>فیلتر</button>
+<AccountInput/>
+                      
                     </div>
                     <table className='w-[90%] mx-auto text-center '>
                         <thead>

@@ -8,6 +8,7 @@ import {redirect, useRouter} from "next/navigation";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import {router} from "next/client";
 import {tripTourApi} from "@/axios-instances";
+import ResidenceInput from "@/app/components/superAdmin/inputs";
 
 
 const ProfilePage = () => {
@@ -103,6 +104,7 @@ const ProfilePage = () => {
                                         className='w-[30%] mx-auto rounded-md bg-[#000] text-white py-2'>ثبت
                                 </button>
                             </div>
+                            <ResidenceInput/>
                         </div>
                     </form>
                 </div>

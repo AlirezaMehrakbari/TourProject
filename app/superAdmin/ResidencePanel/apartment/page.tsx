@@ -10,6 +10,7 @@ import {tripTourApi} from "@/axios-instances";
 import {useQuery} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import {useAppSelector} from "@/app/redux/store";
+import ResidenceInput from "@/app/components/superAdmin/inputs";
 
 const ResidencePanel = () => {
     const pathName = usePathname()
@@ -36,8 +37,7 @@ const ResidencePanel = () => {
                 <SuperAdminSidebar/>
                 <div className='w-full flex flex-col items-center gap-y-2 '>
                     <div className='w-[90%] flex justify-between  '>
-                        <Inputs className4='hidden'/>
-                        <button className='w-[10%] rounded-md bg-[#533FA1] py-2 text-white '>فیلتر</button>
+                        <ResidenceInput/>
                     </div>
                     <table className='w-[90%] mx-auto text-center '>
                         <thead>
