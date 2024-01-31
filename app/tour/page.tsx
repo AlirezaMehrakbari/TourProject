@@ -25,8 +25,7 @@ import DatePickerPlugin from "@/app/components/plugin/DatePickerPlugin";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
 import {useInfiniteQuery} from "@tanstack/react-query";
-import {usePDF} from "@react-pdf/renderer";
-import PDF from "@/app/components/PDF";
+import {toast} from "react-toastify";
 
 
 const TourHomePage = () => {
@@ -120,13 +119,22 @@ const TourHomePage = () => {
         text && setFilterValue(text)
 
     }
+    const handleSearch = (e: any) => {
+        e.preventDefault()
+        if (destination === 'مقصد' || passengers === 0) {
+            toast.warn('لطفا فیلد مورد نظر انتخاب کنید.')
+            return
+        }
+        refetch()
+
+    }
 
     const fetchAllTour = async ({pageParam = 1}): Promise<Tours> => {
-        const res = await tripTourApi.get(`tours/all?paginate=4&page=${pageParam}&filter=${activeButton}`)
+        const res = await tripTourApi.get(`tours/all?paginate=4&page=${pageParam}&filter=${activeButton}&destination=${destination !== 'مقصد' ? destination : ''}`)
         return res.data
     }
 
-    const {data, isLoading, isFetching,isRefetching, hasNextPage, fetchNextPage} = useInfiniteQuery({
+    const {data, isLoading, isFetching,isRefetching, hasNextPage, fetchNextPage,refetch} = useInfiniteQuery({
         queryKey: ['allTour', activeButton],
         //@ts-ignore
         queryFn: fetchAllTour,
@@ -182,7 +190,9 @@ const TourHomePage = () => {
                 alt='Tour Picture'/>
             <div className='mx-auto mt-[-60px]'>
                 <Layout>
-                    <form className='xl:w-[1020px] grid xl:grid-cols-5 md:grid-cols-2 gap-8'>
+                    <form
+                    onSubmit={handleSearch}
+                        className='xl:w-[1020px] grid xl:grid-cols-5 md:grid-cols-2 gap-8'>
                         <div className='flex flex-col gap-y-4'>
                             <p className='text-[20.6px] font-kalameh700 text-white'>از کجا میخوای بـری؟!</p>
                             <SelectDropDown main label={origin}
@@ -297,9 +307,9 @@ const TourHomePage = () => {
                     {/*768 به بالا*/}
                     <div className='hidden lg:flex items-center justify-between lg:gap-x-2 xl:w-[70%]'>
                         <button
-                            name={'suggested'}
+                            name={'suggestion'}
                             onClick={(e) => handleFilter(e)}
-                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'suggested' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>
+                            className={`bg-[#F0F0F0] rounded-[50px] text-[14px] font-kalameh500 p-2 w-full ${activeButton === 'suggestion' && 'bg-orange text-white border-[2px] border-white shadow-md'}`}>
                             پیـشــنهاد
                             مــا
                         </button>

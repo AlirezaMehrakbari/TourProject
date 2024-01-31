@@ -19,13 +19,6 @@ const ConfirmInformation: React.FC<ConfirmInformationProps> = ({isVilla, villaDe
     const userSession = useAppSelector(state => state.userSlice)
     const registerModal = useRegisterModal()
 
-    useEffect(() => {
-        if(userSession.value.isLoggedIn){
-            step.nextStep()
-        }
-
-    }, [userSession.value.isLoggedIn]);
-
     const handleSubmit = () => {
         if (!userSession.value.isLoggedIn) {
             toast.warn('برای ادامه لطفا وارد حساب کاربری خود شوید.')

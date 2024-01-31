@@ -9,7 +9,9 @@ import TourReserveSliceReducer from '@/app/redux/slices/tourReserve-slice'
 
 const persistConfig = {
     key: 'root',
-    storage
+    storage,
+    whitelist : ['userSlice'],
+    blacklist : ['villaReserve','tourReserve']
 }
 const reducer = combineReducers({
     userSlice: UserSliceReducer,

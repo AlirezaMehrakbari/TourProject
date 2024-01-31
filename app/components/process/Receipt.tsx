@@ -5,6 +5,7 @@ import React from "react";
 import {useAppSelector} from "@/app/redux/store";
 import formatCurrency from "@/app/utils/FormatCurrency";
 import {getAllDatesInRange} from "react-multi-date-picker";
+import useStep from "@/app/hooks/useStep";
 
 type ReceiptProps = {
     isVilla?: boolean,
@@ -15,12 +16,12 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
     const userSession = useAppSelector(state => state.userSlice)
     const villaReserveDetail = useAppSelector(state => state.villaReserve)
     const tourReserveDetail = useAppSelector(state => state.tourReserve)
-    if (!tourDetail) return null
     return (
         <div className='bg-[#F5F5F5] min-h-screen flex flex-col items-center'>
             <Stepper isVilla={isVilla}/>
             <div className='flex flex-col md:w-[80%] lg:w-[60%]'>
-                <div className='flex items-center self-end w-fit border-[1px] rounded-[9px] px-4 md:mt-[10rem] mb-3'>
+                <div
+                    className='flex items-center self-end w-fit border-[1px] border-[#000] rounded-[9px] px-4 md:mt-[10rem] mb-3'>
                     <button className='sm:text-[25.6px] self-end'>دانلود بلیط</button>
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
                         <path
@@ -70,8 +71,13 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
                             </div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
-                                <p>{isVilla && villaDetails ? formatCurrency(+(villaReserveDetail.duration) * +(villaDetails?.pricePerNight)) : ''}</p>
-                                <p>{!isVilla && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))} تومان </p>
+                                {
+                                    isVilla ? (
+                                        <p>{villaDetails ? formatCurrency((+villaReserveDetail.duration.length) * (+villaDetails?.pricePerNight)) : ''} تومان </p>
+                                    ) : (
+                                        <p>{!isVilla && tourDetail && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))} تومان </p>
+                                    )
+                                }
                             </div>
                         </div>
                         <div>
@@ -98,7 +104,8 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla, villaDetails, tourDetail}) =>
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تعداد مسافران : </p>
-                                    {isVilla ?  <p>{villaReserveDetail.passengers} نفر</p> :  <p>{tourReserveDetail.passengers.length} نفر</p>}
+                                    {isVilla ? <p>{villaReserveDetail.passengers} نفر</p> :
+                                        <p>{tourReserveDetail.passengers.length} نفر</p>}
                                 </div>
                             </div>
                         </div>

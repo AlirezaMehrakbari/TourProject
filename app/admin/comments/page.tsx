@@ -50,7 +50,7 @@ const CommentsPage = () => {
                                 labelStyles={'text-[10px] sm:text-[13px]'}
                 >
                     <ul className='flex flex-col gap-y-1'>
-                        {userPlaces.length > 1 ? userPlaces.map((item, index) => {
+                        {userPlaces.length > 0 ? userPlaces.map((item, index) => {
                             return (
                                 <li className='hover:text-[#FFE712]'
                                     onClick={() => handleSwitchVilla(item.address.state, item.address.city)}>

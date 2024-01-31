@@ -102,7 +102,8 @@ const RegisterModal = () => {
                             token: res.data.token,
                             nationalCode: res.data.nationalCode,
                             birthDate: res.data.birthDate,
-                            city : res.data.user.city
+                            city : res.data.user.city,
+                            description : res.data.user.description
                         }))
                     toast.success('خوش اومدی :)')
                     setTimeout(() => {
@@ -141,7 +142,7 @@ const RegisterModal = () => {
                     phoneNumber: res.data.user.phoneNumber,
                     role: res.data.role,
                     token: res.data.token,
-                    city : res.data.user.city
+                    city : res.data.user.city,
                 }))
             setStep(0)
             registerModal.onClose()

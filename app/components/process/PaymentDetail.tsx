@@ -50,10 +50,8 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
         }).format())
     const handlePayment = (e: any) => {
         e.preventDefault()
-        console.log(tourReserveDetail.entryDate)
         if (isVilla) {
-            tripTourApi.post('reservations/reservationPlace', {
-                place_id: villaDetails?.id,
+            tripTourApi.post(`reservations/reservationPlace/${villaDetails?.id}`, {
                 checkIn,
                 checkOut,
                 number: villaReserveDetail.passengers
@@ -107,7 +105,6 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
         }
 
     }
-    if (!tourDetail) return null
     return (
         <div>
             <Stepper isVilla={isVilla}/>
@@ -205,7 +202,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                             ) : (
                                 <p className='font-kalameh500 flex items-center'>
                                 <span className='pl-[5px]'>
-                                    {formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}
+                                    {tourDetail && formatCurrency((tourDetail.price.child * (tourReserveDetail.passengersCount.child2 + tourReserveDetail.passengersCount.childFrom2to12)) + (tourDetail.price.adult * (tourReserveDetail.passengersCount.adult1 + tourReserveDetail.passengersCount.adult2)))}
                                 </span>
                                     تومـان
                                 </p>
@@ -298,7 +295,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails, tou
                                     return (
                                         <div className='text-[10.6px] text-[#808080] flex justify-between'>
                                             <p>مسافر {(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) && 'کودک'} {index + 1} : {item.latinFirstName}{item.latinLastName}</p>
-                                            <p>{(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) ? `${formatCurrency(tourDetail.price.child)}` : formatCurrency(tourDetail.price.adult)} تومــان</p>
+                                            <p>{(+item.birthDate.slice(0, 4)) >= (newDate.year - 12) ? `${tourDetail && formatCurrency(tourDetail.price.child)}` : tourDetail && formatCurrency(tourDetail.price.adult)} تومــان</p>
                                         </div>
                                     )
                                 })}

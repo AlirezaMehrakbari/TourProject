@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, freeze} from "@reduxjs/toolkit";
 import DateObject from "react-date-object";
 
 type PassengersCountType = {
@@ -40,7 +40,7 @@ const initialState: InitialState = {
 }
 
 export const TourReserveSlice = createSlice({
-    name: 'ReserveVillaDetail',
+    name: 'ReserveTourDetail',
     initialState,
     reducers: {
         setTourReserve: (state, action) => {
@@ -77,10 +77,16 @@ export const TourReserveSlice = createSlice({
 
             }
 
+        },
+        resetPassenger: (state, action) => {
+            const existingPassenger = state.passengers.find(item => item.nationalCode === action.payload)
+            if (existingPassenger) {
+                existingPassenger.nationalCode = ''
+            }
         }
     }
 })
 
-export const {setTourReserve, setPassengers} = TourReserveSlice.actions
+export const {setTourReserve, setPassengers, resetPassenger} = TourReserveSlice.actions
 
 export default TourReserveSlice.reducer

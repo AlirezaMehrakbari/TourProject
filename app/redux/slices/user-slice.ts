@@ -12,7 +12,8 @@ type UserAuthState = {
     fullName: string,
     birthDate: string,
     nationalCode: string,
-    city : string
+    city: string,
+    description: string
 }
 type InitialState = {
     value: UserAuthState
@@ -29,7 +30,8 @@ const initialState: InitialState = {
         fullName: '',
         birthDate: '',
         nationalCode: '',
-        city: ''
+        city: '',
+        description: ''
     }
 
 }
@@ -42,7 +44,8 @@ type Action = {
     role: string,
     birthDate?: string,
     nationalCode?: string,
-    city: string
+    city: string,
+    description?: string
 }
 
 export const userSlice = createSlice({
@@ -57,7 +60,8 @@ export const userSlice = createSlice({
             state.value.phoneNumber = action.payload.phoneNumber
             state.value.role = action.payload.role
             state.value.city = action.payload.city
-            if (action.payload.nationalCode && action.payload.birthDate) {
+            if (action.payload.nationalCode && action.payload.birthDate && action.payload.description) {
+                state.value.description = action.payload.description
                 state.value.nationalCode = action.payload.nationalCode
                 state.value.birthDate = action.payload.birthDate
             }

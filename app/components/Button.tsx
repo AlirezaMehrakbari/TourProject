@@ -9,7 +9,7 @@ type ButtonProps = {
     outline?: boolean
     height?: string,
     styles?: string,
-    type?:'submit'
+    type?:'submit' | 'button'
 }
 
 const Button: React.FC<ButtonProps> = ({

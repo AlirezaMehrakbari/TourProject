@@ -62,7 +62,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
 
     const handleAddComment = (e: any) => {
         e.preventDefault()
-        tripTourApi.post(`comments/comment/${villaDetails.id}`, {
+        tripTourApi.post(`comments/place/${villaDetails.id}`, {
             comment
         }).then(res => {
             toast.success('دیدگاه شما ثبت شد.')

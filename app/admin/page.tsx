@@ -1,5 +1,5 @@
 'use client'
-import {useAppSelector} from "@/app/redux/store";
+import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import Loading from "@/app/components/Loading";
 import {useRouter} from "next/navigation";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
@@ -14,66 +14,101 @@ import Button from "@/app/components/Button";
 import {tripTourApi} from "@/axios-instances";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import {logIn} from "@/app/redux/slices/user-slice";
+import Image from "next/image";
 
 type Inputs = {
-    firstName : string,
-    lastName : string,
-    nationalCode : string,
-    phoneNumber : string,
-    city : string
+    firstName: string,
+    lastName: string,
+    nationalCode: string,
+    phoneNumber: string,
+    city: string
 }
 const AdminPage = () => {
+    const dispatch = useAppDispatch()
     const {register, handleSubmit, formState: {errors}} = useForm()
     const [birthDate, setBirthDate] = useState(new DateObject().subtract(18, 'years'))
     const router = useRouter()
     const userSession = useAppSelector(state => state.userSlice)
     const registerModal = useRegisterModal()
     const [step, setStep] = useState(0)
+    const [uploadProfileImage, setUploadProfileImage] = useState('')
 
-    const handleCompleteProfile : SubmitHandler<FieldValues> = (data) => {
+    const handleCompleteProfile: SubmitHandler<FieldValues> = (data) => {
         let birthDate_convert = new DateObject({date: birthDate}).convert(gregorian, gregorian_en).format('YYYY-MM-DD')
         const userInformation = {
             ...data,
-            birthDate : birthDate_convert
+            birthDate: birthDate_convert
         }
         console.log(userInformation)
-     tripTourApi.post('users/completeProfile',{
-         userInformation
-     },{
-         headers : {
-             "Content-Type" : 'multipart/form-data'
-         }
-     }).then(res=>{
-         console.log(res)
-     }).catch(error=>{
-         console.log(error)
-     })
+        tripTourApi.post('users/completeProfile', {
+            userInformation
+        }, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+        }).then(res => {
+            dispatch(logIn(
+                {
+                    id: res.data.usere.id,
+                    firstName: res.data.usere.firstName,
+                    lastName: res.data.usere.lastName,
+                    phoneNumber: res.data.usere.phoneNumber,
+                    role: res.data.usere.role[0],
+                    token: res.data.token,
+                    nationalCode: res.data.nationalCode,
+                    birthDate: res.data.birthDate,
+                    city: res.data.usere.city,
+                    description: res.data.usere.description
+                }))
+            console.log(res)
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
-    if (!userSession.value.isLoggedIn || userSession.value.role !== 'advertiser') {
-        router.push('/')
-        return
-    }
+    // if (!userSession.value.isLoggedIn || userSession.value.role !== 'advertiser') {
+    //     router.push('/')
+    //     return
+    // }
+    // console.log(userSession.value)
     return (
         <div className='flex flex-col mt-[5rem] w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%] mx-auto'>
             <h1 className='text-[30px] font-kalameh500'><span className='font-kalameh700'>پروفایل</span> شما</h1>
             <form onSubmit={handleSubmit(handleCompleteProfile)}>
                 <div className="w-fit relative">
                     <div className="pt-[40px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 56 56"
-                             fill="none">
-                            <circle cx="28" cy="28" r="28" fill="#D9D9D9"></circle>
-                        </svg>
+                        <div className='w-full'>
+                            {uploadProfileImage ?
+                                <Image
+                                    width={80}
+                                    height={80}
+                                    className='w-[80px] h-[80px] rounded-full'
+                                    src={uploadProfileImage}
+                                    alt={'Your Profile Image'}
+                                />
+                                :
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 56 56"
+                                 fill="none">
+                                <circle cx="28" cy="28" r="28" fill="#D9D9D9"></circle>
+                            </svg>
+                            }
+                        </div>
                     </div>
                     <div className="absolute bottom-0 left-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 13 13"
                              fill="none">
                             <circle cx="6.5" cy="6.5" r="5.91667" fill="#A0A0A0" stroke="#A0A0A0"
-                                    strokeWidth="1.16667"></circle>
+                                    strokeWidth="1.16667">
+                            </circle>
                         </svg>
-                        <div
-                            className="absolute inset-0 flex justify-center items-center rounded-full text-white">+
-                        </div>
+                        <label
+                            className="absolute inset-0 flex justify-center items-center rounded-full text-white cursor-pointer">
+                            {//@ts-ignore
+                                <input onChange={(e) => setUploadProfileImage(URL.createObjectURL(e.target.files[0]))}
+                                       className='hidden' type='file'/>}
+                            +
+                        </label>
                     </div>
                 </div>
                 <div className='flex flex-col gap-y-4 pt-6'>

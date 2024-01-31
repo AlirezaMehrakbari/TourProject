@@ -22,8 +22,7 @@ const Passengers = ({tourDetail}: { tourDetail: Tour }) => {
     let adultPassengerCount = Array.from({length: adultCount}, (value, index) => index);
     let childPassengerCount = Array.from({length: childCount}, (value, index) => index);
 
-    const handleStep = (e: any) => {
-        e.preventDefault()
+    const handleStep = () => {
         if (allCount !== tourReserveDetail.passengers.length) {
             toast.warn('لطفا اطلاعات مسافران را کامل کنید.')
             return
@@ -48,6 +47,7 @@ const Passengers = ({tourDetail}: { tourDetail: Tour }) => {
                     })
                 }
                 <Button
+                    type={'button'}
                     onClick={handleStep}
                     styles='text-[24px] font-kalameh500 mx-auto h-[61px] mt-10 rounded-[16px] px-4'
 

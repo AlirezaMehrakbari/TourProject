@@ -192,7 +192,7 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                            }
                            }/>
                 </label>
-                <video width="400" controls>
+                <video onPlay={true} width="400" controls>
                     <source src={uploadVideo} type="video/mp4"/>
 
                          Your browser does not support HTML video.

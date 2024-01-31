@@ -104,7 +104,6 @@ const ProfilePage = () => {
                                         className='w-[30%] mx-auto rounded-md bg-[#000] text-white py-2'>ثبت
                                 </button>
                             </div>
-                            <ResidenceInput/>
                         </div>
                     </form>
                 </div>

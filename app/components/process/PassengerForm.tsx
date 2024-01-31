@@ -7,7 +7,7 @@ import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import DateObject from "react-date-object";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import {setPassengers} from "@/app/redux/slices/tourReserve-slice";
+import {resetPassenger, setPassengers} from "@/app/redux/slices/tourReserve-slice";
 import {toast} from "react-toastify";
 
 const PassengerForm = ({tourDetail, index, childPassenger}: {
@@ -45,8 +45,12 @@ const PassengerForm = ({tourDetail, index, childPassenger}: {
         }
         setIsEdit(true)
         dispatch(setPassengers(newData))
-        console.log(passengers)
         setIsNationalCodeDisabled(true)
+    }
+
+    const handleEditPassenger : SubmitHandler<FieldValues> = (data)=>{
+        setIsEdit(false)
+        dispatch(resetPassenger(data.nationalCode))
     }
     return (
         <form
@@ -227,9 +231,7 @@ const PassengerForm = ({tourDetail, index, childPassenger}: {
             {isEdit ? (
                 <button
                     type='button'
-                    onClick={() => {
-                        setIsEdit(false);
-                    }}
+                    onClick={handleSubmit(handleEditPassenger)}
                     className='bg-[#000] text-white font-kalameh400 w-[30%] mx-auto h-[45px] mt-10 rounded-[8px]'
                 >
                     ویرایش اطلاعات
