@@ -11,17 +11,17 @@ import Loading from "@/app/components/Loading";
 import {useAppSelector} from "@/app/redux/store";
 
 
-const VillaDetailPage = ({params: {villaId}}: any) => {
+const PlaceDetailPage = ({params: {placeId}}: any) => {
     const step = useStep()
     const userSession = useAppSelector(state=>state.userSlice)
-    const fetchVillaDetail = async (): Promise<VillaDetails> => {
-        const res = await tripTourApi.get(`places/show/${villaId}`)
+    const fetchPlaceDetail = async (): Promise<VillaDetails> => {
+        const res = await tripTourApi.get(`places/show/${placeId}`)
         return res.data.place[0]
     }
 
     const {data, isLoading, isError} = useQuery({
-        queryKey: ['villaDetail'],
-        queryFn: () => fetchVillaDetail(),
+        queryKey: ['placeDetail'],
+        queryFn: () => fetchPlaceDetail(),
     })
     useEffect(() => {
         step.resetStep()
@@ -46,4 +46,4 @@ const VillaDetailPage = ({params: {villaId}}: any) => {
     return getSectionComponent()
 }
 
-export default VillaDetailPage
+export default PlaceDetailPage

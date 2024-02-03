@@ -23,7 +23,7 @@ import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
 
 
-const VillaHomePage = () => {
+const PlacesPage = ({params : {category}} : any) => {
     const router = useRouter()
     const queryClient = useQueryClient()
     const userSession = useAppSelector(state => state.userSlice)
@@ -78,9 +78,8 @@ const VillaHomePage = () => {
 
     useEffect(() => {
         const nextPage = currentPage + 1
-        queryClient.prefetchQuery({queryKey: ['VillaData', nextPage], queryFn: () => fetchVilla(nextPage)})
+        queryClient.prefetchQuery({queryKey: ['placesData', nextPage], queryFn: () => fetchPlaces(nextPage)})
     }, [currentPage]);
-
     const handleSearch = (e: any) => {
         e.preventDefault()
         if (destination === 'مقصد' || passengers === 0) {
@@ -95,13 +94,13 @@ const VillaHomePage = () => {
         window.scrollTo({top: 700, behavior: 'smooth'})
         setCurrentPage(value)
     }
-    const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
+    const fetchPlaces = async (currPage: number): Promise<PaginateVilla> => {
         const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12&state=${destination !== 'مقصد' ? destination : ''}`)
         return res.data
     }
-    const {data: villaData, isLoading, isError, refetch, isRefetching} = useQuery({
-        queryKey: ['VillaData', currentPage],
-        queryFn: () => fetchVilla(currentPage)
+    const {data: placesData, isLoading, isError, refetch, isRefetching} = useQuery({
+        queryKey: ['placesData', currentPage],
+        queryFn: () => fetchPlaces(currentPage)
     })
 
     const handleIncreasePassenger = () => {
@@ -117,7 +116,7 @@ const VillaHomePage = () => {
 
     if (isLoading) return <Loading/>
     if (isError) return <p className='flex justify-center items-center' dir={'ltr'}>Something went Wrong!!!</p>
-    if (!villaData) {
+    if (!placesData) {
         return
     }
 
@@ -230,19 +229,19 @@ const VillaHomePage = () => {
                     </div>
                 </div>
                 {/*قسمت اجاره ویلا*/}
-                <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر
+                <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویلا در سراسر
                     کشــور</h1>
-                {villaData.data.length < 1 ?
+                {placesData.data.length < 1 ?
                     <p className='flex justify-center items-center text-red-500'> ویلایی یافت نشد.</p> : isRefetching ? <span
                             className="text-orange mx-auto flex justify-center items-center loading loading-dots loading-lg"></span>
-                        : <VillaList data={villaData.data}/>
+                        : <VillaList data={placesData.data}/>
                 }
             </section>
             <Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'
-                        count={villaData.meta.last_page}/>
+                        count={placesData.meta.last_page}/>
             <Footer/>
         </div>
     )
 }
 
-export default VillaHomePage
+export default PlacesPage

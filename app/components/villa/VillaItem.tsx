@@ -47,7 +47,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
     return (
         <div className="flex flex-col hover:text-[#000] group">
             <div className='relative'>
-                <Link href={`/villa/${id}`}>
+                <Link href={`/reserve/place/${id}`}>
                     <div className='h-[250px]'>
                         <Image
                             className='rounded-[12px] object-cover object-center shadow-md hover:shadow-lg cursor-pointer h-[250px] '
@@ -84,7 +84,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
 
 
             </div>
-            <Link href={`/villa/${id}`}>
+            <Link href={`/reserve/place/ ${id}`}>
                 <div className="flex flex-row justify-between py-2 px-[2.98px]">
                     <div className="flex text-[16.5px]">
                         <p>{opinion}</p>

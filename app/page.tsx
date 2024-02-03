@@ -30,25 +30,25 @@ export default async function Home() {
         {
             id: 1,
             category: 'ویلا',
-            url: '/villa',
+            url: '/reserve/villa',
             icon: VillaPic
         },
         {
             id: 2,
             category: "آپارتمان",
-            url: '/',
+            url: '/reserve/apartment',
             icon: Apartment
         },
         {
             id: 3,
             category: "ساحلی",
-            url: '/',
+            url: '/reserve/sahel',
             icon: Sahel
         },
         {
             id: 4,
             category: "هتل",
-            url: '/',
+            url: '/reserve/hotel',
             icon: Hotel
         },
         {

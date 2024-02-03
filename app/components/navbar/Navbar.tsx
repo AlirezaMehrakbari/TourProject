@@ -20,16 +20,16 @@ const Navbar = () => {
             <div className='flex items-center'>
                 <Link href={'/'} className='pl-6'><Logo width={'w-[100px] h-[60px] sm:w-[190px] sm:h-[90px]'}/></Link>
                 <ul className='hidden items-center lg:text-[20.6px] font-kalameh400 lg:gap-x-[53px] lg:flex'>
-                    <Link href={'/villa'} className={(pathname === '/villa' ? 'active' : '')}>
+                    <Link href={'/reserve/villa'} className={(pathname === '/reserve/villa' ? 'active' : '')}>
                         <li>ویلا</li>
                     </Link>
-                    <Link href={'/'}>
+                    <Link href={'/reserve/apartment'} className={(pathname === '/reserve/apartment' ? 'active' : '')}>
                         <li>آپارتمان</li>
                     </Link>
-                    <Link href={'/'}>
+                    <Link href={'/reserve/sahel'} className={(pathname === '/reserve/sahel' ? 'active' : '')}>
                         <li>ساحلی</li>
                     </Link>
-                    <Link href={'/'}>
+                    <Link href={'/reserve/hotel'} className={(pathname === '/reserve/hotel' ? 'active' : '')}>
                         <li>هتل</li>
                     </Link>
                     <Link href={'/tour'} className={(pathname === '/tour' ? 'active' : '')}>
