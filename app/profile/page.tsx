@@ -23,9 +23,9 @@ const ProfilePage = () => {
     //     }
     // }, [])
     const HandleAddUser = () => {
-        tripTourApi.post('/users/completeProfile' , {
-            firstName : userSession.value.firstName ,
-            lastName : userSession.value.lastName,
+        tripTourApi.post('/users/completeProfile', {
+            firstName: userSession.value.firstName,
+            lastName: userSession.value.lastName,
         })
     }
 
@@ -61,42 +61,45 @@ const ProfilePage = () => {
                                 <p className="font-kalameh400 text-[12px]">نام و نام خانوادگی</p>
                                 <div className='flex justify-between w-[95%] sm:w-[70%] gap-x-4'>
                                     <input
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             e.target.value
                                         }}
-                                        className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
+                                        className="w-full py-2 rounded-md border border-[#000] bg-transparent text-center"
                                         type="text" placeholder="نام" value={userSession.value.firstName}/>
                                     <input
-                                        className="w-full py-2 rounded-md border border-solid bg-transparent text-center"
+                                        className="w-full py-2 rounded-md border border-[#000] bg-transparent text-center"
                                         type="text" placeholder="نام خانوادگی" value={userSession.value.lastName}/>
                                 </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-y-4 items-center justify-between">
                                 <p className="font-kalameh400 text-[12px] ">کد ملی</p>
                                 <input
-                                    value={userSession.value.nationalCode}
-                                    className="w-[95%] sm:w-[70%] py-2 rounded-md border border-solid bg-transparent text-center"
+                                    defaultValue={userSession.value.nationalCode}
+                                    className="w-[95%] sm:w-[70%] py-2 rounded-md border border-[#000] bg-transparent text-center"
                                     type="text"/>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-y-4 items-center justify-between">
                                 <p className="font-kalameh400 text-[12px]">تاریخ تولد</p>
-                                <DatePicker
-                                    inputClass='w-[200px] py-2 rounded-md border border-solid  bg-transparent text-center'
-                                    placeholder={'تاریخ تولد خود را انتخاب کنید'}
-                                    value={userSession.value.nationalCode === '' ? userSession.value.nationalCode : '1402-12-12'}
-                                    //@ts-ignore
-                                    onChange={setDateBirth}
-                                    fixMainPosition={true}
-                                    calendar={persian}
-                                    locale={persian_fa}
-                                    calendarPosition="bottom"
-                                />
+                                <div className='sm:w-[70%] w-[95%]'>
+                                    <DatePicker
+                                        className='birthDayInput'
+                                        inputClass='w-full py-2 rounded-md border border-[#000] bg-transparent text-center'
+                                        placeholder={'تاریخ تولد خود را انتخاب کنید'}
+                                        value={userSession.value.nationalCode === '' ? userSession.value.nationalCode : '1402-12-12'}
+                                        //@ts-ignore
+                                        onChange={setDateBirth}
+                                        fixMainPosition={true}
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        calendarPosition="bottom"
+                                    />
+                                </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-y-4 items-center justify-between">
                                 <p className="font-kalameh400 text-[12px]">شماره همراه</p>
                                 <input
 
-                                    className="w-[95%] sm:w-[70%] py-2 rounded-md border border-solid bg-transparent text-center"
+                                    className="w-[95%] sm:w-[70%] py-2 rounded-md border border-[#000] bg-transparent text-center"
                                     type="number" value={userSession.value.phoneNumber} disabled/>
                             </div>
                             <div className="flex w-full pt-7 gap-x-4">

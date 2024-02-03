@@ -8,6 +8,7 @@ import {tripTourApi} from "@/axios-instances";
 import {useAppSelector} from "@/app/redux/store";
 import {useQuery} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
+import NotFoundData from "@/app/components/NotFoundData";
 
 const Transaction = () => {
     // const data = [1, 2, 3]
@@ -25,7 +26,7 @@ const Transaction = () => {
     })
     if (isLoading) return <Loading/>
     if (!data) return <p>Not found!!</p>
-
+    if(data.length < 1) return <NotFoundData text={'هنوز هیچ تراکنشی ثبت نشده است'}/>
 
     return (
         <div className='w-[90%] md:w-[65%] sm:w-[70%] mx-auto flex flex-col'>

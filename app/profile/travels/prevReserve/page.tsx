@@ -8,6 +8,7 @@ import {tripTourApi} from "@/axios-instances";
 import {useQuery} from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import React from "react";
+import NotFoundData from "@/app/components/NotFoundData";
 
 
 const prevReserve = () => {
@@ -26,7 +27,7 @@ const prevReserve = () => {
         //@ts-ignore
         console.log()
     }
-    if (!myPreviousTourData) return <p>Not found!!</p>
+    if (!myPreviousTourData) return <NotFoundData text={'در حال حاضر هیچ سفر فعالی ندارد'}/>
 
     return (
         isLoading ?

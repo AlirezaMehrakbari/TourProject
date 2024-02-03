@@ -5,7 +5,7 @@ import EarthLogo from "@/public/icons/EarthLogo.svg";
 
 const Loading = () => {
     return (
-        <div className='absolute top-0 w-full h-screen flex flex-col justify-center items-center bg-white'>
+        <div className='absolute top-0 w-full h-screen flex flex-col justify-center items-center bg-white opacity-60'>
         <div className='relative w-fit'>
             <svg className='animate-spin' xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" fill="none">
                 <path

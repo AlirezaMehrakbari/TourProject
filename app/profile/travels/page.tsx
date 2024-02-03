@@ -7,6 +7,7 @@ import {useQuery} from "@tanstack/react-query";
 import {useAppSelector} from "@/app/redux/store";
 import Loading from "@/app/components/Loading";
 import React from "react";
+import NotFoundData from "@/app/components/NotFoundData";
 
 const Travels = () => {
     const userSession = useAppSelector(state => state.userSlice)
@@ -23,7 +24,7 @@ const Travels = () => {
     //@ts-ignore
         console.log()
     }
-    if (!myTourData) return <p>Not found!!</p>
+    if (!myTourData) return <NotFoundData text={'در حال حاضر هیچ سفر فعالی ندارد'}/>
     return (
         isLoading ?
             <Loading/>

@@ -7,6 +7,8 @@ import {useQuery} from "@tanstack/react-query";
 import {tripTourApi} from "@/axios-instances";
 import Loading from "@/app/components/Loading";
 import {useAppSelector} from "@/app/redux/store";
+import NotFound from "@/app/not-found";
+import NotFoundData from "@/app/components/NotFoundData";
 
 const Favorite = () => {
     const userSession = useAppSelector(state => state.userSlice)
@@ -20,7 +22,7 @@ const Favorite = () => {
         queryFn: () => fetchFavoritePlace()
     })
     if (isLoading) return <Loading/>
-    if (!data) return <p>Not found!!</p>
+    if (!data) return <NotFoundData text={'لیست اقامتگاه های مورد علاقه شما خالی است'}/>
     return (
         <div className='md:w-[60%] px-4 items-center w-full flex flex-col justify-center'>
             <div className="w-full flex flex-col justify-b etween pb-10 pt-7 md:flex-row gap-x-8">

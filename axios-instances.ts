@@ -8,7 +8,7 @@ tripTourApi.interceptors.response.use((res) => {
     }, (error) => {
         if (error.response.status === 401) {
             storage.removeItem('persist:root')
-            return window.location.href === '/'
+            location.reload()
         }
         return Promise.reject(error)
     }

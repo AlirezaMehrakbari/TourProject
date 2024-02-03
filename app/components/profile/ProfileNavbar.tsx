@@ -7,6 +7,7 @@ import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {logOut} from "@/app/redux/slices/user-slice";
 import {useRouter} from "next/navigation";
 import {toast} from "react-hot-toast";
+import storage from "redux-persist/lib/storage";
 
 const ProfileNavbar = () => {
     const router = useRouter()
