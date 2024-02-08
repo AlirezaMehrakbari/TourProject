@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from "@/app/components/navbar/Logo";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import SelectDropDown from "@/app/components/dropDown/SelectDropDown";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
@@ -12,6 +12,7 @@ import {toast, ToastContainer} from "react-toastify";
 const Navbar = () => {
     const pathname = usePathname()
     const registerModal = useRegisterModal()
+    const router = useRouter()
     const dispatch = useAppDispatch()
     const userSession = useAppSelector(state => state.userSlice)
     return (
@@ -52,10 +53,9 @@ const Navbar = () => {
                                 <Link href={'/profile'}>
                                     <li className='hover:text-[#2C2AAF] cursor-pointer'>اطلاعات حساب کاربری</li>
                                 </Link>
-                                <Link href={'/profile'}>
                                     <li className='hover:text-[#2C2AAF] cursor-pointer' onClick={()=>{dispatch(logOut())
-                                        toast.warning('از حساب کاربری خود خارج شدید.')}}>خروج از حساب کاربری</li>
-                                </Link>
+                                        toast.warning('از حساب کاربری خود خارج شدید.')
+                                    router.push('/')}}>خروج از حساب کاربری</li>
                             </ul>
                         </div>
                     </SelectDropDown>

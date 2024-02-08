@@ -192,11 +192,11 @@ const ResidenceEditPage = ({params: {villaId}}: any) => {
                            }
                            }/>
                 </label>
-                <video onPlay={true} width="400" controls>
-                    <source src={uploadVideo} type="video/mp4"/>
+                {/*<video onPlay={true} width="400" controls>*/}
+                {/*    <source src={uploadVideo} type="video/mp4"/>*/}
 
-                         Your browser does not support HTML video.
-                </video>
+                {/*         Your browser does not support HTML video.*/}
+                {/*</video>*/}
             </div>
 
             <div className="flex-grow border-t border-dashed border-[#5F5F5F99] mt-[3rem] pt-20"></div>
