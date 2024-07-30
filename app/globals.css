@@ -61,6 +61,7 @@ body,
     box-sizing: border-box;
     direction: rtl;
     background-color: white;
+    color: black;
 }
 /* width */
 ::-webkit-scrollbar {
