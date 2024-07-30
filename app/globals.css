@@ -60,6 +60,7 @@ body,
     margin: 0 auto;
     box-sizing: border-box;
     direction: rtl;
+    background-color: white;
 }
 /* width */
 ::-webkit-scrollbar {
