@@ -1,18 +1,25 @@
+import React, {useState} from "react";
+
 type CommentsProps = {
     disabled?: boolean,
     reply?: boolean
-    comments: Comments[]
+    // comments: Comments[]
 }
 
 const Comments: React.FC<CommentsProps> = ({
                                                disabled,
-                                               reply,
-                                               comments
+                                               // comments
 
                                            }) => {
+    const [comments, setComments] = useState([{id: Math.round(Math.random() * 1000), comment: 'بسیار مرتب و تمیز'}])
+    const [comment, setComment] = useState('')
+
+    const handleAddComment = (e: any) => {
+        e.preventDefault()
+        setComments(prev => [...prev, {id: Math.round(Math.random() * 1000), comment: comment}])
+    }
     return (
         <div className='pb-8'>
-            {!reply &&
                 <div className='flex items-center gap-x-2'>
                     <svg className='icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 40"
                          fill="none">
@@ -27,8 +34,7 @@ const Comments: React.FC<CommentsProps> = ({
                     </svg>
                     <h1 className='text-[20px] md:text-[39.8px] font-kalameh400'>دیــدگاه ها</h1>
                 </div>
-            }
-            {comments.length > 1 &&
+            {comments?.length > 0 &&
                 <div
                     className={`relative bg-[#F7F6F6] p-4 ${comments.length > 12 ? 'h-[724px]' : 'h-full'} hover:overflow-y-auto overflow-hidden mt-8 rounded-[15px]`}>
                     <div className='w-full relative grid sm:grid-cols-2 justify-items-center'>
@@ -63,30 +69,26 @@ const Comments: React.FC<CommentsProps> = ({
                                     </div>
                                     <div className='flex flex-row-reverse'>
                                         <p className='whitespace-pre py-[35px] pr-10'>{item.comment}</p>
-                                        {reply &&
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="4" height="112"
-                                                 viewBox="0 0 4 112"
-                                                 fill="none">
-                                                <path
-                                                    d="M2.00586 0.0644113C1.10352 0.0644112 0.372029 0.795902 0.372028 1.69824C0.372028 2.60058 1.10352 3.33207 2.00586 3.33207C2.9082 3.33207 3.63969 2.60058 3.63969 1.69824C3.63969 0.795902 2.9082 0.0644113 2.00586 0.0644113ZM2.00585 111.3L3.77453 109.531L2.00585 107.762L0.237181 109.531L2.00585 111.3ZM1.69952 1.69824L1.69951 109.531L2.3122 109.531L2.3122 1.69824L1.69952 1.69824Z"
-                                                    fill="black"/>
-                                            </svg>
-                                        }
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="4" height="112"
+                                             viewBox="0 0 4 112"
+                                             fill="none">
+                                            <path
+                                                d="M2.00586 0.0644113C1.10352 0.0644112 0.372029 0.795902 0.372028 1.69824C0.372028 2.60058 1.10352 3.33207 2.00586 3.33207C2.9082 3.33207 3.63969 2.60058 3.63969 1.69824C3.63969 0.795902 2.9082 0.0644113 2.00586 0.0644113ZM2.00585 111.3L3.77453 109.531L2.00585 107.762L0.237181 109.531L2.00585 111.3ZM1.69952 1.69824L1.69951 109.531L2.3122 109.531L2.3122 1.69824L1.69952 1.69824Z"
+                                                fill="black"/>
+                                        </svg>
                                     </div>
-                                    {reply &&
-                                        <form className='relative'>
-                                            <input
-                                                className='bg-[#5E5E5E] mb-16 placeholder:text-[26px] placeholder:font-kalameh500 px-4 py-3 rounded-[6px] text-white outline-none'
-                                                placeholder='پاسخ شما'
-                                            />
-                                            <svg className='absolute top-[-0.7rem]' xmlns="http://www.w3.org/2000/svg"
-                                                 width="29" height="31" viewBox="0 0 29 31" fill="none">
-                                                <path
-                                                    d="M2.29379 18.7818C-0.369758 17.4149 -0.369757 13.6076 2.29379 12.2406L23.6514 1.27992C26.0977 0.0244675 29.006 1.80083 29.006 4.55049V26.4719C29.006 29.2216 26.0977 30.998 23.6514 29.7425L2.29379 18.7818Z"
-                                                    fill="#5E5E5E"/>
-                                            </svg>
-                                        </form>
-                                    }
+                                    <form className='relative'>
+                                        <input
+                                            className='bg-[#5E5E5E] mb-16 placeholder:text-[26px] placeholder:font-kalameh500 px-4 py-3 rounded-[6px] text-white outline-none'
+                                            placeholder='پاسخ شما'
+                                        />
+                                        <svg className='absolute top-[-0.7rem]' xmlns="http://www.w3.org/2000/svg"
+                                             width="29" height="31" viewBox="0 0 29 31" fill="none">
+                                            <path
+                                                d="M2.29379 18.7818C-0.369758 17.4149 -0.369757 13.6076 2.29379 12.2406L23.6514 1.27992C26.0977 0.0244675 29.006 1.80083 29.006 4.55049V26.4719C29.006 29.2216 26.0977 30.998 23.6514 29.7425L2.29379 18.7818Z"
+                                                fill="#5E5E5E"/>
+                                        </svg>
+                                    </form>
                                 </div>
                             )
                         })}
@@ -95,28 +97,29 @@ const Comments: React.FC<CommentsProps> = ({
                 </div>
             }
 
-            {!reply &&
-                <form
-                    className='flex items-center justify-between bg-[#F7F6F6] px-8 mt-8 rounded-[15px] h-[108px]'>
+            <form
+                onSubmit={handleAddComment}
+                className='flex items-center justify-between bg-[#F7F6F6] px-8 mt-8 rounded-[15px] h-[108px]'>
                                     <textarea
                                         className='bg-[#F7F6F6] mt-8 outline-0 text-justify px-8 w-[80%]'
                                         placeholder='نـظرخــود را ثـبت کنیـد ... '
                                         disabled={disabled}
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
                                     />
-                    <button type='submit' disabled={disabled}>
-                        <svg className='' xmlns="http://www.w3.org/2000/svg" width="40" height="38"
-                             viewBox="0 0 40 38" fill="none">
-                            <path d="M13.5527 16.8524L19.3359 22.6084L38.6131 3.42188" stroke="black"
-                                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path
-                                d="M36.6858 18.7708V32.2013C36.6858 33.2191 36.2796 34.1951 35.5566 34.9147C34.8335 35.6344 33.8529 36.0386 32.8303 36.0386H5.84226C4.81973 36.0386 3.83908 35.6344 3.11605 34.9147C2.39301 34.1951 1.98682 33.2191 1.98682 32.2013V5.34023C1.98682 4.32252 2.39301 3.34648 3.11605 2.62685C3.83908 1.90722 4.81973 1.50293 5.84226 1.50293H27.0472"
-                                stroke="black" strokeWidth="2" strokeLinecap="round"
-                                strokeLinejoin="round"/>
-                        </svg>
-                    </button>
-                </form>
-            }
-            {disabled && !reply &&
+                <button type={'submit'} disabled={disabled}>
+                    <svg className='' xmlns="http://www.w3.org/2000/svg" width="40" height="38"
+                         viewBox="0 0 40 38" fill="none">
+                        <path d="M13.5527 16.8524L19.3359 22.6084L38.6131 3.42188" stroke="black"
+                              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path
+                            d="M36.6858 18.7708V32.2013C36.6858 33.2191 36.2796 34.1951 35.5566 34.9147C34.8335 35.6344 33.8529 36.0386 32.8303 36.0386H5.84226C4.81973 36.0386 3.83908 35.6344 3.11605 34.9147C2.39301 34.1951 1.98682 33.2191 1.98682 32.2013V5.34023C1.98682 4.32252 2.39301 3.34648 3.11605 2.62685C3.83908 1.90722 4.81973 1.50293 5.84226 1.50293H27.0472"
+                            stroke="black" strokeWidth="2" strokeLinecap="round"
+                            strokeLinejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+            {disabled &&
                 <p className='text-[15px] font-kalameh500 py-2'>برای ثبت نظرات خود باید حساب کاربری داشته باشید .</p>
             }
         </div>

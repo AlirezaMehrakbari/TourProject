@@ -44,29 +44,29 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
         }).format())
     const handlePayment = (e: any) => {
         e.preventDefault()
-        tripTourApi.post('reservations/reservationPlace', {
-            place_id: villaDetails?.id,
-            checkIn,
-            checkOut,
-            number: villaReserveDetail.passengers
-        }, {
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${userSession.value.token}`
-            }
-        }).then(res => {
+        // tripTourApi.post('reservations/reservationPlace', {
+        //     place_id: villaDetails?.id,
+        //     checkIn,
+        //     checkOut,
+        //     number: villaReserveDetail.passengers
+        // }, {
+        //     headers: {
+        //         "Content-Type": 'application/json',
+        //         Authorization: `Bearer ${userSession.value.token}`
+        //     }
+        // }).then(res => {
             step.nextStep()
-            toast.success('رزور شما با موفقیت انجام شد.')
-            // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
-            //     headers: {
-            //         Authorization: `Bearer ${userSession.value.token}`
-            //     }
-            // }).then(res => {
-            //     router.push(`${res.data.paymentUrl}`)
-            // })
-        }).catch(error => {
-            console.log(error)
-        })
+        //     toast.success('رزور شما با موفقیت انجام شد.')
+        //     // tripTourApi.get(`transactions/pay/${res.data.data.id}`, {
+        //     //     headers: {
+        //     //         Authorization: `Bearer ${userSession.value.token}`
+        //     //     }
+        //     // }).then(res => {
+        //     //     router.push(`${res.data.paymentUrl}`)
+        //     // })
+        // }).catch(error => {
+        //     console.log(error)
+        // })
     }
     return (
         <div>
@@ -94,7 +94,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>تـاریـخ سفـر</p>
                             {//@ts-ignore
-                                <p className='font-kalameh500'> {villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name}</p>}
+                                <p className='font-kalameh500'> {villaReserveDetail?.entryDate?.day} {villaReserveDetail?.entryDate?.month?.name}</p>}
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>
@@ -133,7 +133,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({isVilla, villaDetails}) =>
                         </svg>
                         <div className='flex flex-col'>
                             <p className='text-[11.2px] text-[#777]'>اطلاعات کاربــر</p>
-                            <p className='font-kalameh500'>{userSession.value.fullName}</p>
+                            <p className='font-kalameh500'>{'علیرضا مهراکبری'}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-3'>

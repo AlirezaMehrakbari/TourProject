@@ -22,6 +22,132 @@ import {formatDateToShamsi} from "@/app/utils/FormatDateToShamsi";
 
 
 const VillaHomePage = () => {
+    const dummyData = [
+        {
+            id: 1,
+            title: 'ویلا 2 خوابه آستارا',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'گیلان',
+                city: 'آستارا'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 2,
+            title: 'ویلا 2 خوابه تهران',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'تهران',
+                city: 'تهران'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 3,
+            title: 'ویلا 3 خوابه رامسر',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'مازندران',
+                city: 'رامسر'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 4,
+            title: 'ویلا 2 خوابه کرج',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'البرز',
+                city: 'کرج'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 5,
+            title: 'ویلا 2 خوابه آستارا',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'گیلان',
+                city: 'آستارا'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 6,
+            title: 'ویلا 4 خوابه سمنان',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'سمنان',
+                city: 'ساری'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },
+        {
+            id: 8,
+            title: 'ویلا تک خوابه قشم',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'بندرعباس',
+                city: 'قشم'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        }, {
+            id: 9,
+            title: 'آپارتمان تک خوابه کوچ اصفهان',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'اصفهان',
+                city: 'اصفهان'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        }, {
+            id: 10,
+            title: 'ویلا 2 خوابه مشهد',
+            rating_comment: {
+                averageRating: 4,
+                totalComments: Math.round(Math.random())
+            },
+            address: {
+                state: 'مشهد',
+                city: 'مشهد'
+            },
+            pricePerNight: Math.round(Math.random() * 1000)
+
+        },]
+
     const queryClient = useQueryClient()
     const [destination, setDestination] = useState('مقصد')
     const [passengers, setPassengers] = useState(0)
@@ -72,23 +198,23 @@ const VillaHomePage = () => {
 
     }).format()
 
-    useEffect(() => {
-        const nextPage = currentPage + 1
-        queryClient.prefetchQuery({queryKey: ['VillaData', nextPage], queryFn: () => fetchVilla(nextPage)})
-    }, [currentPage]);
-
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        window.scrollTo({top: 700, behavior: 'smooth'})
-        setCurrentPage(value)
-    }
-    const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
-        const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`)
-        return res.data
-    }
-    const {data: villaData, isLoading, isError} = useQuery({
-        queryKey: ['VillaData', currentPage],
-        queryFn: () => fetchVilla(currentPage)
-    })
+    // useEffect(() => {
+    //     const nextPage = currentPage + 1
+    //     queryClient.prefetchQuery({queryKey: ['VillaData', nextPage], queryFn: () => fetchVilla(nextPage)})
+    // }, [currentPage]);
+    //
+    // const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    //     window.scrollTo({top: 700, behavior: 'smooth'})
+    //     setCurrentPage(value)
+    // }
+    // const fetchVilla = async (currPage: number): Promise<PaginateVilla> => {
+    //     const res = await tripTourApi.get(`places/all?type=ویلا&page=${currPage}&paginate=12`)
+    //     return res.data
+    // }
+    // const {data: villaData, isLoading, isError} = useQuery({
+    //     queryKey: ['VillaData', currentPage],
+    //     queryFn: () => fetchVilla(currentPage)
+    // })
 
     const handleIncreasePassenger = () => {
         setPassengers(prev => prev + 1)
@@ -101,11 +227,11 @@ const VillaHomePage = () => {
     }
 
 
-    if (isLoading) return <Loading/>
-    if (isError) return <p className='flex justify-center items-center' dir={'ltr'}>Something went Wrong!!!</p>
-    if (!villaData) {
-        return
-    }
+    // if (isLoading) return <Loading/>
+    // if (isError) return <p className='flex justify-center items-center' dir={'ltr'}>Something went Wrong!!!</p>
+    // if (!villaData) {
+    //     return
+    // }
 
     return (
         <div>
@@ -144,8 +270,7 @@ const VillaHomePage = () => {
                                             بـری؟!</p>
                                         <DatePicker
                                             //@ts-ignore
-                                            plugins={[<DatePickerPlugin entryDate={checkIn} exitDate={checkOut} position='top'/>
-                                            ]}
+                                            plugins={[<DatePickerPlugin entryDate={checkIn} exitDate={checkOut} position='top'/>]}
                                             dateSeparator=' تا '
                                             animations={[opacity()]}
                                             inputClass='cursor-pointer w-full bg-transparent text-white border-b-[1px] rounded-md outline-none placeholder:text-white text-[14px] font-kalameh400 px-2'
@@ -214,10 +339,10 @@ const VillaHomePage = () => {
                 </div>
                 {/*قسمت اجاره ویلا*/}
                 <h1 className='text-[32px] font-kalameh700 pt-[110px] pb-10'>اجــاره ویـلا در سراسر کشــور</h1>
-              <VillaList data={villaData.data}/>
+                <VillaList data={dummyData}/>
             </section>
-            <Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'
-                        count={villaData.meta.last_page}/>
+            {/*<Pagination onChange={handleChange} color="primary" className='pt-10 flex justify-center items-center'*/}
+            {/*            count={3}/>*/}
             <Footer/>
         </div>
     )

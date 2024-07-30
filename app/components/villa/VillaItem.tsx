@@ -31,7 +31,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
                                                  price,
                                                  id,
                                                  onClickFavorite,
-                                                 favoriteList
+                                                 favoriteList,
                                              }) => {
     const userSession = useAppSelector(state => state.userSlice)
 
@@ -47,7 +47,7 @@ const VillaItem: React.FC<VillaItemProps> = ({
                     />
                 </Link>
 
-                { userSession.value.isLoggedIn ?
+                {userSession.value.isLoggedIn ?
                     favoriteList.find(item => item.id === id) ? (
                         <svg className='absolute left-[15px] top-[18px]' onClick={onClickFavorite}
                              xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 23 21" fill="none">

@@ -89,7 +89,7 @@ type User = {
 }
 type VillaDetails = {
     id: number,
-    user_id: 5,
+    user_id: number,
     title: string,
     address: {
         state: string,

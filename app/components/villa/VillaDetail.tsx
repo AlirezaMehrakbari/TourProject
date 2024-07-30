@@ -20,6 +20,7 @@ import formatCurrency from "@/app/utils/FormatCurrency";
 import {toast, ToastContainer} from "react-toastify";
 import {useAppDispatch, useAppSelector} from "@/app/redux/store";
 import {setVillaReserve} from "@/app/redux/slices/villaReserve-slice";
+import Loading from "@/app/components/Loading";
 
 const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
     const step = useStep()
@@ -61,6 +62,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
         }))
         step.increase2Step()
     }
+
     return (
         <div>
             <Stepper isVilla/>
@@ -106,10 +108,8 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 <div className="flex-grow border-t border-[#DDD]"></div>
                             </div>
                             <div className='flex flex-col justify-between gap-y-4 lg:gap-y-8 lg:pt-4'>
-                                {villaDetails.facilities.filter((item, index) => {
-                                    return index < 6
-                                })
-                                    .map((item) => {
+                                {villaDetails?.facilities
+                                    ?.map((item) => {
                                         return (
                                             <p
                                                 key={item.id}
@@ -119,14 +119,14 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                         )
                                     })}
                                 <div className='self-end'>
-                                    {villaDetails.facilities.length > 6 &&
+                                    {/*{villaDetails?.facilities?.length > 6 &&*/}
                                         <button
                                             className="text-[17px] text-[#4E69CA] border-[0.3px] border-[#9A9A9A] rounded-[12px] px-3"
                                             //@ts-ignore
                                             onClick={() => document.getElementById('my_modal_2').showModal()}>
                                             مشاهده همـه امکانــات
                                         </button>
-                                    }
+                                    {/*}*/}
                                 </div>
                                 <dialog id="my_modal_2" className="modal">
                                     <div className="modal-box">
@@ -135,7 +135,7 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                             <h1 className='font-kalameh500 text-[25px] pb-4'>امکانات رفاهی</h1>
                                         </div>
                                         <div className='grid grid-cols-2 pt-4 gap-3'>
-                                            {villaDetails.facilities.map(item => {
+                                            {villaDetails?.facilities?.map(item => {
                                                 return (
                                                     <div className='flex items-center gap-2'>
                                                                     <span
@@ -181,40 +181,40 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>متراژ</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.meter}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails?.meter}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>مناسب برای</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.suitableFor}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails?.suitableFor}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>تعداد اتاق</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.numberOfRooms}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails?.numberOfRooms}</p>
                                 </div>
                             </div>
                             <div
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>ظرفیت</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.capacity} نفر</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails?.capacity} نفر</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>سال ساخت</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>طبـقه</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails.layer}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{villaDetails?.layer}</p>
                                 </div>
                             </div>
                             <div
                                 className='flex flex-col sm:flex-row items-center justify-between w-full gap-x-4 gap-y-3'>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر شب</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerNight)}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails?.pricePerNight)}</p>
                                 </div>
                                 <div className='bg-[#F8F8F8] w-full rounded-[6px] flex justify-between'>
                                     <p className='text-[12px] font-kalameh400 py-[12px] px-4'>قیمت برای هر نفر</p>
-                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails.pricePerAdditionalPerson)}</p>
+                                    <p className='text-[12px] font-kalameh500 py-[12px] px-4'>{formatCurrency(+villaDetails?.pricePerAdditionalPerson)}</p>
                                 </div>
                             </div>
                         </div>
@@ -274,17 +274,17 @@ const VillaDetail = ({villaDetails}: { villaDetails: VillaDetails }) => {
                                 <h2 className='lg:text-[32px] font-kalameh400 pr-2'>موقعیـت مکانــی</h2>
                             </div>
                             <div className='pt-4'>
-                                <Map position={[+villaDetails.address.lng, +villaDetails.address.lat]} popup={'ویلا'}/>
+                                {/*<Map position={[+villaDetails?.address.lng, +villaDetails?.address.lat]} popup={'ویلا'}/>*/}
                                 <p className='whitespace-pre  lg:text-[24px] text-[#888888]'>
-                                    {villaDetails.address.state}،
-                                    {villaDetails.address.city}،
-                                    خیابان {villaDetails.address.street}،
-                                    کوچه {villaDetails.address.alley}
+                                    {villaDetails?.address?.state}،
+                                    {villaDetails?.address?.city}،
+                                    خیابان {villaDetails?.address?.street}،
+                                    کوچه {villaDetails?.address?.alley}
                                 </p>
                             </div>
                         </div>
                         <div className='pt-20'>
-                            <Comments comments={villaDetails.comments}/>
+                            <Comments />
                         </div>
                         {/*حالت موبایل انتخاب رزرو*/}
                         <div

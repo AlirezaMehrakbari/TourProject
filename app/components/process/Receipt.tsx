@@ -55,7 +55,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
                         <div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>به نام :</p>
-                                <p>{userSession.value.fullName}</p>
+                                <p>{'علیرضا مهراکبری'}</p>
                             </div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 {isVilla ? (
@@ -67,7 +67,7 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
                             </div>
                             <div className='sm:text-[25.5px] flex items-center'>
                                 <p className='text-[#777575]'>مبلغ پرداختی : </p>
-                                <p>{isVilla && villaDetails ? formatCurrency(+(villaReserveDetail.duration) * +(villaDetails?.pricePerNight)) : ''}</p>
+                                <p>{isVilla && villaDetails ? formatCurrency(4000000) : ''}</p>
                             </div>
                         </div>
                         <div>
@@ -75,16 +75,16 @@ const Receipt: React.FC<ReceiptProps> = ({isVilla,villaDetails}) => {
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ رفت : </p>
                                     {//@ts-ignore
-                                        <p>{villaReserveDetail.entryDate.day} {villaReserveDetail.entryDate.month.name} ماه</p>}
+                                        <p>{villaReserveDetail?.entryDate?.day} {villaReserveDetail?.entryDate?.month?.name} ماه</p>}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تاریخ برگشت : </p>
                                     {//@ts-ignore
-                                    <p>{villaReserveDetail.exitDate.day} {villaReserveDetail.exitDate.month.name} ماه</p>}
+                                    <p>{villaReserveDetail?.exitDate?.day} {villaReserveDetail.exitDate?.month?.name} ماه</p>}
                                 </div>
                                 <div className='sm:text-[25.5px] flex items-center'>
                                     <p className='text-[#777575]'>تعداد مسافران : </p>
-                                    <p>{villaReserveDetail.passengers} نفر</p>
+                                    <p>{villaReserveDetail?.passengers} نفر</p>
                                 </div>
                             </div>
                         </div>

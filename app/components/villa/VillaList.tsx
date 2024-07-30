@@ -6,7 +6,7 @@ import {toast} from "react-toastify";
 import {tripTourApi} from "@/axios-instances";
 
 type VillaListProps = {
-    data: Villa[]
+    data: any[]
 }
 export type FavoriteListType = {
     id: number
